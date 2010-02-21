@@ -24,6 +24,7 @@ import org.apache.wicket.util.lang.PropertyResolver;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.fj.ExtBundle;
 import de.fj.wickx.util.ExtEventListener;
 import de.fj.wickx.util.ExtProperty;
 import de.fj.wickx.util.JSONIdentifier;
@@ -47,18 +48,18 @@ public abstract class ExtComponent extends Panel {
 	public ExtComponent(String id) {
 		super(id);
 
-		add(CSSPackageResource.getHeaderContribution(ExtComponent.class, "extjs/resources/css/ext-all.css"));
+		add(CSSPackageResource.getHeaderContribution(ExtBundle.class, ExtBundle.EXT_ALL_STYLE));
 		String extBase, extAll;
 		if (Application.get().getConfigurationType().equals(Application.DEVELOPMENT)) {
-			extBase = "extjs/adapter/ext/ext-base-debug.js";
-			extAll = "extjs/ext-all-debug.js";
+			extBase = ExtBundle.EXT_BASE_DEBUG;
+			extAll = ExtBundle.EXT_ALL_DEBUG;
 		}
 		else {
-			extBase = "extjs/adapter/ext/ext-base.js";
-			extAll = "extjs/ext-all.js";
+			extBase = ExtBundle.EXT_BASE_DEPLOY;
+			extAll = ExtBundle.EXT_ALL_DEPLOY;
 		}
-		add(JavascriptPackageResource.getHeaderContribution(ExtComponent.class, extBase));
-		add(JavascriptPackageResource.getHeaderContribution(ExtComponent.class, extAll));
+		add(JavascriptPackageResource.getHeaderContribution(ExtBundle.class, extBase));
+		add(JavascriptPackageResource.getHeaderContribution(ExtBundle.class, extAll));
 	}
 
 	protected boolean isRenderFromMarkup() {

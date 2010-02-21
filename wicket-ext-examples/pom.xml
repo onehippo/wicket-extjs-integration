@@ -73,7 +73,7 @@
 
 		<dependency>
 			<groupId>de.fj</groupId>
-			<artifactId>WicketExt</artifactId>
+			<artifactId>wicket-ext</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
