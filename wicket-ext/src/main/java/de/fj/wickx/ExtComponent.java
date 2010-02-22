@@ -2,9 +2,6 @@ package de.fj.wickx;
 
 import static de.fj.wickx.util.ExtPropertyConverter.convert;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +29,6 @@ import de.fj.wickx.util.JSONIdentifier;
 public abstract class ExtComponent extends Panel {
 
 	protected transient JSONObject properties = new JSONObject();
-	private String savedProperties;
 	
 	@ExtProperty
 	String cls;
@@ -120,6 +116,7 @@ public abstract class ExtComponent extends Panel {
 		preRenderExtHead(js);
 		js.append(String
 				.format("var %s = new %s(%s);\n", getMarkupId(), getExtClass(), properties.toString()));
+		properties = null;
 		postRenderExtHead(js);
 	}
 
@@ -216,21 +213,6 @@ public abstract class ExtComponent extends Panel {
 		this.stateful = stateful;
 	}
 
-	// serialization stuff
-	private void writeObject(ObjectOutputStream out) throws IOException {
-		savedProperties = properties.toString();
-		out.defaultWriteObject();
-	}
-
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-		in.defaultReadObject();
-		try {
-			properties = new JSONObject(savedProperties);
-		} catch (JSONException e) {
-			throw new WicketRuntimeException(e);
-		}
-	}
-	
 	private final class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {
 		
 		private String event;
