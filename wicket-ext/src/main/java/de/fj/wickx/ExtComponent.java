@@ -29,7 +29,7 @@ import de.fj.wickx.util.JSONIdentifier;
 public abstract class ExtComponent extends Panel {
 
 	protected transient JSONObject properties = new JSONObject();
-	
+
 	@ExtProperty
 	String cls;
 	@ExtProperty
@@ -38,9 +38,9 @@ public abstract class ExtComponent extends Panel {
 	String stateId;
 	@ExtProperty
 	Boolean stateful;
-	
+
 	Map<String, ExtEventListener> listeners = new HashMap<String, ExtEventListener>();
-	
+
 	public ExtComponent(String id) {
 		super(id);
 
@@ -49,8 +49,7 @@ public abstract class ExtComponent extends Panel {
 		if (Application.get().getConfigurationType().equals(Application.DEVELOPMENT)) {
 			extBase = ExtBundle.EXT_BASE_DEBUG;
 			extAll = ExtBundle.EXT_ALL_DEBUG;
-		}
-		else {
+		} else {
 			extBase = ExtBundle.EXT_BASE_DEPLOY;
 			extAll = ExtBundle.EXT_ALL_DEPLOY;
 		}
@@ -61,7 +60,7 @@ public abstract class ExtComponent extends Panel {
 	protected boolean isRenderFromMarkup() {
 		return isExtRoot();
 	}
-	
+
 	@Override
 	protected void onBeforeRender() {
 		if (isExtRoot()) {
@@ -99,11 +98,12 @@ public abstract class ExtComponent extends Panel {
 		}
 		onRenderProperties();
 	}
+
 	private void renderProperties() {
 		for (ExtComponent item : getExtComponents()) {
 			item.renderProperties();
 		}
-		
+
 		setPropertyValue("disabled", !isEnabled());
 		addProperties(getClass());
 		addListeners();
@@ -154,10 +154,10 @@ public abstract class ExtComponent extends Panel {
 			setPropertyValue("id", getMarkupId());
 		}
 	}
-	
+
 	private void addListeners() {
 		if (!listeners.isEmpty()) {
-			JSONObject jsonListeners = new JSONObject(); 
+			JSONObject jsonListeners = new JSONObject();
 			for (String event : listeners.keySet()) {
 				ExtEventAjaxBehavior behavior = new ExtEventAjaxBehavior(event);
 				add(behavior);
@@ -187,7 +187,7 @@ public abstract class ExtComponent extends Panel {
 	public List<ExtComponent> getExtComponents() {
 		return getItems();
 	}
-	
+
 	public void addEventListener(String event, ExtEventListener listener) {
 		listeners.put(event, listener);
 	}
@@ -200,27 +200,27 @@ public abstract class ExtComponent extends Panel {
 	public void setCls(String cls) {
 		this.cls = cls;
 	}
-	
+
 	public void setHidden(Boolean hidden) {
 		this.hidden = hidden;
 	}
-	
+
 	public void setStateId(String stateId) {
 		this.stateId = stateId;
 	}
-	
+
 	public void setStateful(Boolean stateful) {
 		this.stateful = stateful;
 	}
 
 	private final class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {
-		
+
 		private String event;
 
 		public ExtEventAjaxBehavior(String event) {
 			this.event = event;
 		}
-		
+
 		@Override
 		protected void respond(AjaxRequestTarget target) {
 			listeners.get(event).onEvent(target);
@@ -234,7 +234,7 @@ public abstract class ExtComponent extends Panel {
 			}
 			return this;
 		}
-		
+
 		@Override
 		protected CharSequence getPreconditionScript() {
 			return "return true;";

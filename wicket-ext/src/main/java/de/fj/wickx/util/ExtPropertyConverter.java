@@ -11,6 +11,8 @@ public class ExtPropertyConverter {
 			return ((IModel<?>) property).getObject();
 		} else if (property.getClass().isEnum()) {
 			return property.toString().toLowerCase();
+		} else if (property instanceof ExtFormat) {
+			return new JSONIdentifier(((ExtFormat) property).get());
 		} else {
 			return property;
 		}

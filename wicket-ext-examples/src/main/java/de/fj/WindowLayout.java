@@ -11,6 +11,7 @@ import org.apache.wicket.model.Model;
 import de.fj.wickx.ExtPanel;
 import de.fj.wickx.ExtTabPanel;
 import de.fj.wickx.ExtWindow;
+import de.fj.wickx.ExtWindow.CloseAction;
 import de.fj.wickx.layout.BorderLayout;
 import de.fj.wickx.layout.BorderLayout.Region;
 
@@ -52,6 +53,7 @@ public class WindowLayout extends WebPage {
 		nav.setCMargins(3, 3, 3, 3);
 		
 		final ExtWindow win = new ExtWindow("win");
+		win.setCloseAction(CloseAction.HIDE);
 		win.setTitle(new Model<String>("Layout Window"));
 		win.setClosable(true);
 		win.setWidth(600);
@@ -61,8 +63,6 @@ public class WindowLayout extends WebPage {
 		win.addItem(nav, tabs);
 		add(win);
 		
-		win.show();
-
 		add(new WebMarkupContainer("showButton").add(new AjaxEventBehavior("onclick") {
 			@Override
 			protected void onEvent(AjaxRequestTarget target) {

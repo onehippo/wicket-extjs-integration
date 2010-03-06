@@ -3,7 +3,7 @@ package de.fj.wickx.grid;
 import org.apache.wicket.model.Model;
 
 import de.fj.wickx.util.ExtColumnRenderer;
-import de.fj.wickx.util.Renderer;
+import de.fj.wickx.util.ExtFormat;
 
 public class ExtColumn {
 
@@ -12,7 +12,7 @@ public class ExtColumn {
 	private Number width;
 	private Boolean sortable;
 	private String dataIndex;
-	private Renderer renderer;
+	private ExtFormat renderer;
 	private ExtColumnRenderer columnRenderer;
 
 	public void setId(String id) {
@@ -55,16 +55,12 @@ public class ExtColumn {
 		return dataIndex;
 	}
 
-	public void setRenderer(Renderer renderer) {
+	public void setRenderer(ExtFormat renderer) {
 		this.renderer = renderer;
 	}
 
-	public String getRenderer() {
-		if (renderer != null) {
-			return renderer.toString();
-		} else {
-			return null;
-		}
+	public ExtFormat getRenderer() {
+		return renderer;
 	}
 
 	public void setColumnRenderer(ExtColumnRenderer columnRenderer) {
