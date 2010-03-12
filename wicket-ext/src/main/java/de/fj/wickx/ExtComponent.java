@@ -2,28 +2,24 @@ package de.fj.wickx;
 
 import static de.fj.wickx.util.ExtPropertyConverter.convert;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.AbstractRepeater;
-import org.apache.wicket.util.lang.PropertyResolver;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.fj.ExtBundle;
 import de.fj.wickx.util.ExtEventListener;
 import de.fj.wickx.util.ExtProperty;
+import de.fj.wickx.util.ExtPropertyConverter;
+import de.fj.wickx.util.ExtResourcesBehaviour;
 import de.fj.wickx.util.JSONIdentifier;
 
 public abstract class ExtComponent extends Panel {
@@ -43,18 +39,7 @@ public abstract class ExtComponent extends Panel {
 
 	public ExtComponent(String id) {
 		super(id);
-
-		add(CSSPackageResource.getHeaderContribution(ExtBundle.class, ExtBundle.EXT_ALL_STYLE));
-		String extBase, extAll;
-		if (Application.get().getConfigurationType().equals(Application.DEVELOPMENT)) {
-			extBase = ExtBundle.EXT_BASE_DEBUG;
-			extAll = ExtBundle.EXT_ALL_DEBUG;
-		} else {
-			extBase = ExtBundle.EXT_BASE_DEPLOY;
-			extAll = ExtBundle.EXT_ALL_DEPLOY;
-		}
-		add(JavascriptPackageResource.getHeaderContribution(ExtBundle.class, extBase));
-		add(JavascriptPackageResource.getHeaderContribution(ExtBundle.class, extAll));
+		add(new ExtResourcesBehaviour());
 	}
 
 	protected boolean isRenderFromMarkup() {
@@ -105,7 +90,7 @@ public abstract class ExtComponent extends Panel {
 		}
 
 		setPropertyValue("disabled", !isEnabled());
-		addProperties(getClass());
+		ExtPropertyConverter.addProperties(this, getClass(), properties);
 		addListeners();
 	}
 
@@ -164,21 +149,6 @@ public abstract class ExtComponent extends Panel {
 				behavior.addListener(jsonListeners);
 			}
 			setPropertyValue("listeners", jsonListeners);
-		}
-	}
-
-	private void addProperties(Class<?> clazz) {
-		Field fs[] = clazz.getDeclaredFields();
-		for (Field f : fs) {
-			if (f.isAnnotationPresent(ExtProperty.class)) {
-				Object value = PropertyResolver.getValue(f.getName(), this);
-				if (value != null) {
-					setPropertyValue(f.getName(), value);
-				}
-			}
-		}
-		if (ExtComponent.class.isAssignableFrom(clazz.getSuperclass())) {
-			addProperties(clazz.getSuperclass());
 		}
 	}
 

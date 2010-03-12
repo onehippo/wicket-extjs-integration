@@ -38,6 +38,7 @@ public class WicketApplication extends WebApplication {
 		mountBookmarkablePage("layout/accordion.html", Accordion.class);
 		mountBookmarkablePage("tabs/tabs.html", Tabs.class);
 		mountBookmarkablePage("grid/array-grid.html", ArrayGrid.class);
+		mountBookmarkablePage("message-box/msg-box.html", MessageBox.class);
 		getMarkupSettings().setStripWicketTags(true);
 
 		getResourceSettings().setResourcePollFrequency(null);

@@ -1,6 +1,5 @@
 package de.fj;
 
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.model.Model;
@@ -12,7 +11,7 @@ import de.fj.wickx.layout.BorderLayout;
 import de.fj.wickx.layout.BorderLayout.Region;
 
 
-public class Accordion extends WebPage {
+public class Accordion extends ExamplesPage {
 
 	public Accordion() {
 		ExtPanel item1 = new ExtPanel("1");

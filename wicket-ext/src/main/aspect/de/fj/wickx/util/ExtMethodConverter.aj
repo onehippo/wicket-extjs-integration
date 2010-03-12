@@ -1,6 +1,8 @@
 package de.fj.wickx.util;
 
 import static de.fj.wickx.util.ExtPropertyConverter.generateArgs;
+import static de.fj.wickx.util.ExtPropertyConverter.generateReferenceObject;
+import static de.fj.wickx.util.ExtPropertyConverter.generateStaticPart;
 
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.RequestCycle;
@@ -16,16 +18,23 @@ import de.fj.wickx.ExtComponent;
  */
 aspect ExtMethodConverter {
 
-	public pointcut extMethod() : execution(@ExtMethod * *.*());
+	public pointcut extMethod() : execution(@ExtMethod * *.*(..));
 
 	after() returning : extMethod() {
 		IRequestTarget requestTarget = RequestCycle.get().getRequestTarget();
 		if (requestTarget instanceof AjaxRequestTarget) {
 			AjaxRequestTarget ajaxRT = (AjaxRequestTarget) requestTarget;
-			ExtComponent target = (ExtComponent) thisJoinPoint.getTarget();
-			String name = thisJoinPoint.getStaticPart().getSignature().getName();
+			
+			String method = thisJoinPoint.getStaticPart().getSignature().getName();
 			String args = generateArgs(thisJoinPoint.getArgs());
-			String jsMethodCall = String.format("Ext.getCmp('%s').%s(%s);", target.getMarkupId(), name, args);
+			String object;
+			if (thisJoinPoint.getTarget() != null) {
+				object = generateReferenceObject(thisJoinPoint.getTarget());
+			}
+			else {
+				object = generateStaticPart(thisJoinPoint.getSignature().getDeclaringType());
+			}
+			String jsMethodCall = String.format("%s.%s(%s);", object, method, args);
 			ajaxRT.appendJavascript(jsMethodCall);
 		}
 	}

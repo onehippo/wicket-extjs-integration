@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
 
 import de.fj.wickx.data.ExtArrayStore;
@@ -15,7 +14,7 @@ import de.fj.wickx.grid.ExtColumn;
 import de.fj.wickx.grid.ExtGridPanel;
 import de.fj.wickx.util.ExtFormat;
 
-public class ArrayGrid extends WebPage {
+public class ArrayGrid extends ExamplesPage {
 
 	protected class Data {
 		private String company;

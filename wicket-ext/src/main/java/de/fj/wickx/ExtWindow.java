@@ -24,7 +24,7 @@ public class ExtWindow extends ExtPanel {
 	protected Boolean draggable;
 	@ExtProperty
 	protected Boolean expandOnShow;
-	
+	// sets visibility on dom basis
 	protected Boolean hidden;
 	@ExtProperty
 	protected Boolean initHidden;
@@ -68,16 +68,6 @@ public class ExtWindow extends ExtPanel {
 	@Override
 	protected boolean isRenderFromMarkup() {
 		return false;
-	}
-	
-	@Override
-	protected void postRenderExtHead(StringBuilder js) {
-		if (hidden != null && !hidden) {
-			js.append(String.format("%s.show()", getMarkupId()));
-		}
-		else {
-			js.append(String.format("%s.render(Ext.getBody())", getMarkupId()));
-		}
 	}
 	
 	@Override

@@ -5,7 +5,6 @@ package de.fj;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.model.Model;
 
@@ -16,7 +15,7 @@ import de.fj.wickx.ExtWindow;
 import de.fj.wickx.ExtWindow.CloseAction;
 import de.fj.wickx.layout.FitLayout;
 
-public class HelloWorld extends WebPage {
+public class HelloWorld extends ExamplesPage {
 
 	public HelloWorld() {
 		final ExtWindow win = new ExtWindow("win");
