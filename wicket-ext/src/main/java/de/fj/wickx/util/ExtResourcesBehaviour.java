@@ -24,8 +24,6 @@ public class ExtResourcesBehaviour extends AbstractBehavior {
 		component.add(JavascriptPackageResource.getHeaderContribution(ExtBundle.class, extBase));
 		component.add(JavascriptPackageResource.getHeaderContribution(ExtBundle.class, extAll));
 		
-		component.add(JavascriptPackageResource.getHeaderContribution(ExtBundle.class, "examples/examples.js"));
-		component.add(CSSPackageResource.getHeaderContribution(ExtBundle.class, "examples/examples.css"));
 	}
 
 }

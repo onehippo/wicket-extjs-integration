@@ -7,6 +7,8 @@ import de.fj.wickx.util.ExtProperty;
 public abstract class ExtBoxComponent extends ExtComponent {
 	
 	@ExtProperty
+	protected String anchor;
+	@ExtProperty
 	protected Boolean autoScroll;
 	@ExtProperty
 	protected Boolean autoWidth;
@@ -49,6 +51,10 @@ public abstract class ExtBoxComponent extends ExtComponent {
 	}
 	public void setRegion(Region region) {
 		this.region = region;
+	}
+
+	public void setAnchor(String anchor) {
+		this.anchor = anchor;
 	}
 
 	

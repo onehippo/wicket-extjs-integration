@@ -2,8 +2,13 @@ package de.fj.wickx.layout;
 
 import de.fj.wickx.ExtComponent;
 import de.fj.wickx.ExtPanel;
+import de.fj.wickx.util.ExtProperty;
 
 public class AccordionLayout extends FitLayout {
+
+	@ExtProperty
+	protected Boolean animate;
+
 	public AccordionLayout() {
 		super(LayoutType.ACCORDION);
 	}
@@ -14,7 +19,9 @@ public class AccordionLayout extends FitLayout {
 		for (ExtComponent item : component.getItems()) {
 			if (item instanceof ExtPanel) {
 				ExtPanel panel = (ExtPanel) item;
-				panel.setAnimCollapse(false);
+				if (animate != null && animate == false) {
+					panel.setAnimCollapse(false);
+				}
 				panel.setCollapsible(true);
 				panel.setAutoWidth(true);
 				panel.setTitleCollapse(true);
@@ -23,8 +30,12 @@ public class AccordionLayout extends FitLayout {
 			}
 			isFirst = false;
 		}
-		
+
 		super.applyLayout(component);
+	}
+
+	public void setAnimate(Boolean animate) {
+		this.animate = animate;
 	}
 
 }

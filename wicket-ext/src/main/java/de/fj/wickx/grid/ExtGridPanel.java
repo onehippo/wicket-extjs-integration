@@ -5,7 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.fj.wickx.ExtPanel;
-import de.fj.wickx.data.ExtStore;
+import de.fj.wickx.data.ExtDataStore;
 import de.fj.wickx.util.ExtProperty;
 import de.fj.wickx.util.ExtPropertyConverter;
 import de.fj.wickx.util.JSONIdentifier;
@@ -17,7 +17,7 @@ public class ExtGridPanel<T> extends ExtPanel {
 	@ExtProperty
 	protected Boolean stripeRows;
 	
-	private ExtStore<T> store;
+	private ExtDataStore<T> store;
 	private ExtColumn[] columns;
 
 	public ExtGridPanel(String id) {
@@ -74,7 +74,7 @@ public class ExtGridPanel<T> extends ExtPanel {
 		this.columns = columns;
 	}
 
-	public void setStore(ExtStore<T> store) {
+	public void setStore(ExtDataStore<T> store) {
 		this.store = store;
 	}
 

@@ -6,7 +6,7 @@ import org.apache.wicket.util.lang.PropertyResolver;
 
 import de.fj.wickx.grid.ExtColumn;
 
-public abstract class ExtStore<T> {
+public abstract class ExtDataStore<T> {
 
 	protected List<T> data;
 	private ExtColumn[] columns;

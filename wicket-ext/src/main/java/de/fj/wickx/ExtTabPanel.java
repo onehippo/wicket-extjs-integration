@@ -35,11 +35,6 @@ public class ExtTabPanel extends ExtPanel {
 		return "Ext.TabPanel";
 	}
 	
-	@Override
-	protected boolean hideLazyLoadContent() {
-		return !isExtRoot();
-	}
-	
 	public void setDeferredRender(Boolean deferredRender) {
 		this.deferredRender = deferredRender;
 	}

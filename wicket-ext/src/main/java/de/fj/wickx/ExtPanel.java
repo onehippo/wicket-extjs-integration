@@ -25,6 +25,8 @@ public class ExtPanel extends ExtContainer {
 	@ExtProperty
 	protected Boolean autoHeight;
 	@ExtProperty
+	protected String baseCls;
+	@ExtProperty
 	protected Boolean border;
 	@ExtProperty
 	protected String bodyStyle;
@@ -35,11 +37,17 @@ public class ExtPanel extends ExtContainer {
 	@ExtProperty
 	protected Boolean collapsed;
 	@ExtProperty
+	protected Number columnWidth;
+	@ExtProperty
+	protected Number colspan;
+	@ExtProperty
 	protected Boolean collapsible;
 	@ExtProperty
 	protected Boolean frame;
 	@ExtProperty
 	protected Boolean header;
+	@ExtProperty
+	protected String iconCls;
 	@ExtProperty
 	protected Boolean split;
 	@ExtProperty
@@ -49,7 +57,10 @@ public class ExtPanel extends ExtContainer {
 
 	public ExtPanel(String id) {
 		super(id);
-		add(buttons = new ButtonsRepeater("buttons"));
+	}
+
+	protected void addButtonsContainer(MarkupContainer buttons) {
+		add(buttons);
 	}
 
 	@Override
@@ -60,8 +71,12 @@ public class ExtPanel extends ExtContainer {
 	@Override
 	protected void onBeforeRender() {
 		super.onBeforeRender();
+		if (buttons == null) {
+			buttons = new ButtonsRepeater("buttons");
+			addButtonsContainer(buttons);
+		}
 		if (isRenderFromMarkup()) {
-			get("items").add(new AttributeAppender("style", true, new Model<String>(bodyStyle), ";"));
+			getItemsContainer().add(new AttributeAppender("style", true, new Model<String>(bodyStyle), ";"));
 		}
 	}
 	
@@ -72,10 +87,10 @@ public class ExtPanel extends ExtContainer {
 
 	@Override
 	protected void onRenderProperties() {
-		List<ExtButton> buttonsList = getButtons();
+		List<AbstractExtButton> buttonsList = getButtons();
 		if (buttonsList.size() > 0) {
 			JSONArray jsonButtons = new JSONArray();
-			for (ExtButton button : buttonsList) {
+			for (AbstractExtButton button : buttonsList) {
 				jsonButtons.put(new JSONIdentifier(button.getMarkupId()));
 			}
 			setPropertyValue("buttons", jsonButtons);
@@ -90,14 +105,14 @@ public class ExtPanel extends ExtContainer {
 		return items;
 	}
 
-	List<ExtButton> getButtons() {
-		List<ExtButton> buttonsList = new ArrayList<ExtButton>();
+	List<AbstractExtButton> getButtons() {
+		List<AbstractExtButton> buttonsList = new ArrayList<AbstractExtButton>();
 		if (buttons != null) {
 			Iterator<? extends Component> iterator = buttons.iterator();
 			while (iterator.hasNext()) {
 				Component component = (Component) iterator.next();
-				if (component instanceof ExtButton) {
-					buttonsList.add((ExtButton) component);
+				if (component instanceof AbstractExtButton) {
+					buttonsList.add((AbstractExtButton) component);
 				} else {
 					assert (false);
 				}
@@ -114,7 +129,15 @@ public class ExtPanel extends ExtContainer {
 		this.autoHeight = autoHeight;
 	}
 	
-	public void addButton(ExtButton button) {
+	public void setBaseCls(String baseCls) {
+		this.baseCls = baseCls;
+	}
+	
+	public void addButton(AbstractExtButton button) {
+		if (buttons == null) {
+			buttons = new ButtonsRepeater("buttons");
+			addButtonsContainer(buttons);
+		}
 		buttons.add(button);
 	}
 
@@ -149,6 +172,10 @@ public class ExtPanel extends ExtContainer {
 	public void setHeader(Boolean header) {
 		this.header = header;
 	}
+	
+	public void setIconCls(String iconCls) {
+		this.iconCls = iconCls;
+	}
 
 	public void setSplit(Boolean split) {
 		this.split = split;
@@ -181,6 +208,15 @@ public class ExtPanel extends ExtContainer {
 		protected void onPopulate() {
 			/* noop */
 		}
+	}
+	
+	
+	// helper properties for layouts
+	public void setColumnWidth(Number columnWidth) {
+		this.columnWidth = columnWidth;
+	}
+	public void setColspan(int colspan) {
+		this.colspan = colspan;
 	}
 
 	

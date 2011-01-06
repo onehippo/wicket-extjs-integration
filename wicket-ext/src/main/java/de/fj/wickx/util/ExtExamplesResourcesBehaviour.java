@@ -12,9 +12,9 @@ public class ExtExamplesResourcesBehaviour extends AbstractBehavior {
 	@Override
 	public void bind(Component component) {
 
-//		component.add(JavascriptPackageResource
-//				.getHeaderContribution(ExtBundle.class, "examples/examples.js"));
-//		component.add(CSSPackageResource.getHeaderContribution(ExtBundle.class, "examples/examples.css"));
+		component.add(JavascriptPackageResource
+				.getHeaderContribution(ExtBundle.class, "examples/examples.js"));
+		component.add(CSSPackageResource.getHeaderContribution(ExtBundle.class, "examples/examples.css"));
 
 	}
 

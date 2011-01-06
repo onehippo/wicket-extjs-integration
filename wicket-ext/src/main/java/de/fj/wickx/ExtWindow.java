@@ -61,11 +61,6 @@ public class ExtWindow extends ExtPanel {
 	}
 	
 	@Override
-	protected boolean hideLazyLoadContent() {
-		return false;
-	}
-	
-	@Override
 	protected boolean isRenderFromMarkup() {
 		return false;
 	}

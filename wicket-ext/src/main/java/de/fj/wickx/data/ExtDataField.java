@@ -1,22 +1,22 @@
 package de.fj.wickx.data;
 
 
-public class ExtField {
+public class ExtDataField {
 
 	private String name;
 	private Class<?> type;
 	private String dateFormat;
 
 	
-	public ExtField(String name) {
+	public ExtDataField(String name) {
 		this(name, null);
 	}
 
-	public ExtField(String name, Class<?> type) {
+	public ExtDataField(String name, Class<?> type) {
 		this(name, type, null);
 	}
 	
-	public ExtField(String name, Class<?> type, String dateFormat) {
+	public ExtDataField(String name, Class<?> type, String dateFormat) {
 		this.name = name;
 		this.type = type;
 		this.dateFormat = dateFormat;

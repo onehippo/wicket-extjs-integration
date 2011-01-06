@@ -9,15 +9,15 @@ import de.fj.wickx.util.ExtPropertyConverter;
 
 
 
-public class ExtArrayStore<T> extends ExtStore<T> {
+public class ExtArrayStore<T> extends ExtDataStore<T> {
 
-	private List<ExtField> fields;
+	private List<ExtDataField> fields;
 
-	public ExtArrayStore(List<ExtField> fields) {
+	public ExtArrayStore(List<ExtDataField> fields) {
 		this.fields = fields;
 	}
 	
-	public List<ExtField> getFields() {
+	public List<ExtDataField> getFields() {
 		return fields;
 	}
 	
@@ -26,7 +26,7 @@ public class ExtArrayStore<T> extends ExtStore<T> {
 		JSONArray jsonData = new JSONArray();
 		for (T dataObject : data) {
 			JSONArray jsonLine = new JSONArray();
-			for (ExtField field : fields) {
+			for (ExtDataField field : fields) {
 				jsonLine.put(filter(dataObject, field.getName()));
 			}
 			jsonData.put(jsonLine);
@@ -34,7 +34,7 @@ public class ExtArrayStore<T> extends ExtStore<T> {
 		js.append("\nvar data = " + jsonData.toString() + ";\n");
 		
 		JSONArray jsonFields = new JSONArray();
-		for (ExtField field : fields) {
+		for (ExtDataField field : fields) {
 			JSONObject jsonField = new JSONObject();
 			ExtPropertyConverter.setIfNotNull(jsonField, "name", field.getName());
 			String type = (field.getType() !=  null) ? field.getType().getSimpleName().toLowerCase() : null;

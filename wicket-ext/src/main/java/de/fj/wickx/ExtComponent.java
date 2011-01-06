@@ -10,9 +10,11 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.AbstractRepeater;
+import org.apache.wicket.model.IModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,10 +26,12 @@ import de.fj.wickx.util.JSONIdentifier;
 
 public abstract class ExtComponent extends Panel {
 
-	protected transient JSONObject properties = new JSONObject();
+	protected transient JSONObject properties = null;
 
 	@ExtProperty
 	String cls;
+	@ExtProperty
+	IModel<String> fieldLabel;
 	@ExtProperty
 	Boolean hidden;
 	@ExtProperty
@@ -74,16 +78,21 @@ public abstract class ExtComponent extends Panel {
 
 	protected boolean isExtRoot() {
 		return !(getParent() instanceof ExtComponent)
-				&& !(getParent() instanceof AbstractRepeater && getParent().getParent() instanceof ExtComponent);
+				&& !(getParent() instanceof AbstractRepeater && getParent().getParent() instanceof ExtComponent)
+				&& !(getParent() instanceof AbstractRepeater
+						&& getParent().getParent() instanceof Form<?> && getParent().getParent().getParent() instanceof ExtComponent);
 	}
-
+	
+	// iterate through child components and call onrenderproperties
 	private void fireOnRenderProperties() {
 		for (ExtComponent item : getExtComponents()) {
 			item.fireOnRenderProperties();
 		}
+		properties = new JSONObject();
 		onRenderProperties();
 	}
 
+	// iterate through child components and render properties
 	private void renderProperties() {
 		for (ExtComponent item : getExtComponents()) {
 			item.renderProperties();
@@ -99,8 +108,7 @@ public abstract class ExtComponent extends Panel {
 			item.handleExtHeader(js);
 		}
 		preRenderExtHead(js);
-		js.append(String
-				.format("var %s = new %s(%s);\n", getMarkupId(), getExtClass(), properties.toString()));
+		js.append(String.format("var %s = new %s(%s);\n", getExtId(), getExtClass(), properties.toString()));
 		properties = null;
 		postRenderExtHead(js);
 	}
@@ -136,7 +144,7 @@ public abstract class ExtComponent extends Panel {
 			setPropertyValue("applyTo", getMarkupId());
 		}
 		if (stateId == null) {
-			setPropertyValue("id", getMarkupId());
+			setPropertyValue("id", getExtId());
 		}
 	}
 
@@ -150,6 +158,10 @@ public abstract class ExtComponent extends Panel {
 			}
 			setPropertyValue("listeners", jsonListeners);
 		}
+	}
+
+	protected final String getExtId() {
+		return getMarkupId().replace("-", "_");
 	}
 
 	public abstract List<ExtComponent> getItems();
@@ -181,6 +193,10 @@ public abstract class ExtComponent extends Panel {
 
 	public void setStateful(Boolean stateful) {
 		this.stateful = stateful;
+	}
+
+	public void setFieldLabel(IModel<String> fieldLabel) {
+		this.fieldLabel = fieldLabel;
 	}
 
 	private final class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {

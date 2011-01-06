@@ -1,5 +1,5 @@
 package de.fj.wickx.layout;
 
 public enum LayoutType {
-	ACCORDION, BORDER, FIT 
+	ACCORDION, BORDER, FIT, COLUMN, TABLE, ANCHOR, FORM
 }
