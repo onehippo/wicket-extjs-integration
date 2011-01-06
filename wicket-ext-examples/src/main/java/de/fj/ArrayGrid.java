@@ -8,8 +8,8 @@ import java.util.List;
 import org.apache.wicket.model.Model;
 
 import de.fj.wickx.data.ExtArrayStore;
-import de.fj.wickx.data.ExtField;
-import de.fj.wickx.data.ExtStore;
+import de.fj.wickx.data.ExtDataField;
+import de.fj.wickx.data.ExtDataStore;
 import de.fj.wickx.grid.ExtColumn;
 import de.fj.wickx.grid.ExtGridPanel;
 import de.fj.wickx.util.ExtFormat;
@@ -86,9 +86,9 @@ public class ArrayGrid extends ExamplesPage {
 		myData.add(new Data("Verizon Communications", 35.57f, 0.39f, 1.11f, "9/1 12:00am"));
 		myData.add(new Data("Wal-Mart Stores, Inc.", 45.45f, 0.73f, 1.63f, "9/1 12:00am"));
 
-		ExtStore<Data> store = new ExtArrayStore<Data>(Arrays.asList(new ExtField("company"), new ExtField(
-				"price", Float.class), new ExtField("change", Float.class), new ExtField("pctChange",
-				Float.class), new ExtField("lastChange", Date.class, "n/j h:ia")));
+		ExtDataStore<Data> store = new ExtArrayStore<Data>(Arrays.asList(new ExtDataField("company"), new ExtDataField(
+				"price", Float.class), new ExtDataField("change", Float.class), new ExtDataField("pctChange",
+				Float.class), new ExtDataField("lastChange", Date.class, "n/j h:ia")));
 
 		store.loadData(myData);
 

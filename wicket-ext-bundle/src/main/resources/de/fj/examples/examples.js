@@ -7,7 +7,8 @@
 Ext.BLANK_IMAGE_URL = '../../resources/images/default/s.gif';
 
 Ext.example = function(){
-    var msgCt;
+
+	var msgCt;
 
     function createBox(t, s){
         return ['<div class="msg">',
