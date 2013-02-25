@@ -1,0 +1,216 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.wicketstuff</groupId>
+  <artifactId>wicket-extjs-parent</artifactId>
+  <version>0.18-SNAPSHOT</version>
+  <name>Wicket ExtJS Integration - parent</name>
+  <description />
+  <packaging>pom</packaging>
+
+  <properties>
+    <!-- use UTF-8 encoding for filtered file copy -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <maven.plugin.resources.version>2.6</maven.plugin.resources.version>
+  </properties>
+
+  <!--
+    TODO <organization> <name>company name</name> <url>company url</url>
+    </organization>
+  -->
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <modules>
+    <module>bundle</module>
+    <module>core</module>
+    <module>examples</module>
+  </modules>
+
+  <scm>
+    <connection>scm:svn:http://wicket-extjs-integration.googlecode.com/svn/branches/hippo-fork</connection>
+    <developerConnection>scm:svn:https://wicket-extjs-integration.googlecode.com/svn/branches/hippo-fork</developerConnection>
+    <url>http://wicket-extjs-integration.googlecode.com/svn/branches/hippo-fork</url>
+  </scm>
+
+  <build>
+    <extensions>
+      <!-- Enabling the use of FTP -->
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+         <artifactId>wagon-ftp</artifactId>
+         <version>1.0-beta-6</version>
+      </extension>
+    </extensions>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven.plugin.resources.version}</version>
+          <configuration>
+            <encoding>${project.build.sourceEncoding}</encoding>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>2.1.2</version>
+          <inherited>true</inherited>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <inherited>true</inherited>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- Where to publish the project data -->
+  <distributionManagement>
+    <repository>
+      <name>Hippo Maven 2 Repository</name>
+      <id>hippo-maven2</id>
+      <url>https://maven.onehippo.com/content/repositories/releases/</url>
+      <uniqueVersion>false</uniqueVersion>
+    </repository>
+    <snapshotRepository>
+      <id>hippo-maven2-snapshots</id>
+      <name>Hippo Maven 2 Snapshots Repository</name>
+      <url>https://maven.onehippo.com/content/repositories/snapshots/</url>
+      <uniqueVersion>false</uniqueVersion>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <repositories>
+   <repository>
+      <id>hippo</id>
+      <name>Hippo Maven 2</name>
+      <url>http://maven.onehippo.com/maven2/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+    </repository>
+    <!-- DISABLED repositories which are often "transitively" pulled in 
+        and/or were used in the past
+    -->
+    <repository>
+      <id>codehaus</id>
+      <url>https://nexus.codehaus.org/content/repositories/releases/org/codehaus/mojo</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>glassfish</id>
+      <name>Glassfish maven repository</name>
+      <url>http://download.java.net/maven/glassfish</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>openqa</id>
+      <name>OpenQA Repository</name>
+      <url>http://nexus.openqa.org/content/repositories/releases</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>jpox</id>
+      <name>JPOX maven repository.</name>
+      <url>http://www.jpox.org/downloads/maven2/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>m2snapshots</id>
+      <name>Maven 2 snapshots repository</name>
+      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>hippo</id>
+      <name>Hippo maven 2 repository.</name>
+      <url>http://maven.onehippo.com/maven2/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <layout>default</layout>
+    </pluginRepository>
+    <!-- DISABLED repositories which are often "transitively" pulled in 
+        and/or were used in the past
+    -->
+    <pluginRepository>
+      <id>jpox.plugin</id>
+      <name>JPOX maven 2 plugin repository.</name>
+      <url>http://www.jpox.org/downloads/maven2/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </pluginRepository>
+    <pluginRepository>
+      <id>codehaus</id>
+      <url>http://repository.codehaus.org/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+
+</project>

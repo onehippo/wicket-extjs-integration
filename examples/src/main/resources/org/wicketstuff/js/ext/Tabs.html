@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Tabs Example</title>
+</head>
+<body>
+    <style type="text/css">
+    	
+.list {list-style:square;width:500px;padding-left:16px;}
+.list li{padding:2px;font-size:8pt;}
+
+pre {
+   font-size:11px; 
+}
+
+.x-tab-panel-body .x-panel-body {
+    padding:10px;
+}
+
+/* default loading indicator for ajax calls */
+.loading-indicator {
+	font-size:8pt;
+	background-image:url('../../resources/images/default/grid/loading.gif');
+	background-repeat: no-repeat;
+	background-position: left;
+	padding-left:20px;
+}
+
+.new-tab {
+    background-image:url(../feed-viewer/images/new_tab.gif) !important;
+}
+
+
+.tabs {
+    background-image:url( ../desktop/images/tabs.gif ) !important;
+}
+    </style>
+<h1>Tab Panel Examples</h1>
+<p>Note that the js and css is not minified so it is readable. See <a href="tabs-example.js">tabs-example.js</a> for the tab creation code
+and <a href="tabs-example.css">tabs-example.css</a> for the css.</p>
+
+    <h3>Tabs with auto height that resize to the content. Built from existing markup.</h3><br>
+
+    <!-- container for the existing markup tabs -->
+    <div wicket:id="tabs1">
+        <div wicket:id="short1"></div>
+        <div wicket:id="long1"></div>
+    </div>
+
+    <br>
+    <h3>Tabs with no tab strip and a fixed height that scroll the content. Built entirely with javascript.</h3>
+    <ul class="list">
+
+    <li>Tab 1 is a normal tab with content passed when adding it.</li>
+    <li>Tab 2 is loaded via Ajax.</li>
+    <li>Tab 3 is loaded via Ajax too. It was set up to pass parameters when loaded.</li>
+    <li>Tab 4 has an event listener attached.</li>
+    <li>Tab 5 is disabled.</li>
+    </ul><br>
+
+    <div wicket:id="tabs2">
+        <div wicket:id="construct"></div>
+        <div wicket:id="long2"></div>
+        <div wicket:id="long3"></div>
+        <div wicket:id="event"></div>
+        <div wicket:id="disabled"></div>
+    </div>
+
+</body>
+</html>

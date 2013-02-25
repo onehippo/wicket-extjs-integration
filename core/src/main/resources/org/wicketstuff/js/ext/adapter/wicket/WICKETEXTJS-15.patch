@@ -1,0 +1,27 @@
+Index: wicket-extjs/bundle/src/main/resources/org/wicketstuff/js/ext/src/ext-core/src/adapter/ext-base-ajax.js
+===================================================================
+--- wicket-extjs/bundle/src/main/resources/org/wicketstuff/js/ext/src/ext-core/src/adapter/ext-base-ajax.js	(revision 27161)
++++ wicket-extjs/bundle/src/main/resources/org/wicketstuff/js/ext/src/ext-core/src/adapter/ext-base-ajax.js	(revision )
+@@ -199,11 +199,10 @@
+     }
+ 
+     // private
+-    function asyncRequest(method, uri, callback, postData) {
++    function sendRequest(method, uri, callback, postData, async) {
+         var o = getConnectionObject() || null;
+-
+         if (o) {
+-            o.conn.open(method, uri, true);
++            o.conn.open(method, uri, async);
+ 
+             if (pub.useDefaultXhrHeader) {
+                 initHeader('X-Requested-With', pub.defaultXhrHeader);
+@@ -273,7 +272,7 @@
+                     data = xmlData || (!Ext.isPrimitive(jsonData) ? Ext.encode(jsonData) : jsonData);
+                 }
+             }
+-            return asyncRequest(method || options.method || "POST", uri, cb, data);
++            return sendRequest(method || options.method || "POST", uri, cb, data, options.async || true);
+         },
+ 
+         serializeForm : function(form) {
