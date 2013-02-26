@@ -4,12 +4,12 @@
   <parent>
     <groupId>org.wicketstuff</groupId>
     <artifactId>wicket-extjs-parent</artifactId>
-    <version>0.18-SNAPSHOT</version>
+    <version>0.18</version>
   </parent>
 
   <groupId>org.wicketstuff</groupId>
   <artifactId>wicket-extjs-examples</artifactId>
-  <version>0.18-SNAPSHOT</version>
+  <version>0.18</version>
   <name>Wicket ExtJS Integration - Examples</name>
   <description />
   <packaging>war</packaging>
@@ -87,7 +87,7 @@
     <dependency>
       <groupId>org.wicketstuff</groupId>
       <artifactId>wicket-extjs</artifactId>
-      <version>0.18-SNAPSHOT</version>
+      <version>0.18</version>
     </dependency>
   </dependencies>
   <build>
