@@ -1,0 +1,11 @@
+Fork of the wicket-extjs-integration project
+============================================
+
+This fork integrates Wicket with Ext-JS, independent of Hippo CMS.  It provides
+a library to create Ext component hierarchies in an intuitive manner and to mix
+the ext component hierarchy with the Wicket one.
+
+The original code for the fork can be found at 
+  http://code.google.com/p/wicket-extjs-integration/
+
+The intention is to merge this fork back into the original code base.
