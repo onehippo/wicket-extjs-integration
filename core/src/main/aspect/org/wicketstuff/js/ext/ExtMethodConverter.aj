@@ -16,7 +16,7 @@ import static org.wicketstuff.js.ext.util.ExtPropertyConverter.generateStaticPar
  */
 aspect ExtMethodConverter {
 
-	public pointcut extMethod() : execution(@ExtMethod * *.*(..));
+	public pointcut extMethod() : execution(@org.wicketstuff.js.ext.util.ExtMethod * *.*(..));
 
 	after() returning : extMethod() {
 		IRequestTarget requestTarget = RequestCycle.get().getRequestTarget();
