@@ -12,10 +12,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.json.JSONArray;
 
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtMethod;
 import org.wicketstuff.js.ext.util.ExtProperty;
 import org.wicketstuff.js.ext.util.JSONIdentifier;
 
+@ExtClass("Ext.Panel")
 public class ExtPanel extends ExtContainer {
 
 	private MarkupContainer buttons;
@@ -61,11 +63,6 @@ public class ExtPanel extends ExtContainer {
 
 	protected void addButtonsContainer(MarkupContainer buttons) {
 		add(buttons);
-	}
-
-	@Override
-	protected String getExtClass() {
-		return "Ext.Panel";
 	}
 
 	@Override

@@ -1,9 +1,11 @@
 package org.wicketstuff.js.ext;
 
 import org.wicketstuff.js.ext.layout.BorderLayout.Region;
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtMethod;
 import org.wicketstuff.js.ext.util.ExtProperty;
 
+@ExtClass("Ext.BoxComponent")
 public abstract class ExtBoxComponent extends ExtComponent {
 	
 	@ExtProperty

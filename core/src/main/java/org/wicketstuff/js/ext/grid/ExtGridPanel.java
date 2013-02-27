@@ -6,10 +6,12 @@ import org.json.JSONObject;
 
 import org.wicketstuff.js.ext.ExtPanel;
 import org.wicketstuff.js.ext.data.ExtDataStore;
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtProperty;
 import org.wicketstuff.js.ext.util.ExtPropertyConverter;
 import org.wicketstuff.js.ext.util.JSONIdentifier;
 
+@ExtClass("Ext.grid.GridPanel")
 public class ExtGridPanel<T> extends ExtPanel {
 
 	@ExtProperty
@@ -22,11 +24,6 @@ public class ExtGridPanel<T> extends ExtPanel {
 
 	public ExtGridPanel(String id) {
 		super(id);
-	}
-
-	@Override
-	protected String getExtClass() {
-		return "Ext.grid.GridPanel";
 	}
 
 	@Override

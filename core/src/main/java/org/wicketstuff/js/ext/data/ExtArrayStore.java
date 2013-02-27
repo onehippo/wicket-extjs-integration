@@ -5,10 +5,11 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtPropertyConverter;
 
 
-
+@ExtClass("Ext.data.ArrayStore")
 public class ExtArrayStore<T> extends ExtDataStore<T> {
 
 	private List<ExtDataField> fields;

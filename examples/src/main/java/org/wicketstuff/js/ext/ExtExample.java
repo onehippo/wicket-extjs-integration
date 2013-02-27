@@ -1,6 +1,10 @@
-package org.wicketstuff.js.ext.util;
+package org.wicketstuff.js.ext;
 
 
+import org.wicketstuff.js.ext.util.ExtClass;
+import org.wicketstuff.js.ext.util.ExtMethod;
+
+@ExtClass("Ext.example")
 public class ExtExample {
 
 	public static void showResult(String btn) {

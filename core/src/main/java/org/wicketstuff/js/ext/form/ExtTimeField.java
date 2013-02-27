@@ -1,9 +1,10 @@
 package org.wicketstuff.js.ext.form;
 
 import org.apache.wicket.model.IModel;
-
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtProperty;
 
+@ExtClass("Ext.form.TimeField")
 public class ExtTimeField<T> extends ExtComboBox<T> {
 	
 	@ExtProperty
@@ -18,12 +19,7 @@ public class ExtTimeField<T> extends ExtComboBox<T> {
 	public ExtTimeField(String id) {
 		super(id);
 	}
-	
-	@Override
-	protected String getExtClass() {
-		return "Ext.form.TimeField";
-	}
-	
+
 	public void setMinValue(String minValue) {
 		this.minValue = minValue;
 	}

@@ -9,11 +9,9 @@ import org.apache.wicket.util.lang.PropertyResolver;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
-
 import org.wicketstuff.js.ext.ExtComponent;
-import org.wicketstuff.js.ext.ExtMessageBox;
-import org.wicketstuff.js.ext.ExtMessageBoxCallback;
 import org.wicketstuff.js.ext.ExtMessageBox.Buttons;
+import org.wicketstuff.js.ext.ExtMessageBoxCallback;
 
 public class ExtPropertyConverter {
 	public static Object convert(Object property) {
@@ -74,16 +72,14 @@ public class ExtPropertyConverter {
 		}
 	}
 
-	public static String generateStaticPart(Class<?> clazz) {
-		if (clazz == ExtMessageBox.class) {
-			return "Ext.MessageBox";
-		}
-		if (clazz == ExtExample.class) {
-			return "Ext.example";
-		} else {
-			return "";
-		}
-	}
+    public static String generateStaticPart(Class<?> clazz) {
+        ExtClass annotation = clazz.getAnnotation(ExtClass.class);
+        if (annotation != null) {
+            return annotation.value();
+        } else {
+            return "";
+        }
+    }
 
 	public static String generateArgs(Object[] methodArguments) {
 		String[] argsArray = new String[methodArguments.length];

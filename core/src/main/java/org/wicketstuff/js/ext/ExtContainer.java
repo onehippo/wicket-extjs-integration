@@ -13,8 +13,10 @@ import org.json.JSONArray;
 
 import org.wicketstuff.js.ext.layout.DefaultLayout;
 import org.wicketstuff.js.ext.layout.ILayout;
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.JSONIdentifier;
 
+@ExtClass("Ext.Container")
 public abstract class ExtContainer extends ExtBoxComponent {
 
 	private MarkupContainer itemsContainer;

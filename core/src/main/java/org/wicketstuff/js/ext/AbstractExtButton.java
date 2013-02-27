@@ -6,8 +6,10 @@ import java.util.List;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
 
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtProperty;
 
+@ExtClass("Ext.Button")
 public abstract class AbstractExtButton extends ExtBoxComponent {
 
 	@ExtProperty
@@ -20,11 +22,6 @@ public abstract class AbstractExtButton extends ExtBoxComponent {
 
 	public void setText(IModel<String> text) {
 		this.text = text;
-	}
-	
-	@Override
-	protected String getExtClass() {
-		return "Ext.Button";
 	}
 
 	@Override

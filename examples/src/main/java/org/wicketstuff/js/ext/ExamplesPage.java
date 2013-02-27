@@ -1,20 +1,14 @@
 package org.wicketstuff.js.ext;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
-
-import org.wicketstuff.js.ext.util.ExtExamplesResourcesBehaviour;
+import org.wicketstuff.js.ext.util.ExtResourcesBehaviour;
 
 public class ExamplesPage extends WebPage {
 
 	public ExamplesPage() {
+        add(new ExtResourcesBehaviour());
+        add(new ExtExamplesResourcesBehaviour());
 
-	}
-
-	@Override
-	protected void onBeforeRender() {
-		add(new WebMarkupContainer("dummy").add(new ExtExamplesResourcesBehaviour()).setRenderBodyOnly(true));
-		super.onBeforeRender();
 	}
 
 }

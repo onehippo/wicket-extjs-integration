@@ -1,12 +1,9 @@
 package org.wicketstuff.js.ext;
 
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
-
-import org.wicketstuff.js.ext.ExtPanel;
 import org.wicketstuff.js.ext.layout.TableLayout;
 
-public class TableLayoutExample extends WebPage {
+public class TableLayoutExample extends ExamplesPage {
 
 	public TableLayoutExample() {
 		

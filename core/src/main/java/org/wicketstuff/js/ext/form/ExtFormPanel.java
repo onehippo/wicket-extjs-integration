@@ -1,13 +1,13 @@
 package org.wicketstuff.js.ext.form;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IFormSubmitListener;
-
 import org.wicketstuff.js.ext.ExtPanel;
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtProperty;
 
+@ExtClass("Ext.form.FormPanel")
 public class ExtFormPanel<T> extends ExtPanel {
 	
 	public enum LabelAlign {LEFT, TOP, RIGHT}
@@ -33,12 +33,7 @@ public class ExtFormPanel<T> extends ExtPanel {
 		form.setRenderBodyOnly(true);
 		add(form);
 	}
-	
-	@Override
-	protected String getExtClass() {
-		return "Ext.FormPanel";
-	}
-	
+
 	@Override
 	protected void addItemsContainer(MarkupContainer items) {
 		setItemsContainer(items);

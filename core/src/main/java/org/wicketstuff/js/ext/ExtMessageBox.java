@@ -1,7 +1,9 @@
 package org.wicketstuff.js.ext;
 
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtMethod;
 
+@ExtClass("Ext.MessageBox")
 public class ExtMessageBox {
 	
 	public enum Buttons {

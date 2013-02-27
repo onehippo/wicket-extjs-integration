@@ -2,9 +2,11 @@ package org.wicketstuff.js.ext;
 
 import org.apache.wicket.model.Model;
 
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtMethod;
 import org.wicketstuff.js.ext.util.ExtProperty;
 
+@ExtClass("Ext.TabPanel")
 public class ExtTabPanel extends ExtPanel {
 	
 	@ExtProperty
@@ -29,12 +31,7 @@ public class ExtTabPanel extends ExtPanel {
 		}
 		addItem(content);
 	}
-	
-	@Override
-	protected String getExtClass() {
-		return "Ext.TabPanel";
-	}
-	
+
 	public void setDeferredRender(Boolean deferredRender) {
 		this.deferredRender = deferredRender;
 	}

@@ -8,8 +8,10 @@ import org.apache.wicket.model.IModel;
 
 import org.wicketstuff.js.ext.ExtBoxComponent;
 import org.wicketstuff.js.ext.ExtComponent;
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtProperty;
 
+@ExtClass("Ext.form.Field")
 public class ExtField<T> extends ExtBoxComponent {
 
 	@ExtProperty

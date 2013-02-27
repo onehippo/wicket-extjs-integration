@@ -1,7 +1,5 @@
 package org.wicketstuff.js.ext;
 
-import static org.wicketstuff.js.ext.util.ExtPropertyConverter.convert;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +15,17 @@ import org.apache.wicket.markup.repeater.AbstractRepeater;
 import org.apache.wicket.model.IModel;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtEventListener;
 import org.wicketstuff.js.ext.util.ExtProperty;
 import org.wicketstuff.js.ext.util.ExtPropertyConverter;
 import org.wicketstuff.js.ext.util.ExtResourcesBehaviour;
 import org.wicketstuff.js.ext.util.JSONIdentifier;
 
-public abstract class ExtComponent extends Panel {
+import static org.wicketstuff.js.ext.util.ExtPropertyConverter.convert;
+
+@ExtClass("Ext.Component")
+public abstract class ExtComponent extends Panel implements IExtObservable {
 
 	protected transient JSONObject properties = null;
 
@@ -117,9 +118,9 @@ public abstract class ExtComponent extends Panel {
 
 	}
 
-	protected String getExtClass() {
-		return "Ext.Component";
-	}
+    private String getExtClass() {
+        return ExtObservableHelper.getExtClass(this, ExtComponent.class);
+    }
 
 	protected void preRenderExtHead(StringBuilder js) {
 

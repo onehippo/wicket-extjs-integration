@@ -1,9 +1,11 @@
 package org.wicketstuff.js.ext;
 
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtMethod;
 import org.wicketstuff.js.ext.util.ExtProperty;
 import org.wicketstuff.js.ext.util.ExtResizable;
 
+@ExtClass("Ext.Window")
 public class ExtWindow extends ExtPanel {
 
 	public enum CloseAction {
@@ -54,12 +56,7 @@ public class ExtWindow extends ExtPanel {
 	public ExtWindow(String id) {
 		super(id);
 	}
-	
-	@Override
-	protected String getExtClass() {
-		return "Ext.Window";
-	}
-	
+
 	@Override
 	protected boolean isRenderFromMarkup() {
 		return false;

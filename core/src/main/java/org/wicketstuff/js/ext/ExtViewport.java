@@ -1,7 +1,8 @@
 package org.wicketstuff.js.ext;
 
+import org.wicketstuff.js.ext.util.ExtClass;
 
-
+@ExtClass("Ext.Viewport")
 public class ExtViewport extends ExtContainer {
 
 	public ExtViewport(String id) {
@@ -11,11 +12,6 @@ public class ExtViewport extends ExtContainer {
 	@Override
 	protected boolean isRenderFromMarkup() {
 		return false;
-	}
-
-	@Override
-	protected String getExtClass() {
-		return "Ext.Viewport";
 	}
 
 }

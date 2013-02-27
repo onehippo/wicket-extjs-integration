@@ -14,15 +14,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
 
-import org.wicketstuff.js.ext.ExtMessageBox;
-import org.wicketstuff.js.ext.ExtMessageBoxCallback;
-import org.wicketstuff.js.ext.ExtMessageBoxOptions;
-import org.wicketstuff.js.ext.ExtWaitConfig;
 import org.wicketstuff.js.ext.ExtMessageBox.Buttons;
 import org.wicketstuff.js.ext.ExtMessageBox.Icons;
-import org.wicketstuff.js.ext.util.ExtExample;
+import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtResourcesBehaviour;
 
+@ExtClass("Ext.MessageBox")
 public class MessageBox extends ExamplesPage {
 
 	public MessageBox() {
