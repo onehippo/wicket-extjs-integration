@@ -1,3 +1,9 @@
+/*!
+ * Ext JS Library 3.4.0
+ * Copyright(c) 2006-2011 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
 /**
  * Slovenian translation by Matjaž (UTF-8 encoding)
  * 25 April 2007
@@ -124,7 +130,8 @@ if(Ext.form.DateField){
       minText           : "Datum mora biti po {0}",
       maxText           : "Datum mora biti pred {0}",
       invalidText       : "{0} ni veljaven datum - mora biti v tem formatu {1}",
-      format            : "d.m.y"
+      format            : "d.m.y",
+      startDay          : 1
    });
 }
 

@@ -1,3 +1,9 @@
+/*!
+ * Ext JS Library 3.4.0
+ * Copyright(c) 2006-2011 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
 /*
  * Croatian translation
  * By Ylodi (utf8 encoding)
@@ -114,7 +120,7 @@ if(Ext.DatePicker){
       format            : "d.m.y",
       okText            : "&#160;U redu&#160;",
       cancelText        : "Odustani",      
-      startDay 		 : 1
+      startDay 		: 1
    });
 }
 
@@ -157,7 +163,8 @@ if(Ext.form.DateField){
       minText           : "Datum u ovom polje mora biti poslije {0}",
       maxText           : "Datum u ovom polju mora biti prije {0}",
       invalidText       : "{0} nije ispravan datum - mora biti u obliku {1}",
-      format            : "d.m.y"
+      format            : "d.m.y",
+      startDay 		: 1
    });
 }
 

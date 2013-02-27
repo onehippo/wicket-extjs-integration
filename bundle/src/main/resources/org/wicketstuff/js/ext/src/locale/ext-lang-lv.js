@@ -1,3 +1,9 @@
+/*!
+ * Ext JS Library 3.4.0
+ * Copyright(c) 2006-2011 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
 /**
  * Latvian Translations
  * By salix 17 April 2007
@@ -124,7 +130,8 @@ if(Ext.form.DateField){
       minText           : "Datumam šajā laukā jābūt lielākam kā {0}",
       maxText           : "Datumam šajā laukā jābūt mazākam kā {0}",
       invalidText       : "{0} nav pareizs datums - tam jābūt šādā formātā: {1}",
-      format            : "d.m.Y"
+      format            : "d.m.Y",
+      startDay          : 1
    });
 }
 

@@ -1,3 +1,9 @@
+/*!
+ * Ext JS Library 3.4.0
+ * Copyright(c) 2006-2011 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
 /**
  * Swedish translation (utf8-encoding)
  * By Erik Andersson, Monator Technologies
@@ -126,7 +132,8 @@ if(Ext.form.DateField){
       minText           : "Datumet i detta fält måste inträffa efter {0}",
       maxText           : "Datumet i detta fält måste inträffa före {0}",
       invalidText       : "{0} är inte ett tillåtet datum - datum ska anges i formatet {1}",
-      format            : "Y-m-d"
+      format            : "Y-m-d",
+      startDay          : 1
    });
 }
 

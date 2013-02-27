@@ -1,3 +1,9 @@
+/*!
+ * Ext JS Library 3.4.0
+ * Copyright(c) 2006-2011 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
 /*
  * Ukrainian translations for ExtJS (UTF-8 encoding)
  *
@@ -131,7 +137,8 @@ if(Ext.form.DateField){
       minText           : "Дата у цьому полі повинна бути більша {0}",
       maxText           : "Дата у цьому полі повинна бути меньша {0}",
       invalidText       : "{0} хибна дата - дата повинна бути вказана у форматі {1}",
-      format            : "d.m.y"
+      format            : "d.m.y",
+      startDay          : 1
    });
 }
 

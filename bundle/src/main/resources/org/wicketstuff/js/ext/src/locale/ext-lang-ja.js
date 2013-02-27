@@ -1,3 +1,9 @@
+/*!
+ * Ext JS Library 3.4.0
+ * Copyright(c) 2006-2011 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
 /*
  * Japanese translation
  * By tyama
@@ -160,7 +166,8 @@ if(Ext.form.DateField){
     maxText           : "このフィールドの日付は、 {0} 以前の日付に設定してください。",
     invalidText       : "{0} は間違った日付入力です。 - 入力形式は「{1}」です。",
     format            : "Y/m/d",
-    altFormats        : "y/m/d|m/d/y|m/d/Y|m-d-y|m-d-Y|m/d|m-d|md|mdy|mdY|d|Y-m-d"
+    altFormats        : "y/m/d|m/d/y|m/d/Y|m-d-y|m-d-Y|m/d|m-d|md|mdy|mdY|d|Y-m-d",
+    startDay          : 0
   });
 }
 

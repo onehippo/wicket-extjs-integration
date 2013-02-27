@@ -1,8 +1,8 @@
 /*!
- * Ext JS Library 3.1.1
- * Copyright(c) 2006-2010 Ext JS, LLC
- * licensing@extjs.com
- * http://www.extjs.com/license
+ * Ext JS Library 3.4.0
+ * Copyright(c) 2006-2011 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
  */
 if(typeof jQuery == "undefined"){
     throw "Unable to load Ext, jQuery not found.";
@@ -24,7 +24,7 @@ Ext.lib.Dom = {
 
     isAncestor : function(p, c){
         var ret = false;
-            
+
         p = Ext.getDom(p);
         c = Ext.getDom(c);
         if (p && c) {
@@ -34,10 +34,10 @@ Ext.lib.Dom = {
                 return !!(p.compareDocumentPosition(c) & 16);
             } else {
                 while (c = c.parentNode) {
-                    ret = c == p || ret;                        
+                    ret = c == p || ret;
                 }
-            }               
-        }   
+            }
+        }
         return ret;
     },
 
@@ -265,15 +265,15 @@ Ext.lib.Ajax = function(){
             }
          };
     };
-    
+
     var createResponse = function(cb, xhr){
         var headerObj = {},
-            headerStr,              
+            headerStr,
             t,
             s;
 
         try {
-            headerStr = xhr.getAllResponseHeaders();   
+            headerStr = xhr.getAllResponseHeaders();
             Ext.each(headerStr.replace(/\r\n/g, '\n').split('\n'), function(v){
                 t = v.indexOf(':');
                 if(t >= 0){
@@ -285,15 +285,19 @@ Ext.lib.Ajax = function(){
                 }
             });
         } catch(e) {}
-        
+
         return {
             responseText: xhr.responseText,
             responseXML : xhr.responseXML,
             argument: cb.argument,
             status: xhr.status,
             statusText: xhr.statusText,
-            getResponseHeader : function(header){return headerObj[header.toLowerCase()];},
-            getAllResponseHeaders : function(){return headerStr}
+            getResponseHeader : function(header){
+                return headerObj[header.toLowerCase()];
+            },
+            getAllResponseHeaders : function(){
+                return headerStr;
+            }
         };
     };
     return {
@@ -325,12 +329,12 @@ Ext.lib.Ajax = function(){
                 }
                 if(hs){
                     o.beforeSend = function(xhr){
-                        for(var h in hs){
-                            if(hs.hasOwnProperty(h)){
+                        for (var h in hs) {
+                            if (hs.hasOwnProperty(h)) {
                                 xhr.setRequestHeader(h, hs[h]);
                             }
                         }
-                    }
+                    };
                 }
             }
             jQuery.ajax(o);
@@ -455,9 +459,10 @@ Ext.lib.Anim = function(){
                         if (args.top.from)
                             e.setTop(args.top.from);
                     break;
+                        // jQuery can't handle callback, scope, and xy arguments, so break here
                     case 'callback':
                     case 'scope':
-                        // jQuery can't handle callback and scope arguments, so break here
+                    case 'xy':
                     break;
 
                     default:

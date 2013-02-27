@@ -1,3 +1,9 @@
+/*!
+ * Ext JS Library 3.4.0
+ * Copyright(c) 2006-2011 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
 /**
  * Lithuanian Translations (UTF-8)
  * Vladas Saulis (vladas at prodata dot lt),  03-29-2009
@@ -169,7 +175,8 @@ if(Ext.form.DateField){
     maxText           : "Šiame lauke data turi būti mažesnėė už {0}",
     invalidText       : "{0} yra neteisinga data - ji turi būti įvesta formatu {1}",
     format            : "y-m-d",
-    altFormats        : "y-m-d|y/m/d|Y-m-d|m/d|m-d|md|ymd|Ymd|d|Y-m-d"
+    altFormats        : "y-m-d|y/m/d|Y-m-d|m/d|m-d|md|ymd|Ymd|d|Y-m-d",
+    startDay          : 1
   });
 }
 
