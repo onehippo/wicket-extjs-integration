@@ -26,6 +26,8 @@
     </license>
   </licenses>
 
+  <inceptionYear>2010</inceptionYear>
+
   <modules>
     <module>bundle</module>
     <module>core</module>
