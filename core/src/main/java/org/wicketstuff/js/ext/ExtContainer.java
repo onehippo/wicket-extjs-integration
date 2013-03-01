@@ -28,24 +28,24 @@ public class ExtContainer extends ExtBoxComponent {
         this("item");
     }
 
-	public ExtContainer(String id) {
-		super(id);
+    public ExtContainer(String id) {
+        super(id);
         add(items = new ItemsRepeater("items"));
-	}
+    }
 
-	protected boolean hasExtItems() {
-		return true;
-	}
+    protected boolean hasExtItems() {
+        return true;
+    }
 
-	@Override
-	protected void onBeforeRender() {
+    @Override
+    protected void onBeforeRender() {
         wrapNonExtComponents();
 
         items.beforeRender();
 
         // before render of parent first
         super.onBeforeRender();
-	}
+    }
 
     private void wrapNonExtComponents() {
         // wrap children in a BoxComponent
@@ -73,24 +73,24 @@ public class ExtContainer extends ExtBoxComponent {
 
     protected final MarkupContainer getItemsContainer() {
         return items;
-	}
+    }
 
-	protected String getName() {
-		return "x-container";
-	}
+    protected String getName() {
+        return "x-container";
+    }
 
-	@Override
-	protected boolean isRenderFromMarkup() {
-		return super.isRenderFromMarkup() || !hasExtItems();
-	}
+    @Override
+    protected boolean isRenderFromMarkup() {
+        return super.isRenderFromMarkup() || !hasExtItems();
+    }
 
-	@Override
-	protected void onRenderProperties(JSONObject properties) throws JSONException {
-		JSONArray jsonItems = new JSONArray();
-		for (ExtComponent item : getItems()) {
-			jsonItems.put(new JSONIdentifier(item.getExtId()));
-		}
-		properties.put("items", jsonItems);
+    @Override
+    protected void onRenderProperties(JSONObject properties) throws JSONException {
+        JSONArray jsonItems = new JSONArray();
+        for (ExtComponent item : getItems()) {
+            jsonItems.put(new JSONIdentifier(item.getExtId()));
+        }
+        properties.put("items", jsonItems);
 
         if (layout.getType() != LayoutType.AUTO) {
             properties.put("layout", layout.getType().toString().toLowerCase());
@@ -99,10 +99,10 @@ public class ExtContainer extends ExtBoxComponent {
             ExtPropertyConverter.addProperties(layout, layout.getClass(), layoutConfig);
             properties.put("layoutConfig", layoutConfig);
         }
-		layout.applyLayout(this);
+        layout.applyLayout(this);
 
-		super.onRenderProperties(properties);
-	}
+        super.onRenderProperties(properties);
+    }
 
     public List<ExtComponent> getItems() {
         final List<ExtComponent> itemsList = new ArrayList<ExtComponent>();
@@ -125,13 +125,13 @@ public class ExtContainer extends ExtBoxComponent {
     }
 
     public void addItem(ExtComponent... components) {
-		for (ExtComponent component : components) {
-			items.add(component);
-		}
-	}
+        for (ExtComponent component : components) {
+            items.add(component);
+        }
+    }
 
-	public void setLayout(ILayout layout) {
-		this.layout = layout;
-	}
+    public void setLayout(ILayout layout) {
+        this.layout = layout;
+    }
 
 }

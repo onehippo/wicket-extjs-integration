@@ -33,7 +33,7 @@ public class ExtObservable extends AbstractBehavior implements IExtObservable {
     @Override
     public void bind(Component component) {
         this.component = component;
-        for (Map.Entry<String,ExtEventAjaxBehavior> entry : eventHandlers.entrySet()) {
+        for (Map.Entry<String, ExtEventAjaxBehavior> entry : eventHandlers.entrySet()) {
             ExtEventAjaxBehavior behavior = entry.getValue();
             if (!component.getBehaviors().contains(behavior)) {
                 component.add(behavior);
@@ -70,8 +70,9 @@ public class ExtObservable extends AbstractBehavior implements IExtObservable {
     }
 
     /**
-     * This method returns the properties in a transient JSONObject.
-     * Subclasses should add their properties when not handled by the ExtProperty annotation.
+     * This method returns the properties in a transient JSONObject. Subclasses should add their properties when not
+     * handled by the ExtProperty annotation.
+     *
      * @return the properties of this observable
      */
     protected JSONObject getProperties() throws JSONException {
@@ -80,7 +81,7 @@ public class ExtObservable extends AbstractBehavior implements IExtObservable {
 
         if (!eventHandlers.isEmpty()) {
             JSONObject jsonListeners = new JSONObject();
-            for (Map.Entry<String,ExtEventAjaxBehavior> entry : eventHandlers.entrySet()) {
+            for (Map.Entry<String, ExtEventAjaxBehavior> entry : eventHandlers.entrySet()) {
                 ExtEventAjaxBehavior behavior = entry.getValue();
                 jsonListeners.put(entry.getKey(), behavior.getEventScript());
             }
@@ -157,8 +158,8 @@ public class ExtObservable extends AbstractBehavior implements IExtObservable {
     }
 
     /**
-     * Factory method to implement event specific ajax behavior.
-     * Default supported events are 'enable', 'disable', 'show', 'hide'.
+     * Factory method to implement event specific ajax behavior. Default supported events are 'enable', 'disable',
+     * 'show', 'hide'.
      *
      * @param event name of the event
      * @return behavior for the event

@@ -5,10 +5,10 @@ import org.wicketstuff.js.ext.util.ExtResourcesBehaviour;
 
 public class ExamplesPage extends WebPage {
 
-	public ExamplesPage() {
+    public ExamplesPage() {
         add(new ExtResourcesBehaviour());
         add(new ExtExamplesResourcesBehaviour());
 
-	}
+    }
 
 }

@@ -29,34 +29,34 @@ import static org.wicketstuff.js.ext.util.ExtPropertyConverter.convert;
 @ExtClass("Ext.Component")
 public abstract class ExtComponent extends Panel implements IExtObservable {
 
-	protected transient JSONObject properties = new JSONObject();
+    protected transient JSONObject properties = new JSONObject();
 
     private static final int FLAG_ONRENDERPROPERTIES = 1;
     private transient int flags = 0;
 
-	@ExtProperty
-	String cls;
-	@ExtProperty
-	IModel<String> fieldLabel;
-	@ExtProperty
-	Boolean hidden;
-	@ExtProperty
-	String stateId;
-	@ExtProperty
-	Boolean stateful;
+    @ExtProperty
+    String cls;
+    @ExtProperty
+    IModel<String> fieldLabel;
+    @ExtProperty
+    Boolean hidden;
+    @ExtProperty
+    String stateId;
+    @ExtProperty
+    Boolean stateful;
     @ExtProperty
     String contentEl;
 
     Map<String, ExtEventAjaxBehavior> eventHandlers = new HashMap<String, ExtEventAjaxBehavior>();
 
     public ExtComponent(String id) {
-		super(id);
-		add(new ExtResourcesBehaviour());
-	}
+        super(id);
+        add(new ExtResourcesBehaviour());
+    }
 
-	protected boolean isRenderFromMarkup() {
-		return isExtRoot();
-	}
+    protected boolean isRenderFromMarkup() {
+        return isExtRoot();
+    }
 
     protected boolean isExtRoot() {
         return !(getParent() instanceof ExtComponent)
@@ -65,21 +65,21 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
     }
 
     @Override
-	protected void onBeforeRender() {
+    protected void onBeforeRender() {
         updateContentElement();
 
         renderProperties();
 
         if (isRenderFromMarkup()) {
-			setOutputMarkupId(true);
-		} else {
-			setRenderBodyOnly(true);
-		}
+            setOutputMarkupId(true);
+        } else {
+            setRenderBodyOnly(true);
+        }
 
         addThemeBehavior();
 
-		super.onBeforeRender();
-	}
+        super.onBeforeRender();
+    }
 
     private void updateContentElement() {
         final List<Component> children = new LinkedList<Component>();
@@ -110,7 +110,7 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
     }
 
     // iterate through child components and render properties
-	private void renderProperties() {
+    private void renderProperties() {
         properties = new JSONObject();
         try {
             properties.put("disabled", !isEnabled());
@@ -159,7 +159,7 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
         }
         buildInstantiationJs(js, getExtClass(), properties);
         postRenderExtHead(js);
-	}
+    }
 
     protected void preRenderExtHead(StringBuilder js) {
     }
@@ -168,8 +168,8 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
         js.append(String.format("var %s = new %s(%s);\n", getExtId(), extClass, properties.toString()));
     }
 
-	protected void postRenderExtHead(StringBuilder js) {
-	}
+    protected void postRenderExtHead(StringBuilder js) {
+    }
 
     protected final String getExtClass() {
         return ExtObservableHelper.getExtClass(this, ExtComponent.class);
@@ -211,13 +211,13 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
                 }
                 jsonListeners.put(entry.getKey(), behavior.getEventScript());
             }
-			properties.put("listeners", jsonListeners);
-		}
-	}
+            properties.put("listeners", jsonListeners);
+        }
+    }
 
-	protected final String getExtId() {
-		return getMarkupId().replace("-", "_");
-	}
+    protected final String getExtId() {
+        return getMarkupId().replace("-", "_");
+    }
 
     /**
      * Factory method to implement event specific ajax behavior. Default supported events are 'enable', 'disable',
@@ -262,29 +262,29 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
         eventHandlers.get(event).addListener(listener);
     }
 
-	/* ExtProperties setters */
-	public ExtComponent setDisabled(Boolean disabled) {
-		return (ExtComponent) setEnabled(!disabled);
-	}
+    /* ExtProperties setters */
+    public ExtComponent setDisabled(Boolean disabled) {
+        return (ExtComponent) setEnabled(!disabled);
+    }
 
-	public void setCls(String cls) {
-		this.cls = cls;
-	}
+    public void setCls(String cls) {
+        this.cls = cls;
+    }
 
-	public void setHidden(Boolean hidden) {
-		this.hidden = hidden;
-	}
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
+    }
 
-	public void setStateId(String stateId) {
-		this.stateId = stateId;
-	}
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
+    }
 
-	public void setStateful(Boolean stateful) {
-		this.stateful = stateful;
-	}
+    public void setStateful(Boolean stateful) {
+        this.stateful = stateful;
+    }
 
-	public void setFieldLabel(IModel<String> fieldLabel) {
-		this.fieldLabel = fieldLabel;
-	}
+    public void setFieldLabel(IModel<String> fieldLabel) {
+        this.fieldLabel = fieldLabel;
+    }
 
 }

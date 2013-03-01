@@ -4,10 +4,10 @@ import org.wicketstuff.js.ext.ExtComponent;
 
 public class DefaultLayout implements ILayout {
 
-	@Override
-	public void applyLayout(ExtComponent component) {
-		
-	}
+    @Override
+    public void applyLayout(ExtComponent component) {
+
+    }
 
     @Override
     public LayoutType getType() {

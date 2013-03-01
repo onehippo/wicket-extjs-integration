@@ -6,20 +6,20 @@ import org.wicketstuff.js.ext.util.ExtProperty;
 
 @ExtClass("Ext.form.FieldSet")
 public class ExtFieldSet extends ExtPanel {
-	
-	@ExtProperty
-	Boolean checkboxToggle;
+
+    @ExtProperty
+    Boolean checkboxToggle;
 
     public ExtFieldSet() {
         this("item");
     }
 
-	public ExtFieldSet(String id) {
-		super(id);
-	}
+    public ExtFieldSet(String id) {
+        super(id);
+    }
 
     public void setCheckboxToggle(Boolean checkboxToggle) {
-		this.checkboxToggle = checkboxToggle;
-	}
-	
+        this.checkboxToggle = checkboxToggle;
+    }
+
 }

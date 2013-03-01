@@ -15,9 +15,9 @@ public class ExtSubmitButton extends AbstractExtButton {
         this("item", null);
     }
 
-	public ExtSubmitButton(String id) {
-		this(id, null);
-	}
+    public ExtSubmitButton(String id) {
+        this(id, null);
+    }
 
     public ExtSubmitButton(final IModel<String> save) {
         this("item", save);
@@ -28,37 +28,37 @@ public class ExtSubmitButton extends AbstractExtButton {
     }
 
     @Override
-	protected void onRenderProperties(JSONObject properties) throws JSONException {
-		Form<?> form = findParent(Form.class);
-		ExtAjaxFormSubmitBehaviour submitBehavior = new ExtAjaxFormSubmitBehaviour(form, "handler");
-		add(submitBehavior);
-		submitBehavior.addListener(properties);
-		super.onRenderProperties(properties);
-	}
+    protected void onRenderProperties(JSONObject properties) throws JSONException {
+        Form<?> form = findParent(Form.class);
+        ExtAjaxFormSubmitBehaviour submitBehavior = new ExtAjaxFormSubmitBehaviour(form, "handler");
+        add(submitBehavior);
+        submitBehavior.addListener(properties);
+        super.onRenderProperties(properties);
+    }
 
-	private final class ExtAjaxFormSubmitBehaviour extends AjaxFormSubmitBehavior {
+    private final class ExtAjaxFormSubmitBehaviour extends AjaxFormSubmitBehavior {
 
-		public ExtAjaxFormSubmitBehaviour(Form<?> form, String event) {
-			super(form, event);
-		}
-		
-		private void addListener(JSONObject properties) {
-			try {
-				properties.put(getEvent(), new JSONIdentifier("function() {" + getEventHandler() + ";}"));
-			} catch (JSONException e) {
-				throw new WicketRuntimeException(e);
-			}
-		}
+        public ExtAjaxFormSubmitBehaviour(Form<?> form, String event) {
+            super(form, event);
+        }
 
-		@Override
-		protected void onSubmit(AjaxRequestTarget target) {
+        private void addListener(JSONObject properties) {
+            try {
+                properties.put(getEvent(), new JSONIdentifier("function() {" + getEventHandler() + ";}"));
+            } catch (JSONException e) {
+                throw new WicketRuntimeException(e);
+            }
+        }
 
-		}
+        @Override
+        protected void onSubmit(AjaxRequestTarget target) {
 
-		@Override
-		protected void onError(AjaxRequestTarget target) {
+        }
 
-		}
-	}
+        @Override
+        protected void onError(AjaxRequestTarget target) {
+
+        }
+    }
 
 }

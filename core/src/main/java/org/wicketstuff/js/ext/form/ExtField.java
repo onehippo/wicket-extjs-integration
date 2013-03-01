@@ -11,18 +11,18 @@ import org.wicketstuff.js.ext.util.ExtProperty;
 @ExtClass("Ext.form.Field")
 public class ExtField<T> extends ExtBoxComponent {
 
-	@ExtProperty
-	protected String name;
-	@ExtProperty
-	protected IModel<T> value;
-	
-	protected FormComponent<T> field;
+    @ExtProperty
+    protected String name;
+    @ExtProperty
+    protected IModel<T> value;
 
-	public ExtField(String id, IModel<T> model) {
-		super(id);
-		this.value = model;
+    protected FormComponent<T> field;
 
-		field = new TextField<T>("field", model);
+    public ExtField(String id, IModel<T> model) {
+        super(id);
+        this.value = model;
+
+        field = new TextField<T>("field", model);
         field.setRenderBodyOnly(true);
     }
 
@@ -42,8 +42,8 @@ public class ExtField<T> extends ExtBoxComponent {
     }
 
     public void setName(String name) {
-		this.name = name;
-	}
+        this.name = name;
+    }
 
 
 }

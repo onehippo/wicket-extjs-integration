@@ -12,26 +12,26 @@ import org.wicketstuff.js.ext.util.ExtProperty;
 public class ExtFormPanel<T> extends ExtPanel {
 
     public enum LabelAlign {LEFT, TOP, RIGHT}
-	
-	@ExtProperty
-	protected LabelAlign labelAlign;
-	@ExtProperty
-	protected Number labelWidth;
-	@ExtProperty
-	protected String url;
-	
-	private Form<T> form;
 
-	public ExtFormPanel(String id) {
-		super(id);
-		
-		form = new Form<T>("form") {
-			@Override
-			protected void onSubmit() {
-				System.out.println("form submitted");
-			}
-		};
-		form.setRenderBodyOnly(true);
+    @ExtProperty
+    protected LabelAlign labelAlign;
+    @ExtProperty
+    protected Number labelWidth;
+    @ExtProperty
+    protected String url;
+
+    private Form<T> form;
+
+    public ExtFormPanel(String id) {
+        super(id);
+
+        form = new Form<T>("form") {
+            @Override
+            protected void onSubmit() {
+                System.out.println("form submitted");
+            }
+        };
+        form.setRenderBodyOnly(true);
     }
 
     @Override
@@ -43,21 +43,21 @@ public class ExtFormPanel<T> extends ExtPanel {
     }
 
     @Override
-	protected void onRenderProperties(JSONObject properties) throws JSONException {
-		if (form.getOutputMarkupId()) {
-			properties.put("formId", form.getMarkupId());
-		}
-		url = form.urlFor(IFormSubmitListener.INTERFACE).toString();
-		super.onRenderProperties(properties);
-	}
-	
-	public void setLabelAlign(LabelAlign labelAlign) {
-		this.labelAlign = labelAlign;
-	}
-	
-	public void setLabelWidth(Number labelWidth) {
-		this.labelWidth = labelWidth;
-	}
+    protected void onRenderProperties(JSONObject properties) throws JSONException {
+        if (form.getOutputMarkupId()) {
+            properties.put("formId", form.getMarkupId());
+        }
+        url = form.urlFor(IFormSubmitListener.INTERFACE).toString();
+        super.onRenderProperties(properties);
+    }
+
+    public void setLabelAlign(LabelAlign labelAlign) {
+        this.labelAlign = labelAlign;
+    }
+
+    public void setLabelWidth(Number labelWidth) {
+        this.labelWidth = labelWidth;
+    }
 
 
 }

@@ -6,7 +6,7 @@ import org.wicketstuff.js.ext.ExtComponent;
 
 public interface ILayout extends Serializable {
 
-	void applyLayout(ExtComponent component);
+    void applyLayout(ExtComponent component);
 
     LayoutType getType();
 }

@@ -8,10 +8,10 @@ import org.wicketstuff.js.ext.layout.BorderLayout.Region;
 import org.wicketstuff.js.ext.layout.ColumnLayout;
 
 public class ColumnLayoutExample extends ExamplesPage {
-	
-	private static final String BOGUS_MARKUP = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus. Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel, urna.";
-	
-	public ColumnLayoutExample() {
+
+    private static final String BOGUS_MARKUP = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus. Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel, urna.";
+
+    public ColumnLayoutExample() {
         add(new ExtExamplesResourcesBehaviour());
 
         ExtPanel accordion = new ExtPanel();
@@ -77,11 +77,11 @@ public class ColumnLayoutExample extends ExamplesPage {
         add(viewport);
     }
 
-	private ExtComponent newBogusItem(String title) {
-		ExtPanel item = new TextPanel();
-		item.setTitle(new Model<String>(title));
-		item.add(new MultiLineLabel("text", BOGUS_MARKUP));
-		return item;
-	}
-	
+    private ExtComponent newBogusItem(String title) {
+        ExtPanel item = new TextPanel();
+        item.setTitle(new Model<String>(title));
+        item.add(new MultiLineLabel("text", BOGUS_MARKUP));
+        return item;
+    }
+
 }

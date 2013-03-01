@@ -11,7 +11,7 @@ public class ExtHtmlEditor<T> extends ExtField<T> {
     }
 
     public ExtHtmlEditor(String id, IModel<T> model) {
-		super(id, model);
-	}
+        super(id, model);
+    }
 
 }

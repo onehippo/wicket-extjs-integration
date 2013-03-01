@@ -24,7 +24,7 @@ public abstract class ExtEventListener implements Serializable {
      * @param target
      * @param parameters
      */
-    public void onEvent(AjaxRequestTarget target, Map<String,JSONArray> parameters) {
+    public void onEvent(AjaxRequestTarget target, Map<String, JSONArray> parameters) {
         onEvent(target);
     }
 }
