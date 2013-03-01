@@ -9,4 +9,9 @@ public class DefaultLayout implements ILayout {
 		
 	}
 
+    @Override
+    public LayoutType getType() {
+        return LayoutType.AUTO;
+    }
+
 }

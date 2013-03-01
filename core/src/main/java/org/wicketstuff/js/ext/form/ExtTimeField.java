@@ -11,16 +11,20 @@ public class ExtTimeField<T> extends ExtComboBox<T> {
 	protected String minValue;
 	@ExtProperty
 	protected String maxValue;
-	
+
+    public ExtTimeField(String id) {
+        this(id, null);
+    }
+
+    public ExtTimeField(final IModel<T> stringModel) {
+        this("item", stringModel);
+    }
+
 	public ExtTimeField(String id, IModel<T> model) {
 		super(id, model);
 	}
 
-	public ExtTimeField(String id) {
-		super(id);
-	}
-
-	public void setMinValue(String minValue) {
+    public void setMinValue(String minValue) {
 		this.minValue = minValue;
 	}
 	

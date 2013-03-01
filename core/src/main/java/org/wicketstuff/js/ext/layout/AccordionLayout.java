@@ -16,7 +16,7 @@ public class AccordionLayout extends FitLayout {
 	@Override
 	public void applyLayout(ExtComponent component) {
 		boolean isFirst = true;
-		for (ExtComponent item : component.getItems()) {
+		for (ExtComponent item : component.getExtComponents()) {
 			if (item instanceof ExtPanel) {
 				ExtPanel panel = (ExtPanel) item;
 				if (animate != null && animate == false) {

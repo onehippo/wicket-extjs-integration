@@ -6,7 +6,7 @@ import org.wicketstuff.js.ext.util.ExtMethod;
 import org.wicketstuff.js.ext.util.ExtProperty;
 
 @ExtClass("Ext.BoxComponent")
-public abstract class ExtBoxComponent extends ExtComponent {
+public class ExtBoxComponent extends ExtComponent {
 	
 	@ExtProperty
 	protected String anchor;
@@ -24,8 +24,12 @@ public abstract class ExtBoxComponent extends ExtComponent {
 	protected String cmargins;
 	@ExtProperty
 	protected Region region;
-	
-	public ExtBoxComponent(String id) {
+
+    public ExtBoxComponent() {
+        this("item");
+    }
+
+    public ExtBoxComponent(String id) {
 		super(id);
 	}
 	

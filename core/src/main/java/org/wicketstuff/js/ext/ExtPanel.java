@@ -1,17 +1,14 @@
 package org.wicketstuff.js.ext;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.markup.repeater.AbstractRepeater;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.json.JSONArray;
-
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtMethod;
 import org.wicketstuff.js.ext.util.ExtProperty;
@@ -20,7 +17,7 @@ import org.wicketstuff.js.ext.util.JSONIdentifier;
 @ExtClass("Ext.Panel")
 public class ExtPanel extends ExtContainer {
 
-	private MarkupContainer buttons;
+	private final ItemsRepeater<AbstractExtButton> buttons = new ItemsRepeater<AbstractExtButton>("buttons");
 
 	@ExtProperty
 	protected Boolean animCollapse;
@@ -57,23 +54,20 @@ public class ExtPanel extends ExtContainer {
 	@ExtProperty
 	protected Boolean titleCollapse;
 
-	public ExtPanel(String id) {
-		super(id);
-	}
+    public ExtPanel() {
+        this("item");
+    }
 
-	protected void addButtonsContainer(MarkupContainer buttons) {
-		add(buttons);
+    public ExtPanel(String id) {
+		super(id);
+        add(buttons);
 	}
 
 	@Override
 	protected void onBeforeRender() {
 		super.onBeforeRender();
-		if (buttons == null) {
-			buttons = new ButtonsRepeater("buttons");
-			addButtonsContainer(buttons);
-		}
 		if (isRenderFromMarkup()) {
-			getItemsContainer().add(new AttributeAppender("style", true, new Model<String>(bodyStyle), ";"));
+            getItemsContainer().add(new AttributeAppender("style", true, new Model<String>(bodyStyle), ";"));
 		}
 	}
 	
@@ -83,16 +77,16 @@ public class ExtPanel extends ExtContainer {
 	}
 
 	@Override
-	protected void onRenderProperties() {
+	protected void onRenderProperties(JSONObject properties) throws JSONException {
 		List<AbstractExtButton> buttonsList = getButtons();
 		if (buttonsList.size() > 0) {
 			JSONArray jsonButtons = new JSONArray();
 			for (AbstractExtButton button : buttonsList) {
-				jsonButtons.put(new JSONIdentifier(button.getMarkupId()));
+				jsonButtons.put(new JSONIdentifier(button.getExtId()));
 			}
-			setPropertyValue("buttons", jsonButtons);
+			properties.put("buttons", jsonButtons);
 		}
-		super.onRenderProperties();
+		super.onRenderProperties(properties);
 	}
 
 	@Override
@@ -102,23 +96,24 @@ public class ExtPanel extends ExtContainer {
 		return items;
 	}
 
-	List<AbstractExtButton> getButtons() {
-		List<AbstractExtButton> buttonsList = new ArrayList<AbstractExtButton>();
-		if (buttons != null) {
-			Iterator<? extends Component> iterator = buttons.iterator();
-			while (iterator.hasNext()) {
-				Component component = (Component) iterator.next();
-				if (component instanceof AbstractExtButton) {
-					buttonsList.add((AbstractExtButton) component);
-				} else {
-					assert (false);
-				}
-			}
-		}
-		return buttonsList;
+	private List<AbstractExtButton> getButtons() {
+        return buttons.getExtComponents();
 	}
-	
-	public void setAnimCollapse(Boolean animCollapse) {
+
+    protected final MarkupContainer getButtonsContainer() {
+        return buttons;
+    }
+
+    @Override
+    protected ExtEventAjaxBehavior newExtEventBehavior(final String event) {
+        if ("expand".equals(event) || "close".equals(event) || "collapse".equals(event)
+                || "activate".equals(event) || "deactivate".equals(event)) {
+            return new ExtEventAjaxBehavior(null);
+        }
+        return super.newExtEventBehavior(event);
+    }
+
+    public void setAnimCollapse(Boolean animCollapse) {
 		this.animCollapse = animCollapse;
 	}
 	
@@ -131,10 +126,6 @@ public class ExtPanel extends ExtContainer {
 	}
 	
 	public void addButton(AbstractExtButton button) {
-		if (buttons == null) {
-			buttons = new ButtonsRepeater("buttons");
-			addButtonsContainer(buttons);
-		}
 		buttons.add(button);
 	}
 
@@ -191,23 +182,6 @@ public class ExtPanel extends ExtContainer {
 		this.titleCollapse = titleCollapse;
 	}
 
-	private final class ButtonsRepeater extends AbstractRepeater {
-		private ButtonsRepeater(String id) {
-			super(id);
-		}
-
-		@Override
-		protected Iterator<? extends Component> renderIterator() {
-			return buttons.iterator();
-		}
-
-		@Override
-		protected void onPopulate() {
-			/* noop */
-		}
-	}
-	
-	
 	// helper properties for layouts
 	public void setColumnWidth(Number columnWidth) {
 		this.columnWidth = columnWidth;

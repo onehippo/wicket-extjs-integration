@@ -1,11 +1,7 @@
 package org.wicketstuff.js.ext;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
-
 import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtProperty;
 
@@ -22,11 +18,6 @@ public abstract class AbstractExtButton extends ExtBoxComponent {
 
 	public void setText(IModel<String> text) {
 		this.text = text;
-	}
-
-	@Override
-	public List<ExtComponent> getItems() {
-		return Collections.emptyList();
 	}
 
 	protected void onClick(AjaxRequestTarget target) {

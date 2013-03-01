@@ -6,11 +6,11 @@ import org.wicketstuff.js.ext.util.ExtClass;
 @ExtClass("Ext.form.HtmlEditor")
 public class ExtHtmlEditor<T> extends ExtField<T> {
 
-	public ExtHtmlEditor(String id) {
-		super(id);
-	}
+    public ExtHtmlEditor(IModel<T> model) {
+        super("item", model);
+    }
 
-	public ExtHtmlEditor(String id, IModel<T> model) {
+    public ExtHtmlEditor(String id, IModel<T> model) {
 		super(id, model);
 	}
 

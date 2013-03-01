@@ -8,4 +8,5 @@ public interface ILayout extends Serializable {
 
 	void applyLayout(ExtComponent component);
 
+    LayoutType getType();
 }

@@ -2,56 +2,77 @@ package org.wicketstuff.js.ext;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.repeater.AbstractRepeater;
 import org.json.JSONArray;
-
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.wicketstuff.js.ext.layout.DefaultLayout;
 import org.wicketstuff.js.ext.layout.ILayout;
+import org.wicketstuff.js.ext.layout.LayoutType;
 import org.wicketstuff.js.ext.util.ExtClass;
+import org.wicketstuff.js.ext.util.ExtPropertyConverter;
 import org.wicketstuff.js.ext.util.JSONIdentifier;
 
 @ExtClass("Ext.Container")
-public abstract class ExtContainer extends ExtBoxComponent {
+public class ExtContainer extends ExtBoxComponent {
 
-	private MarkupContainer itemsContainer;
-	protected ILayout layout = new DefaultLayout();
+    private final ItemsRepeater<ExtComponent> items;
+
+    protected ILayout layout = new DefaultLayout();
+
+    public ExtContainer() {
+        this("item");
+    }
 
 	public ExtContainer(String id) {
 		super(id);
+        add(items = new ItemsRepeater("items"));
 	}
 
 	protected boolean hasExtItems() {
-		return getItemsContainer() == null || itemsContainer instanceof AbstractRepeater;
+		return true;
 	}
 
 	@Override
 	protected void onBeforeRender() {
-		if (!hasExtItems() && getItemsContainer() != null) {
-			getItemsContainer().add(new SimpleAttributeModifier("class", getName() + "-body"));
-		}
+        wrapNonExtComponents();
 
-		// before render of parent first
-		super.onBeforeRender();
+        items.beforeRender();
 
-		// then add dummy container
-		if (getItemsContainer() == null) {
-			addItemsContainer(new WebMarkupContainer("items"));
-		}
-
+        // before render of parent first
+        super.onBeforeRender();
 	}
 
-	public Component getItemsContainer() {
-		return (itemsContainer != null) ? itemsContainer : get("items");
-	}
+    private void wrapNonExtComponents() {
+        // wrap children in a BoxComponent
+        final List<Component> children = new LinkedList<Component>();
+        visitChildren(new IVisitor<Component>() {
 
-	public void setItemsContainer(MarkupContainer itemsContainer) {
-		this.itemsContainer = itemsContainer;
+            @Override
+            public Object component(Component component) {
+                if ((!(component instanceof ExtComponent)) && (!(component instanceof ItemsRepeater))
+                        && (!(component instanceof ItemsRepeater.ExtItem))) {
+                    children.add(component);
+                }
+                return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
+            }
+
+        });
+        if (children.size() > 1) {
+            for (Component component : children) {
+                ExtBoxComponent boxComponent = new ExtBoxComponent("item");
+                boxComponent.add(component);
+                add(boxComponent);
+            }
+        }
+    }
+
+    protected final MarkupContainer getItemsContainer() {
+        return items;
 	}
 
 	protected String getName() {
@@ -64,70 +85,53 @@ public abstract class ExtContainer extends ExtBoxComponent {
 	}
 
 	@Override
-	protected void onRenderProperties() {
+	protected void onRenderProperties(JSONObject properties) throws JSONException {
 		JSONArray jsonItems = new JSONArray();
 		for (ExtComponent item : getItems()) {
 			jsonItems.put(new JSONIdentifier(item.getExtId()));
 		}
-		setIfNotNull("items", jsonItems);
+		properties.put("items", jsonItems);
 
+        if (layout.getType() != LayoutType.AUTO) {
+            properties.put("layout", layout.getType().toString().toLowerCase());
+
+            JSONObject layoutConfig = new JSONObject();
+            ExtPropertyConverter.addProperties(layout, layout.getClass(), layoutConfig);
+            properties.put("layoutConfig", layoutConfig);
+        }
 		layout.applyLayout(this);
-		super.onRenderProperties();
+
+		super.onRenderProperties(properties);
 	}
 
-	@Override
-	public List<ExtComponent> getItems() {
-		List<ExtComponent> itemsList = new ArrayList<ExtComponent>();
-		if (itemsContainer != null) {
-			Iterator<? extends Component> iterator = itemsContainer.iterator();
-			while (iterator.hasNext()) {
-				Component component = (Component) iterator.next();
-				if (component instanceof ExtComponent) {
-					itemsList.add((ExtComponent) component);
-				} else {
-					assert (false);
-				}
-			}
-		}
-		return itemsList;
-	}
+    public List<ExtComponent> getItems() {
+        final List<ExtComponent> itemsList = new ArrayList<ExtComponent>();
+        Iterator<? extends ExtComponent> iterator = items.extIterator();
+        while (iterator.hasNext()) {
+            itemsList.add(iterator.next());
+        }
+        return itemsList;
+    }
 
-	public void addItem(ExtComponent... items) {
-		for (ExtComponent item : items) {
-			addItem((Component) item);
-		}
-	}
+    public ExtContainer add(ExtComponent... components) {
+        for (ExtComponent component : components) {
+            if ("item".equals(component.getId())) {
+                items.add(component);
+            } else {
+                super.add(component);
+            }
+        }
+        return this;
+    }
 
-	public void addItem(Component item) {
-		if (itemsContainer == null) {
-			addItemsContainer(new ItemsRepeater("items"));
+    public void addItem(ExtComponent... components) {
+		for (ExtComponent component : components) {
+			items.add(component);
 		}
-		itemsContainer.add(item);
-	}
-	
-	protected void addItemsContainer(MarkupContainer items) {
-		setItemsContainer(items);
-		this.add(items);
 	}
 
 	public void setLayout(ILayout layout) {
 		this.layout = layout;
-	}
-
-	public final class ItemsRepeater extends AbstractRepeater {
-		public ItemsRepeater(String id) {
-			super(id);
-		}
-
-		@Override
-		protected Iterator<? extends Component> renderIterator() {
-			return itemsContainer.iterator();
-		}
-
-		@Override
-		protected void onPopulate() {
-			/* noop */
-		}
 	}
 
 }

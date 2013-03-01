@@ -3,9 +3,6 @@ package org.wicketstuff.js.ext;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.model.Model;
-
-import org.wicketstuff.js.ext.ExtPanel;
-import org.wicketstuff.js.ext.ExtTabPanel;
 import org.wicketstuff.js.ext.util.ExtEventListener;
 
 public class Tabs extends ExamplesPage {
@@ -18,13 +15,13 @@ public class Tabs extends ExamplesPage {
 		tabs1.setWidth(450);
 		tabs1.setActiveTab(0);
 		tabs1.setFrame(true);
-		ExtPanel tab1 = new ExtPanel("1");
+		ExtPanel tab1 = new TextPanel();
 		tab1.setAutoHeight(true);
-		tab1.add(new MultiLineLabel("items", SHORT_TEXT));
+		tab1.add(new MultiLineLabel("text", SHORT_TEXT));
 		tabs1.addTab(new Model<String>("Short Text"), tab1);
-		ExtPanel tab2 = new ExtPanel("2");
+		ExtPanel tab2 = new TextPanel();
 		tab2.setAutoHeight(true);
-		tab2.add(new MultiLineLabel("items", LONG_TEXT));
+		tab2.add(new MultiLineLabel("text", LONG_TEXT));
 		tabs1.addTab(new Model<String>("Long Text"), tab2);
 		
 		add(tabs1);
@@ -34,23 +31,23 @@ public class Tabs extends ExamplesPage {
 		tabs2.setWidth(600);
 		tabs2.setHeight(250);
 		tabs2.setPlain(true);
-		tab1 = new ExtPanel("1");
+		tab1 = new TextPanel();
 		tab1.setAutoScroll(true);
-		tab1.add(new MultiLineLabel("items", "My content was added during construction."));
+		tab1.add(new MultiLineLabel("text", "My content was added during construction."));
 		tabs2.addTab(new Model<String>("Normal Tab"), tab1);
-		tab2 = new ExtPanel("2");
+		tab2 = new TextPanel();
 		tab2.setAutoScroll(true);
-		tab2.add(new MultiLineLabel("items", LONG_TEXT));
+		tab2.add(new MultiLineLabel("text", LONG_TEXT));
 		tabs2.addTab(new Model<String>("Ajax Tab 1"), tab2);
 
-		ExtPanel tab3 = new ExtPanel("3");
+		ExtPanel tab3 = new TextPanel();
 		tab3.setAutoScroll(true);
-		tab3.add(new MultiLineLabel("items", LONG_TEXT));
+		tab3.add(new MultiLineLabel("text", LONG_TEXT));
 		tabs2.addTab(new Model<String>("Ajax Tab 2"), tab3);
 		
-		final ExtPanel tab4 = new ExtPanel("4");
+		final ExtPanel tab4 = new TextPanel();
 		tab4.setAutoScroll(true);
-		tab4.add(new MultiLineLabel("items", "I am tab 4's content. I also have an event listener attached."));
+		tab4.add(new MultiLineLabel("text", "I am tab 4's content. I also have an event listener attached."));
 		tab4.addEventListener("activate", new ExtEventListener() {
 			@Override
 			public void onEvent(AjaxRequestTarget target) {
@@ -59,9 +56,9 @@ public class Tabs extends ExamplesPage {
 		});
 		tabs2.addTab(new Model<String>("Event Tab"), tab4);
 		
-		ExtPanel tab5 = new ExtPanel("5");
+		ExtPanel tab5 = new TextPanel();
 		tab5.setAutoScroll(true);
-		tab5.add(new MultiLineLabel("items", "Can't see me cause I'm disabled"));
+		tab5.add(new MultiLineLabel("text", "Can't see me cause I'm disabled"));
 		tab5.setDisabled(true);
 		tabs2.addTab(new Model<String>("Disabled Tab"), tab5);
 		

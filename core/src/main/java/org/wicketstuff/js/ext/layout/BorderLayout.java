@@ -16,7 +16,7 @@ public class BorderLayout extends ContainerLayout {
 
 	@Override
 	public void applyLayout(ExtComponent component) {
-		for (ExtComponent item : component.getItems()) {
+		for (ExtComponent item : component.getExtComponents()) {
 			item.add(new AttributeAppender("class", true, new Model<String>("x-border-panel"), " "));
 		}
 		super.applyLayout(component);

@@ -15,12 +15,16 @@ public class ExtTextField<T> extends ExtField<T> {
 	public ExtTextField(String id) {
 		this(id, null);
 	}
-	
+
+    public ExtTextField(final IModel<T> stringModel) {
+        this("item", stringModel);
+    }
+
 	public ExtTextField(String id, IModel<T> model) {
 		super(id, model);
 	}
 
-	public void setAllowBlank(Boolean allowBlank) {
+    public void setAllowBlank(Boolean allowBlank) {
 		this.allowBlank = allowBlank;
 		field.setRequired(!allowBlank);
 	}

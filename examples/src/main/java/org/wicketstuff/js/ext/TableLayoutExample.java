@@ -15,27 +15,27 @@ public class TableLayoutExample extends ExamplesPage {
 		layout.setColumns(3);
 		panel.setLayout(layout);
 		
-		panel.addItem(newItem("1", "Item 1"));
-		panel.addItem(newItem("2", "Item 2"));
-		panel.addItem(newItem("3", "Item 3"));
-		panel.addItem(newItem("4", "Item 4", 410, 2));
-		panel.addItem(newItem("5", "Item 5"));
-		panel.addItem(newItem("6", "Item 6"));
-		panel.addItem(newItem("7", "Item 7", 410, 2));
-		panel.addItem(newItem("8", "Item 8"));
+		panel.addItem(newItem("Item 1"));
+		panel.addItem(newItem("Item 2"));
+		panel.addItem(newItem("Item 3"));
+		panel.addItem(newItem("Item 4", 410, 2));
+		panel.addItem(newItem("Item 5"));
+		panel.addItem(newItem("Item 6"));
+		panel.addItem(newItem("Item 7", 410, 2));
+		panel.addItem(newItem("Item 8"));
 		
 		add(panel);
 	}
 
-	private ExtPanel newItem(String id, String title, int width, int colspan) {
-		ExtPanel item = newItem(id, title);
+	private ExtPanel newItem(String title, int width, int colspan) {
+		ExtPanel item = newItem(title);
 		item.setWidth(width);
 		item.setColspan(colspan);
 		return item;
 	}
 
-	private ExtPanel newItem(String id, String title) {
-		ExtPanel item = new ExtPanel(id);
+	private ExtPanel newItem(String title) {
+		ExtPanel item = new ExtPanel();
 		item.setTitle(new Model<String>(title));
 		item.setFrame(true);
 		item.setWidth(200);

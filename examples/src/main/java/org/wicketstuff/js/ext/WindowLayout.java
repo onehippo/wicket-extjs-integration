@@ -6,10 +6,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.model.Model;
-
-import org.wicketstuff.js.ext.ExtPanel;
-import org.wicketstuff.js.ext.ExtTabPanel;
-import org.wicketstuff.js.ext.ExtWindow;
 import org.wicketstuff.js.ext.ExtWindow.CloseAction;
 import org.wicketstuff.js.ext.layout.BorderLayout;
 import org.wicketstuff.js.ext.layout.BorderLayout.Region;
@@ -21,28 +17,28 @@ public class WindowLayout extends ExamplesPage {
 
 	public WindowLayout() {
 
-		ExtTabPanel tabs = new ExtTabPanel("0");
+		ExtTabPanel tabs = new ExtTabPanel();
 		tabs.setRegion(Region.CENTER);
 		tabs.setMargins(3, 3, 3, 0);
 		tabs.setActiveTab(0);
 		
-		ExtPanel tab1 = new ExtPanel("1");
-		tab1.add(new MultiLineLabel("items", bogusMarkup));
+		ExtPanel tab1 = new TextPanel();
+		tab1.add(new MultiLineLabel("text", bogusMarkup));
 		tab1.setAutoScroll(true);
 		
-		ExtPanel tab2 = new ExtPanel("2");
-		tab2.add(new MultiLineLabel("items", bogusMarkup));
+		ExtPanel tab2 = new TextPanel();
+		tab2.add(new MultiLineLabel("text", bogusMarkup));
 		tab2.setAutoScroll(true);
 
 		tabs.addTab(new Model<String>("Bogus Tab"), tab1);
 		tabs.addTab(new Model<String>("Another Tab"), tab2);
-		ExtPanel closeableTab = new ExtPanel("3");
-		closeableTab.add(new MultiLineLabel("items", bogusMarkup));
+		ExtPanel closeableTab = new TextPanel();
+		closeableTab.add(new MultiLineLabel("text", bogusMarkup));
 		closeableTab.setClosable(true);
 		closeableTab.setAutoScroll(true);
 		tabs.addTab(new Model<String>("Closable Tab"), closeableTab);
 		
-		ExtPanel nav = new ExtPanel("2");
+		ExtPanel nav = new ExtPanel();
 		nav.setTitle(new Model<String>("Navigation"));
 		nav.setRegion(Region.WEST);
 		nav.setSplit(true);

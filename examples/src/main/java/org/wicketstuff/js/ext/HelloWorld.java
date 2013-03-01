@@ -22,27 +22,27 @@ public class HelloWorld extends ExamplesPage {
 		win.setCloseAction(CloseAction.HIDE);
 		win.setPlain(true);
 
-		final ExtTabPanel tabs = new ExtTabPanel("1");
+		final ExtTabPanel tabs = new ExtTabPanel();
 		//tabs.setAutoTabs(true);
 		tabs.setActiveTab(0);
 		tabs.setDeferredRender(false);
 		tabs.setBorder(false);
 		
-		ExtPanel tab1 = new ExtPanel("1");
-		tab1.add(new MultiLineLabel("items", "Hello..."));
+		ExtPanel tab1 = new TextPanel();
+		tab1.add(new MultiLineLabel("text", "Hello..."));
 		
-		ExtPanel tab2 = new ExtPanel("2");
-		tab2.add(new MultiLineLabel("items", "... World!"));
+		ExtPanel tab2 = new TextPanel();
+		tab2.add(new MultiLineLabel("text", "... World!"));
 		
 		tabs.addTab(new Model<String>("Hello World 1"), tab1);
 		tabs.addTab(new Model<String>("Hello World 2"), tab2);
 		win.addItem(tabs);
 		
-		ExtButton extButton = new ExtButton("1", new Model<String>("Submit"));
+		ExtButton extButton = new ExtButton(new Model<String>("Submit"));
 		extButton.setDisabled(true);
 		win.addButton(extButton);
 		
-		win.addButton(new ExtButton("2", new Model<String>("Close")) {
+		win.addButton(new ExtButton(new Model<String>("Close")) {
 			@Override
 			protected void onClick(AjaxRequestTarget target) {
 				win.hide();

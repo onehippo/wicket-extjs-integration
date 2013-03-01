@@ -14,7 +14,7 @@ public class ColumnLayoutExample extends ExamplesPage {
 	public ColumnLayoutExample() {
         add(new ExtExamplesResourcesBehaviour());
 
-        ExtPanel accordion = new ExtPanel("0");
+        ExtPanel accordion = new ExtPanel();
         accordion.setRegion(Region.WEST);
         accordion.setTitle(new Model<String>("West"));
         accordion.setSplit(true);
@@ -28,15 +28,15 @@ public class ColumnLayoutExample extends ExamplesPage {
         layout.setAnimate(true);
         accordion.setLayout(layout);
 
-        ExtPanel west1 = new ExtPanel("1");
-        west1.add(new MultiLineLabel("items", BOGUS_MARKUP));
+        ExtPanel west1 = new TextPanel();
+        west1.add(new MultiLineLabel("text", BOGUS_MARKUP));
         west1.setTitle(new Model<String>("Navigation"));
         west1.setAutoScroll(true);
         west1.setBorder(false);
         west1.setIconCls("nav");
 
-        ExtPanel west2 = new ExtPanel("2");
-        west2.add(new MultiLineLabel("items", BOGUS_MARKUP));
+        ExtPanel west2 = new TextPanel();
+        west2.add(new MultiLineLabel("text", BOGUS_MARKUP));
         west2.setTitle(new Model<String>("Settings"));
         west2.setAutoScroll(true);
         west2.setBorder(false);
@@ -44,26 +44,26 @@ public class ColumnLayoutExample extends ExamplesPage {
 
         accordion.addItem(west1, west2);
 
-        ExtPanel center1 = new ExtPanel("1");
+        ExtPanel center1 = new ExtPanel();
         center1.setColumnWidth(.33);
         center1.setBaseCls("x-plain");
         center1.setBodyStyle("padding:5px 0 5px 5px");
-        center1.addItem(newBogusItem("1", "A Panel"));
+        center1.addItem(newBogusItem("A Panel"));
 
-        ExtPanel center2 = new ExtPanel("2");
+        ExtPanel center2 = new ExtPanel();
         center2.setColumnWidth(.33);
         center2.setBaseCls("x-plain");
         center2.setBodyStyle("padding:5px 0 5px 5px");
-        center2.addItem(newBogusItem("1", "A Panel"));
+        center2.addItem(newBogusItem("A Panel"));
 
-        ExtPanel center3 = new ExtPanel("3");
+        ExtPanel center3 = new ExtPanel();
         center3.setColumnWidth(.33);
         center3.setBaseCls("x-plain");
         center3.setBodyStyle("padding:5px");
-        center3.addItem(newBogusItem("1", "A Panel"));
-        center3.addItem(newBogusItem("2", "Another Panel"));
+        center3.addItem(newBogusItem("A Panel"));
+        center3.addItem(newBogusItem("Another Panel"));
 
-        ExtPanel center = new ExtPanel("1");
+        ExtPanel center = new ExtPanel();
         center.setRegion(Region.CENTER);
         center.setMargins(35, 5, 5, 0);
         center.setLayout(new ColumnLayout());
@@ -77,10 +77,10 @@ public class ColumnLayoutExample extends ExamplesPage {
         add(viewport);
     }
 
-	private ExtComponent newBogusItem(String id, String title) {
-		ExtPanel item = new ExtPanel(id);
+	private ExtComponent newBogusItem(String title) {
+		ExtPanel item = new TextPanel();
 		item.setTitle(new Model<String>(title));
-		item.add(new MultiLineLabel("items", BOGUS_MARKUP));
+		item.add(new MultiLineLabel("text", BOGUS_MARKUP));
 		return item;
 	}
 	

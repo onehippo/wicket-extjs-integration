@@ -1,16 +1,17 @@
 package org.wicketstuff.js.ext.form;
 
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IFormSubmitListener;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.wicketstuff.js.ext.ExtPanel;
 import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtProperty;
 
 @ExtClass("Ext.form.FormPanel")
 public class ExtFormPanel<T> extends ExtPanel {
-	
-	public enum LabelAlign {LEFT, TOP, RIGHT}
+
+    public enum LabelAlign {LEFT, TOP, RIGHT}
 	
 	@ExtProperty
 	protected LabelAlign labelAlign;
@@ -27,31 +28,27 @@ public class ExtFormPanel<T> extends ExtPanel {
 		form = new Form<T>("form") {
 			@Override
 			protected void onSubmit() {
-				System.out.println("form submitted");;
+				System.out.println("form submitted");
 			}
 		};
 		form.setRenderBodyOnly(true);
-		add(form);
-	}
+    }
 
-	@Override
-	protected void addItemsContainer(MarkupContainer items) {
-		setItemsContainer(items);
-		form.add(items);
-	}
-	
-	@Override
-	protected void addButtonsContainer(MarkupContainer buttons) {
-		form.add(buttons);
-	}
-	
-	@Override
-	protected void onRenderProperties() {
+    @Override
+    protected void onAfterUpdateContentElement() {
+        add(form);
+        form.add(getItemsContainer());
+        form.add(getButtonsContainer());
+        super.onAfterUpdateContentElement();
+    }
+
+    @Override
+	protected void onRenderProperties(JSONObject properties) throws JSONException {
 		if (form.getOutputMarkupId()) {
-			setPropertyValue("formId", form.getMarkupId());
+			properties.put("formId", form.getMarkupId());
 		}
 		url = form.urlFor(IFormSubmitListener.INTERFACE).toString();
-		super.onRenderProperties();
+		super.onRenderProperties(properties);
 	}
 	
 	public void setLabelAlign(LabelAlign labelAlign) {

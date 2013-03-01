@@ -1,17 +1,19 @@
 package org.wicketstuff.js.ext;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
-import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.IBehavior;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.AbstractRepeater;
 import org.apache.wicket.model.IModel;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,14 +22,17 @@ import org.wicketstuff.js.ext.util.ExtEventListener;
 import org.wicketstuff.js.ext.util.ExtProperty;
 import org.wicketstuff.js.ext.util.ExtPropertyConverter;
 import org.wicketstuff.js.ext.util.ExtResourcesBehaviour;
-import org.wicketstuff.js.ext.util.JSONIdentifier;
+import org.wicketstuff.js.ext.util.ExtThemeBehavior;
 
 import static org.wicketstuff.js.ext.util.ExtPropertyConverter.convert;
 
 @ExtClass("Ext.Component")
 public abstract class ExtComponent extends Panel implements IExtObservable {
 
-	protected transient JSONObject properties = null;
+	protected transient JSONObject properties = new JSONObject();
+
+    private static final int FLAG_ONRENDERPROPERTIES = 1;
+    private transient int flags = 0;
 
 	@ExtProperty
 	String cls;
@@ -39,10 +44,12 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
 	String stateId;
 	@ExtProperty
 	Boolean stateful;
+    @ExtProperty
+    String contentEl;
 
-	Map<String, ExtEventListener> listeners = new HashMap<String, ExtEventListener>();
+    Map<String, ExtEventAjaxBehavior> eventHandlers = new HashMap<String, ExtEventAjaxBehavior>();
 
-	public ExtComponent(String id) {
+    public ExtComponent(String id) {
 		super(id);
 		add(new ExtResourcesBehaviour());
 	}
@@ -51,113 +58,160 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
 		return isExtRoot();
 	}
 
-	@Override
+    protected boolean isExtRoot() {
+        return !(getParent() instanceof ExtComponent)
+                && !(getParent() instanceof ItemsRepeater.ExtItem)
+                && !(getParent() instanceof Form && getParent().getParent() instanceof ItemsRepeater.ExtItem);
+    }
+
+    @Override
 	protected void onBeforeRender() {
-		if (isExtRoot()) {
-			fireOnRenderProperties();
-			renderProperties();
-		}
-		if (isRenderFromMarkup()) {
+        updateContentElement();
+
+        renderProperties();
+
+        if (isRenderFromMarkup()) {
 			setOutputMarkupId(true);
 		} else {
 			setRenderBodyOnly(true);
 		}
+
+        addThemeBehavior();
+
 		super.onBeforeRender();
 	}
 
-	@Override
-	public void renderHead(HtmlHeaderContainer container) {
-		super.renderHead(container);
-		// find out if this is the root of a ext-component structure
-		if (isExtRoot()) {
-			IHeaderResponse headerResponse = container.getHeaderResponse();
-			StringBuilder js = new StringBuilder();
-			handleExtHeader(js);
-			headerResponse.renderOnDomReadyJavascript(js.toString());
-		}
-	}
+    private void updateContentElement() {
+        final List<Component> children = new LinkedList<Component>();
+        visitChildren(new IVisitor<Component>() {
 
-	protected boolean isExtRoot() {
-		return !(getParent() instanceof ExtComponent)
-				&& !(getParent() instanceof AbstractRepeater && getParent().getParent() instanceof ExtComponent)
-				&& !(getParent() instanceof AbstractRepeater
-						&& getParent().getParent() instanceof Form<?> && getParent().getParent().getParent() instanceof ExtComponent);
-	}
-	
-	// iterate through child components and call onrenderproperties
-	private void fireOnRenderProperties() {
-		for (ExtComponent item : getExtComponents()) {
-			item.fireOnRenderProperties();
-		}
-		properties = new JSONObject();
-		onRenderProperties();
-	}
+            @Override
+            public Object component(Component component) {
+                if ((!(component instanceof ExtComponent)) && (!(component instanceof ItemsRepeater)) && (!(component instanceof ItemsRepeater.ExtItem))) {
+                    children.add(component);
+                }
+                return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
+            }
 
-	// iterate through child components and render properties
+        });
+        if (children.size() > 1) {
+            throw new WicketRuntimeException("More than one child component added to ExtComponent");
+        }
+        if (children.size() == 1) {
+            Component component = children.get(0);
+            component.setOutputMarkupId(true);
+            component.add(new SimpleAttributeModifier("class", "x-hidden"));
+            this.contentEl = component.getMarkupId();
+        }
+        onAfterUpdateContentElement();
+    }
+
+    protected void onAfterUpdateContentElement() {
+    }
+
+    // iterate through child components and render properties
 	private void renderProperties() {
-		for (ExtComponent item : getExtComponents()) {
-			item.renderProperties();
-		}
+        properties = new JSONObject();
+        try {
+            properties.put("disabled", !isEnabled());
+            ExtPropertyConverter.addProperties(this, getClass(), properties);
+            addListeners();
 
-		setPropertyValue("disabled", !isEnabled());
-		ExtPropertyConverter.addProperties(this, getClass(), properties);
-		addListeners();
+            onRenderProperties(properties);
+            if ((flags & FLAG_ONRENDERPROPERTIES) == 0) {
+                throw new RuntimeException("Class in hierarchy of " + getClass().getName() + " has overridden onRenderProperties, but did not call parent");
+            }
+            flags &= ~FLAG_ONRENDERPROPERTIES;
+        } catch (JSONException ex) {
+            throw new RuntimeException("Error rendering properties", ex);
+        }
+    }
+
+    protected void onRenderProperties(JSONObject properties) throws JSONException {
+        if (isRenderFromMarkup()) {
+            properties.put("applyTo", convert(getMarkupId()));
+        }
+        if (stateId == null) {
+            properties.put("id", convert(getMarkupId()));
+        }
+        flags |= FLAG_ONRENDERPROPERTIES;
+    }
+
+    @Override
+    public void renderHead(HtmlHeaderContainer container) {
+        super.renderHead(container);
+        // find out if this is the root of a ext-component structure
+        if (isExtRoot()) {
+            IHeaderResponse headerResponse = container.getHeaderResponse();
+            StringBuilder js = new StringBuilder();
+            onRenderExtHead(js);
+            headerResponse.renderOnDomReadyJavascript(js.toString());
+        }
+    }
+
+    private void onRenderExtHead(StringBuilder js) {
+        preRenderExtHead(js);
+        for (ExtObservable item : getExtObservables()) {
+            item.onRenderExtHead(js);
+        }
+        for (ExtComponent item : getExtComponents()) {
+            item.onRenderExtHead(js);
+        }
+        buildInstantiationJs(js, getExtClass(), properties);
+        postRenderExtHead(js);
 	}
 
-	private void handleExtHeader(StringBuilder js) {
-		for (ExtComponent item : getExtComponents()) {
-			item.handleExtHeader(js);
-		}
-		preRenderExtHead(js);
-		js.append(String.format("var %s = new %s(%s);\n", getExtId(), getExtClass(), properties.toString()));
-		properties = null;
-		postRenderExtHead(js);
-	}
+    protected void preRenderExtHead(StringBuilder js) {
+    }
+
+    protected void buildInstantiationJs(StringBuilder js, String extClass, JSONObject properties) {
+        js.append(String.format("var %s = new %s(%s);\n", getExtId(), extClass, properties.toString()));
+    }
 
 	protected void postRenderExtHead(StringBuilder js) {
-
 	}
 
-    private String getExtClass() {
+    protected final String getExtClass() {
         return ExtObservableHelper.getExtClass(this, ExtComponent.class);
     }
 
-	protected void preRenderExtHead(StringBuilder js) {
+    private void addThemeBehavior() {
+        if (isExtRoot()) {
+            Component component = this;
+            boolean foundTheme = false;
+            while (component != null) {
+                for (IBehavior behavior : component.getBehaviors()) {
+                    if (behavior instanceof ExtThemeBehavior) {
+                        foundTheme = true;
+                        break;
+                    }
+                }
+                if (foundTheme) {
+                    break;
+                }
+                component = component.getParent();
+            }
+            if (!foundTheme) {
+                add(getThemeBehavior());
+            }
+        }
+    }
 
-	}
+    protected ExtThemeBehavior getThemeBehavior() {
+        return new ExtThemeBehavior();
+    }
 
-	protected void setIfNotNull(String property, Object value) {
-		if (value != null) {
-			setPropertyValue(property, value);
-		}
-	}
-
-	public void setPropertyValue(String name, Object value) {
-		try {
-			properties.put(name, convert(value));
-		} catch (JSONException e) {
-			throw new WicketRuntimeException(e);
-		}
-	}
-
-	protected void onRenderProperties() {
-		if (isRenderFromMarkup()) {
-			setPropertyValue("applyTo", getMarkupId());
-		}
-		if (stateId == null) {
-			setPropertyValue("id", getExtId());
-		}
-	}
-
-	private void addListeners() {
-		if (!listeners.isEmpty()) {
-			JSONObject jsonListeners = new JSONObject();
-			for (String event : listeners.keySet()) {
-				ExtEventAjaxBehavior behavior = new ExtEventAjaxBehavior(event);
-				add(behavior);
-				behavior.addListener(jsonListeners);
-			}
-			setPropertyValue("listeners", jsonListeners);
+    private void addListeners() throws JSONException {
+        if (!eventHandlers.isEmpty()) {
+            JSONObject jsonListeners = new JSONObject();
+            for (Map.Entry<String, ExtEventAjaxBehavior> entry : eventHandlers.entrySet()) {
+                ExtEventAjaxBehavior behavior = entry.getValue();
+                if (!getBehaviors().contains(behavior)) {
+                    add(behavior);
+                }
+                jsonListeners.put(entry.getKey(), behavior.getEventScript());
+            }
+			properties.put("listeners", jsonListeners);
 		}
 	}
 
@@ -165,15 +219,48 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
 		return getMarkupId().replace("-", "_");
 	}
 
-	public abstract List<ExtComponent> getItems();
+    /**
+     * Factory method to implement event specific ajax behavior. Default supported events are 'enable', 'disable',
+     * 'show', 'hide'.
+     *
+     * @param event name of the event
+     * @return the behavior for the event
+     */
+    protected ExtEventAjaxBehavior newExtEventBehavior(String event) {
+        if ("disable".equals(event) || "enable".equals(event) || "show".equals(event) || "hide".equals(event)) {
+            return new ExtEventAjaxBehavior(null);
+        }
+        return new ExtEventAjaxBehavior();
+    }
 
-	public List<ExtComponent> getExtComponents() {
-		return getItems();
-	}
+    public List<ExtComponent> getExtComponents() {
+        final List<ExtComponent> itemsList = new ArrayList<ExtComponent>();
+        visitChildren(new IVisitor() {
 
-	public void addEventListener(String event, ExtEventListener listener) {
-		listeners.put(event, listener);
-	}
+            @Override
+            public Object component(Component component) {
+                if (component instanceof ExtComponent) {
+                    itemsList.add((ExtComponent) component);
+                    return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
+                }
+                return CONTINUE_TRAVERSAL;
+            }
+
+        });
+        return itemsList;
+    }
+
+    protected List<ExtObservable> getExtObservables() {
+        return getBehaviors(ExtObservable.class);
+    }
+
+    public void addEventListener(String event, ExtEventListener listener) {
+        if (!eventHandlers.containsKey(event)) {
+            ExtEventAjaxBehavior behavior = newExtEventBehavior(event);
+            eventHandlers.put(event, behavior);
+        }
+        eventHandlers.get(event).addListener(listener);
+    }
 
 	/* ExtProperties setters */
 	public ExtComponent setDisabled(Boolean disabled) {
@@ -200,31 +287,4 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
 		this.fieldLabel = fieldLabel;
 	}
 
-	private final class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {
-
-		private String event;
-
-		public ExtEventAjaxBehavior(String event) {
-			this.event = event;
-		}
-
-		@Override
-		protected void respond(AjaxRequestTarget target) {
-			listeners.get(event).onEvent(target);
-		}
-
-		private ExtEventAjaxBehavior addListener(JSONObject jsonListeners) {
-			try {
-				jsonListeners.put(event, new JSONIdentifier("function() {" + getCallbackScript() + ";}"));
-			} catch (JSONException e) {
-				throw new WicketRuntimeException(e);
-			}
-			return this;
-		}
-
-		@Override
-		protected CharSequence getPreconditionScript() {
-			return "return true;";
-		}
-	}
 }

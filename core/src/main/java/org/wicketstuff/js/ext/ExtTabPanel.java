@@ -17,8 +17,12 @@ public class ExtTabPanel extends ExtPanel {
 	Boolean deferredRender;
 	@ExtProperty
 	Boolean plain;
-	
-	public ExtTabPanel(String id) {
+
+    public ExtTabPanel() {
+        this("item");
+    }
+
+    public ExtTabPanel(String id) {
 		super(id);
 	}
 	

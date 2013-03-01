@@ -9,12 +9,16 @@ public class ExtFieldSet extends ExtPanel {
 	
 	@ExtProperty
 	Boolean checkboxToggle;
-	
+
+    public ExtFieldSet() {
+        this("item");
+    }
+
 	public ExtFieldSet(String id) {
 		super(id);
 	}
 
-	public void setCheckboxToggle(Boolean checkboxToggle) {
+    public void setCheckboxToggle(Boolean checkboxToggle) {
 		this.checkboxToggle = checkboxToggle;
 	}
 	

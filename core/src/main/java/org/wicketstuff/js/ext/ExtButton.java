@@ -4,25 +4,35 @@ import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.wicketstuff.js.ext.util.JSONIdentifier;
 
 public class ExtButton extends AbstractExtButton {
 
 	private ExtButtonAjaxBehavior behaviour;
 
-	public ExtButton(String id, IModel<String> text) {
+    public ExtButton() {
+        this("item", null);
+    }
+
+    public ExtButton(IModel<String> text) {
+        this("item", text);
+    }
+
+    public ExtButton(String id) {
+        this(id, null);
+    }
+
+    public ExtButton(String id, IModel<String> text) {
 		super(id, text);
 		add(behaviour = new ExtButtonAjaxBehavior());
 	}
 
-	public ExtButton(String id) {
-		this(id, null);
-	}
-
 	@Override
-	protected void onRenderProperties() {
-		behaviour.onBeforeRenderExtHead();
-		super.onRenderProperties();
+	protected void onRenderProperties(JSONObject properties) throws JSONException {
+		behaviour.onBeforeRenderExtHead(properties);
+		super.onRenderProperties(properties);
 	}
 
 	private final class ExtButtonAjaxBehavior extends AbstractDefaultAjaxBehavior {
@@ -31,8 +41,8 @@ public class ExtButton extends AbstractExtButton {
 			onClick(target);
 		}
 
-		private void onBeforeRenderExtHead() {
-			setPropertyValue("handler", new JSONIdentifier("function() {" + getCallbackScript() + ";}"));
+		private void onBeforeRenderExtHead(final JSONObject properties) throws JSONException {
+			properties.put("handler", new JSONIdentifier("function() {" + getCallbackScript() + ";}"));
 		}
 
 		@Override
