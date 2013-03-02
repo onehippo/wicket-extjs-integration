@@ -35,6 +35,10 @@ public class ExtFormPanel<T> extends ExtPanel {
 
     private Form<T> form;
 
+    public ExtFormPanel() {
+        this("item");
+    }
+
     public ExtFormPanel(String id) {
         super(id);
 

@@ -25,6 +25,7 @@ import org.json.JSONString;
 import org.wicketstuff.js.ext.ExtComponent;
 import org.wicketstuff.js.ext.ExtMessageBox.Buttons;
 import org.wicketstuff.js.ext.ExtMessageBoxCallback;
+import org.wicketstuff.js.ext.ExtObservable;
 
 public class ExtPropertyConverter {
     public static Object convert(Object property) {
@@ -42,6 +43,8 @@ public class ExtPropertyConverter {
             JSONObject options = new JSONObject();
             addProperties(property, property.getClass(), options);
             return options;
+        } else if (property instanceof ExtComponent) {
+            return new JSONIdentifier(((Component) property).getMarkupId());
         } else if (property instanceof Component) {
             return ((Component) property).getMarkupId();
         } else if (property instanceof ExtMessageBoxCallback) {
@@ -61,7 +64,8 @@ public class ExtPropertyConverter {
                 }
             }
         }
-        if (ExtComponent.class.isAssignableFrom(clazz.getSuperclass())) {
+        if (ExtComponent.class.isAssignableFrom(clazz.getSuperclass())
+                || ExtObservable.class.isAssignableFrom(clazz.getSuperclass())) {
             addProperties(object, clazz.getSuperclass(), properties);
         }
     }

@@ -17,7 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wicketstuff.js.ext.ExtPanel;
-import org.wicketstuff.js.ext.data.ExtDataStore;
+import org.wicketstuff.js.ext.data.ExtStore;
 import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtProperty;
 import org.wicketstuff.js.ext.util.ExtPropertyConverter;
@@ -31,7 +31,7 @@ public class ExtGridPanel<T> extends ExtPanel {
     @ExtProperty
     protected Boolean stripeRows;
 
-    private ExtDataStore<T> store;
+    private ExtStore<T> store;
     private ExtColumn[] columns;
 
     public ExtGridPanel(String id) {
@@ -40,12 +40,10 @@ public class ExtGridPanel<T> extends ExtPanel {
 
     @Override
     protected void preRenderExtHead(StringBuilder js) {
-
-        store.setColumns(columns);
-        store.onRenderExtHead(js);
+        add(store);
 
         try {
-            properties.put("store", new JSONIdentifier("store"));
+            properties.put("store", new JSONIdentifier(store.getJsObjectId()));
 
             JSONArray jsonColumns = new JSONArray();
             for (ExtColumn column : columns) {
@@ -75,6 +73,22 @@ public class ExtGridPanel<T> extends ExtPanel {
         super.postRenderExtHead(js);
     }
 
+/*
+    protected Object filter(T line, String property) {
+        for (ExtColumn column : columns) {
+            if (column.getDataIndex().equals(property)) {
+                Object value = PropertyResolver.getValue(column.getDataIndex(), line);
+                if (column.getColumnRenderer() != null) {
+                    return column.getColumnRenderer().getString(value, data.indexOf(line));
+                } else {
+                    return value;
+                }
+            }
+        }
+        return null;
+    }
+*/
+
     public void setAutoExpandColumn(String autoExpandColumn) {
         this.autoExpandColumn = autoExpandColumn;
     }
@@ -83,7 +97,7 @@ public class ExtGridPanel<T> extends ExtPanel {
         this.columns = columns;
     }
 
-    public void setStore(ExtDataStore<T> store) {
+    public void setStore(ExtStore<T> store) {
         this.store = store;
     }
 

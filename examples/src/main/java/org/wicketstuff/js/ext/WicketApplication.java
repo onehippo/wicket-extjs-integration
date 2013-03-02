@@ -50,11 +50,14 @@ public class WicketApplication extends WebApplication {
         mountBookmarkablePage("window/layout.html", WindowLayout.class);
         mountBookmarkablePage("layout/accordion.html", Accordion.class);
         mountBookmarkablePage("tabs/tabs.html", Tabs.class);
+        mountBookmarkablePage("menu/menu.html", MenuPage.class);
         mountBookmarkablePage("grid/array-grid.html", ArrayGrid.class);
         mountBookmarkablePage("message-box/msg-box.html", MessageBox.class);
         mountBookmarkablePage("layout/column.html", ColumnLayoutExample.class);
         mountBookmarkablePage("layout/table.html", TableLayoutExample.class);
         mountBookmarkablePage("form/dynamic.html", DynamicForms.class);
+        mountBookmarkablePage("tree/tree.html", Tree.class);
+        mountBookmarkablePage("form/form.html", Form.class);
         getMarkupSettings().setStripWicketTags(true);
 
         getResourceSettings().setResourcePollFrequency(null);

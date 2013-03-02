@@ -21,7 +21,7 @@ import java.util.List;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.js.ext.data.ExtArrayStore;
 import org.wicketstuff.js.ext.data.ExtDataField;
-import org.wicketstuff.js.ext.data.ExtDataStore;
+import org.wicketstuff.js.ext.data.ExtStore;
 import org.wicketstuff.js.ext.grid.ExtColumn;
 import org.wicketstuff.js.ext.grid.ExtGridPanel;
 import org.wicketstuff.js.ext.util.ExtFormat;
@@ -98,11 +98,9 @@ public class ArrayGrid extends ExamplesPage {
         myData.add(new Data("Verizon Communications", 35.57f, 0.39f, 1.11f, "9/1 12:00am"));
         myData.add(new Data("Wal-Mart Stores, Inc.", 45.45f, 0.73f, 1.63f, "9/1 12:00am"));
 
-        ExtDataStore<Data> store = new ExtArrayStore<Data>(Arrays.asList(new ExtDataField("company"), new ExtDataField(
+        ExtStore<Data> store = new ExtArrayStore<Data>(Arrays.asList(new ExtDataField("company"), new ExtDataField(
                 "price", Float.class), new ExtDataField("change", Float.class), new ExtDataField("pctChange",
-                Float.class), new ExtDataField("lastChange", Date.class, "n/j h:ia")));
-
-        store.loadData(myData);
+                Float.class), new ExtDataField("lastChange", Date.class, "n/j h:ia")), myData);
 
         ExtGridPanel<Data> grid = new ExtGridPanel<Data>("grid-example");
         grid.setStore(store);

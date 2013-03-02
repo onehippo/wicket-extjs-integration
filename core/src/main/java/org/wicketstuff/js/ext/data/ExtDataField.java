@@ -14,7 +14,9 @@
 package org.wicketstuff.js.ext.data;
 
 
-public class ExtDataField {
+import java.io.Serializable;
+
+public class ExtDataField implements Serializable {
 
     private String name;
     private Class<?> type;

@@ -9,5 +9,6 @@ public class ExtBundle {
     public static final String EXT_ALL_DEPLOY = "ext-all.js";
 
     public static final String EXT_ALL_STYLE = "resources/css/ext-all.css";
+    public static final String EXT_ALL_NOTHEME_STYLE = "resources/css/ext-all-notheme.css";
 
 }

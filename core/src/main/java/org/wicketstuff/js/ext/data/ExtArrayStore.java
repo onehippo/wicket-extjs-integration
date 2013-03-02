@@ -15,39 +15,28 @@ package org.wicketstuff.js.ext.data;
 
 import java.util.List;
 
+import org.apache.wicket.util.lang.PropertyResolver;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtPropertyConverter;
 
 
 @ExtClass("Ext.data.ArrayStore")
-public class ExtArrayStore<T> extends ExtDataStore<T> {
+public class ExtArrayStore<T> extends ExtStore<T> {
 
-    private List<ExtDataField> fields;
+    private final List<T> data;
 
-    public ExtArrayStore(List<ExtDataField> fields) {
-        this.fields = fields;
-    }
-
-    public List<ExtDataField> getFields() {
-        return fields;
+    public ExtArrayStore(List<ExtDataField> fields, List<T> data) {
+        super(fields);
+        this.data = data;
     }
 
     @Override
-    public void onRenderExtHead(StringBuilder js) {
-        JSONArray jsonData = new JSONArray();
-        for (T dataObject : data) {
-            JSONArray jsonLine = new JSONArray();
-            for (ExtDataField field : fields) {
-                jsonLine.put(filter(dataObject, field.getName()));
-            }
-            jsonData.put(jsonLine);
-        }
-        js.append("\nvar data = " + jsonData.toString() + ";\n");
-
+    public void onRenderProperties(JSONObject properties) throws JSONException {
         JSONArray jsonFields = new JSONArray();
-        for (ExtDataField field : fields) {
+        for (ExtDataField field : getFields()) {
             JSONObject jsonField = new JSONObject();
             ExtPropertyConverter.setIfNotNull(jsonField, "name", field.getName());
             String type = (field.getType() != null) ? field.getType().getSimpleName().toLowerCase() : null;
@@ -55,11 +44,18 @@ public class ExtArrayStore<T> extends ExtDataStore<T> {
             ExtPropertyConverter.setIfNotNull(jsonField, "dateFormat", field.getDateFormat());
             jsonFields.put(jsonField);
         }
+        properties.put("fields", jsonFields);
 
-//		js.append("var store = " + " new Ext.data.ArrayStore({fields: " + jsonFields.toString() + "});\n");
-        js.append("var store = " + " new Ext.data.ArrayStore({fields: [{name: 'company'},{name: 'price', type: 'float'},{name: 'change', type: 'float'},{name: 'pctChange', type: 'float'},{name: 'lastChange', type: 'date', dateFormat: 'n/j h:ia'}]});\n");
-        js.append("store.loadData(data);\n");
-
+        JSONArray jsonData = new JSONArray();
+        for (T dataObject : data) {
+            JSONArray jsonLine = new JSONArray();
+            for (ExtDataField field : getFields()) {
+                Object value = PropertyResolver.getValue(field.getName(), dataObject);
+                jsonLine.put(value);
+            }
+            jsonData.put(jsonLine);
+        }
+        properties.put("data", jsonData);
     }
 
 }

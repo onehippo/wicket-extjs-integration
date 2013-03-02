@@ -22,6 +22,14 @@ import org.wicketstuff.js.ext.layout.DefaultLayout;
 
 public class TestExtComponent extends WicketTester {
 
+    static class TestFormPanel extends ExtFormPanel {
+
+         TestFormPanel() {
+             super("ext");
+             add(new Label("label", "hello"));
+         }
+    }
+
     @Test
     public void testExtComponentRenders() {
         TestPage page = new TestPage();
@@ -37,6 +45,15 @@ public class TestExtComponent extends WicketTester {
         page.add(new ExtFormPanel("ext"));
         WicketTester tester = new WicketTester();
         tester.startPage(page);
+    }
+
+    @Test
+    public void testExtFormPanelSubClassRenders() {
+        TestPage page = new TestPage();
+        page.add(new TestFormPanel());
+        WicketTester tester = new WicketTester();
+        tester.startPage(page);
+        tester.assertContains("hello");
     }
 
     @Test

@@ -129,6 +129,7 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
             properties.put("disabled", !isEnabled());
             ExtPropertyConverter.addProperties(this, getClass(), properties);
             addListeners();
+            properties.put("resources", ExtObservableHelper.renderResources(this, ExtComponent.class));
 
             onRenderProperties(properties);
             if ((flags & FLAG_ONRENDERPROPERTIES) == 0) {
