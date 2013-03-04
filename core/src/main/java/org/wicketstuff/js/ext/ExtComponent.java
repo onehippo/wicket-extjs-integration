@@ -14,6 +14,7 @@
 package org.wicketstuff.js.ext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +47,8 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
     protected transient JSONObject properties = new JSONObject();
 
     private static final int FLAG_ONRENDERPROPERTIES = 1;
+    private static final List SUPPORTED_EVENTS = Arrays.asList("enable", "disable", "show", "hide");
+
     private transient int flags = 0;
 
     @ExtProperty
@@ -243,7 +246,7 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
      * @return the behavior for the event
      */
     protected ExtEventAjaxBehavior newExtEventBehavior(String event) {
-        if ("disable".equals(event) || "enable".equals(event) || "show".equals(event) || "hide".equals(event)) {
+        if (SUPPORTED_EVENTS.contains(event)) {
             return new ExtEventAjaxBehavior(null);
         }
         return new ExtEventAjaxBehavior();
