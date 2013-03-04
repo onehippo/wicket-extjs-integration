@@ -26,7 +26,7 @@ import org.wicketstuff.js.ext.util.ExtPropertyConverter;
 public abstract class ExtStore<T> extends ExtObservable {
     private static final long serialVersionUID = 1L;
 
-    private List<ExtDataField> fields;
+    private final List<ExtDataField> fields;
 
     protected ExtStore(List<ExtDataField> fields) {
         this.fields = fields;
