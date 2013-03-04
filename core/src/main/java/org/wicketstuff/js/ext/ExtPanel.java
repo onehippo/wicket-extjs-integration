@@ -13,6 +13,7 @@
  */
 package org.wicketstuff.js.ext;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.MarkupContainer;
@@ -29,6 +30,8 @@ import org.wicketstuff.js.ext.util.JSONIdentifier;
 
 @ExtClass("Ext.Panel")
 public class ExtPanel extends ExtContainer {
+
+    private static final List SUPPORTED_EVENTS = Arrays.asList("expand", "close", "collapse", "activate", "deactivate");
 
     private final ItemsRepeater<AbstractExtButton> buttons = new ItemsRepeater<AbstractExtButton>("buttons");
 
@@ -119,8 +122,7 @@ public class ExtPanel extends ExtContainer {
 
     @Override
     protected ExtEventAjaxBehavior newExtEventBehavior(final String event) {
-        if ("expand".equals(event) || "close".equals(event) || "collapse".equals(event)
-                || "activate".equals(event) || "deactivate".equals(event)) {
+        if (SUPPORTED_EVENTS.contains(event)) {
             return new ExtEventAjaxBehavior(null);
         }
         return super.newExtEventBehavior(event);
