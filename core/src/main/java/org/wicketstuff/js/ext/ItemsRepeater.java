@@ -11,9 +11,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- *
- */
 package org.wicketstuff.js.ext;
 
 import java.util.ArrayList;
@@ -71,7 +68,7 @@ final class ItemsRepeater<T extends ExtComponent> extends AbstractRepeater {
 
     void add(T ec) {
         if (!"item".equals(ec.getId())) {
-            throw new IllegalArgumentException("ExtComponent does not have 'item' as it's wicket id");
+            throw new IllegalArgumentException("ExtComponent does not have 'item' as its wicket id");
         }
         // Create item for loop iteration
         ExtItem item = new ExtItem(numItems++);
