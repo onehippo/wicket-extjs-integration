@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -72,9 +73,10 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
     }
 
     protected boolean isExtRoot() {
-        return !(getParent() instanceof ExtComponent)
-                && !(getParent() instanceof ItemsRepeater.ExtItem)
-                && !(getParent() instanceof Form && getParent().getParent() instanceof ItemsRepeater.ExtItem);
+        final MarkupContainer parent = getParent();
+        return !(parent instanceof ExtComponent)
+                && !(parent instanceof ItemsRepeater.ExtItem)
+                && !(parent instanceof Form && parent.getParent() instanceof ItemsRepeater.ExtItem);
     }
 
     @Override
