@@ -32,6 +32,8 @@ import org.wicketstuff.js.ext.ExtBundle;
  */
 public class ExtThemeBehavior extends AbstractBehavior {
 
+    private static final String LOCALE_PATH_PREFIX = "src/locale/ext-lang-";
+
     @Override
     public final void bind(Component component) {
         onBind(component);
@@ -55,7 +57,6 @@ public class ExtThemeBehavior extends AbstractBehavior {
     }
 
     private String getLocalizedResource() {
-        String path = "src/locale/ext-lang-";
         Locale locale = Session.get().getLocale();
 
         // Get language and country, either of which may be the empty string
@@ -64,23 +65,23 @@ public class ExtThemeBehavior extends AbstractBehavior {
         final String variant = locale.getVariant();
 
         if (!Strings.isEmpty(variant)) {
-            if (resourceExists(path, locale)) {
-                return getResource(path, locale);
+            if (resourceExists(LOCALE_PATH_PREFIX, locale)) {
+                return getResource(LOCALE_PATH_PREFIX, locale);
             }
         }
 
         Locale currentLocale;
         if (!Strings.isEmpty(language) && !Strings.isEmpty(country)) {
             currentLocale = new Locale(language, country);
-            if (resourceExists(path, currentLocale)) {
-                return getResource(path, currentLocale);
+            if (resourceExists(LOCALE_PATH_PREFIX, currentLocale)) {
+                return getResource(LOCALE_PATH_PREFIX, currentLocale);
             }
         }
 
         if (!Strings.isEmpty(language)) {
             currentLocale = new Locale(language);
-            if (resourceExists(path, currentLocale)) {
-                return getResource(path, currentLocale);
+            if (resourceExists(LOCALE_PATH_PREFIX, currentLocale)) {
+                return getResource(LOCALE_PATH_PREFIX, currentLocale);
             }
         }
         return null;
