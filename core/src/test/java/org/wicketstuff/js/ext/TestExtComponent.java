@@ -65,7 +65,6 @@ public class TestExtComponent extends WicketTester {
         });
         WicketTester tester = new WicketTester();
         tester.startPage(page);
-        tester.dumpPage();
     }
 
     @Test
@@ -76,7 +75,6 @@ public class TestExtComponent extends WicketTester {
         container.setLayout(new DefaultLayout());
         WicketTester tester = new WicketTester();
         tester.startPage(page);
-        tester.dumpPage();
     }
 
     @Test
@@ -88,7 +86,6 @@ public class TestExtComponent extends WicketTester {
         WicketTester tester = new WicketTester();
         tester.startPage(page);
         tester.assertContains("hello");
-        tester.dumpPage();
     }
 
     @Test
@@ -100,7 +97,6 @@ public class TestExtComponent extends WicketTester {
         WicketTester tester = new WicketTester();
         tester.startPage(page);
         tester.assertContains("hello");
-        tester.dumpPage();
     }
 
 }
