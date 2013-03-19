@@ -21,9 +21,10 @@ import java.util.Map;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wicketstuff.js.ext.util.ExtClass;
@@ -33,7 +34,7 @@ import org.wicketstuff.js.ext.util.ExtPropertyConverter;
 import static org.wicketstuff.js.ext.util.ExtPropertyConverter.convert;
 
 @ExtClass("Ext.util.Observable")
-public class ExtObservable extends AbstractBehavior implements IExtObservable {
+public class ExtObservable extends Behavior implements IExtObservable {
     private static final long serialVersionUID = 1L;
 
     private String objectId = null;
@@ -55,19 +56,19 @@ public class ExtObservable extends AbstractBehavior implements IExtObservable {
     }
 
     @Override
-    public void renderHead(IHeaderResponse headerResponse) {
+    public void renderHead(Component component, IHeaderResponse headerResponse) {
         for (IHeaderContributor contributor : contributors) {
             contributor.renderHead(headerResponse);
         }
         for (ExtObservable item : getExtObservables()) {
-            item.renderHead(headerResponse);
+            item.renderHead(component, headerResponse);
         }
 
         // find out if this is the root of a ext-component structure
         if (isExtRoot()) {
             StringBuilder js = new StringBuilder();
             onRenderExtHead(js);
-            headerResponse.renderOnDomReadyJavascript(" Ext.onReady(function() { " + js.toString() + " }); ");
+            headerResponse.render(new OnDomReadyHeaderItem(" Ext.onReady(function() { " + js.toString() + " }); "));
         }
     }
 

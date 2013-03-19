@@ -16,44 +16,43 @@ package org.wicketstuff.js.ext.util;
 import java.util.Locale;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.Session;
-import org.apache.wicket.behavior.AbstractBehavior;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.PackageResource;
+import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.request.resource.PackageResource;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.string.Strings;
 import org.wicketstuff.js.ext.ExtBundle;
 
 /**
  * Adds the default ExtJs theme CSS to the header.
  */
-public class ExtThemeBehavior extends AbstractBehavior {
+public class ExtThemeBehavior extends Behavior {
 
     private static final String LOCALE_PATH_PREFIX = "src/locale/ext-lang-";
+    private static final CssResourceReference EXT_ALL_CSS = new CssResourceReference(ExtBundle.class, ExtBundle.EXT_ALL_STYLE);
 
     @Override
-    public final void bind(Component component) {
+    public final void bind(final Component component) {
         onBind(component);
+    }
+
+    @Override
+    public void renderHead(Component component, IHeaderResponse response) {
+        response.render(CssHeaderItem.forReference(EXT_ALL_CSS));
 
         final String resourcePath = getLocalizedResource();
         if (resourcePath != null) {
-            component.add(new HeaderContributor(new IHeaderContributor() {
-                private static final long serialVersionUID = 1L;
-
-                public void renderHead(IHeaderResponse response) {
-                    ResourceReference reference = new ResourceReference(ExtBundle.class, resourcePath);
-                    reference.setStateless(true);
-                    response.renderJavascriptReference(reference);
-                }
-            }));
+            ResourceReference reference = new JavaScriptResourceReference(ExtBundle.class, resourcePath);
+            response.render(JavaScriptHeaderItem.forReference(reference));
         }
     }
 
     protected void onBind(Component component) {
-        component.add(CSSPackageResource.getHeaderContribution(ExtBundle.class, ExtBundle.EXT_ALL_STYLE));
     }
 
     private String getLocalizedResource() {
@@ -93,6 +92,6 @@ public class ExtThemeBehavior extends AbstractBehavior {
     }
 
     private boolean resourceExists(final String path, final Locale locale) {
-        return PackageResource.exists(ExtBundle.class, path + locale.toString() + ".js", null, null);
+        return PackageResource.exists(ExtBundle.class, path + locale.toString() + ".js", null, null, null);
     }
 }

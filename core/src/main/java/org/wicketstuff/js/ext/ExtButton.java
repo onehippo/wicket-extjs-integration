@@ -13,6 +13,7 @@
  */
 package org.wicketstuff.js.ext;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
@@ -54,7 +55,21 @@ public class ExtButton extends AbstractExtButton {
         }
 
         private void onBeforeRenderExtHead(final JSONObject properties) throws JSONException {
-            properties.put("handler", new JSONIdentifier("function() {" + getCallbackScript() + ";}"));
+            properties.put("handler", new JSONIdentifier(getCallback()));
+        }
+
+        private CharSequence getCallback() {
+            CharSequence ajaxAttributes = renderAjaxAttributes(getPage());
+            return "function() {\n"+
+                    "  var call = new Wicket.Ajax.Call(),\n"+
+                    "     attributes = jQuery.extend({}, " + ajaxAttributes + ");\n"+
+                    "  return call.ajax(attributes);\n"+
+                    "}";
+        }
+
+        @Override
+        public CharSequence getCallbackScript(Component component) {
+            return "(function(){}())";
         }
 
         @Override

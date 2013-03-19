@@ -64,7 +64,7 @@ public class Tabs extends ExamplesPage {
         tab4.addEventListener("activate", new ExtEventListener() {
             @Override
             public void onEvent(AjaxRequestTarget target) {
-                target.prependJavascript("alert('" + tab4.getTitle().getObject() + " was activated');");
+                target.prependJavaScript("alert('" + tab4.getTitle().getObject() + " was activated');");
             }
         });
         tabs2.addTab(new Model<String>("Event Tab"), tab4);

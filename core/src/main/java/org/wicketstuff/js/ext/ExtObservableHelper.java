@@ -19,9 +19,9 @@ import java.util.Map;
 import org.apache.wicket.Application;
 import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.core.util.resource.locator.ResourceNameIterator;
 import org.apache.wicket.resource.IPropertiesFactory;
 import org.apache.wicket.resource.Properties;
-import org.apache.wicket.util.resource.locator.ResourceNameIterator;
 import org.apache.wicket.util.value.ValueMap;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +44,7 @@ class ExtObservableHelper {
         Class<?> clazz = extObservable.getClass();
         while (clazz != baseClass) {
             String path = clazz.getName().replace('.', '/');
-            ResourceNameIterator iter = new ResourceNameIterator(path, style, locale, null);
+            ResourceNameIterator iter = new ResourceNameIterator(path, style, null, locale, null, false);
             while (iter.hasNext()) {
                 String newPath = iter.next();
 

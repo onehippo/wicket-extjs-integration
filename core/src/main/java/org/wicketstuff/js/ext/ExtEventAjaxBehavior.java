@@ -14,14 +14,16 @@
 package org.wicketstuff.js.ext;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.CallbackParameter;
+import org.apache.wicket.request.IRequestParameters;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.util.string.StringValue;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +44,7 @@ public class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {
      * Creates an ExtJS Ajax behavior for a callback function without any parameters.
      */
     public ExtEventAjaxBehavior() {
-        this.parameters = null;
+        this.parameters = new String[0];
     }
 
     /**
@@ -64,39 +66,36 @@ public class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {
     @Override
     protected final void respond(AjaxRequestTarget target) {
         String[] parameters = getParameters();
-        if (parameters == null) {
-            handle(target, Collections.<String, JSONArray>emptyMap());
-        } else {
-            Map<String, String[]> parameterMap = RequestCycle.get().getRequest().getParameterMap();
-            Map<String, JSONArray> filtered = new HashMap<String, JSONArray>();
-            for (String parameter : parameters) {
-                String[] values = parameterMap.get(parameter);
-                if (values == null) {
-                    continue;
-                }
-                JSONArray jsonObjects = new JSONArray();
-                try {
-                    for (String value : values) {
-                        if (value.startsWith("[")) {
-                            JSONTokener tokener = new JSONTokener(value);
-                            JSONArray subVals = new JSONArray(tokener);
-                            for (int i = 0; i < subVals.length(); i++) {
-                                jsonObjects.put(subVals.get(i));
-                            }
-                        } else if (value.startsWith("{")) {
-                            JSONTokener tokener = new JSONTokener(value);
-                            jsonObjects.put(new JSONObject(tokener));
-                        } else {
-                            jsonObjects.put(value);
-                        }
-                    }
-                } catch (JSONException e) {
-                    log.error("Could not parse request parameters", e);
-                }
-                filtered.put(parameter, jsonObjects);
+        IRequestParameters parameterMap = RequestCycle.get().getRequest().getQueryParameters();
+        Map<String, JSONArray> filtered = new HashMap<String, JSONArray>();
+        for (String parameter : parameters) {
+            List<StringValue> values = parameterMap.getParameterValues(parameter);
+            if (values == null) {
+                continue;
             }
-            handle(target, filtered);
+            JSONArray jsonObjects = new JSONArray();
+            try {
+                for (StringValue stringValue : values) {
+                    String value = stringValue.toString();
+                    if (value.startsWith("[")) {
+                        JSONTokener tokener = new JSONTokener(value);
+                        JSONArray subVals = new JSONArray(tokener);
+                        for (int i = 0; i < subVals.length(); i++) {
+                            jsonObjects.put(subVals.get(i));
+                        }
+                    } else if (value.startsWith("{")) {
+                        JSONTokener tokener = new JSONTokener(value);
+                        jsonObjects.put(new JSONObject(tokener));
+                    } else {
+                        jsonObjects.put(value);
+                    }
+                }
+            } catch (JSONException e) {
+                log.error("Could not parse request parameters", e);
+            }
+            filtered.put(parameter, jsonObjects);
         }
+        handle(target, filtered);
     }
 
     private void handle(AjaxRequestTarget target, Map<String, JSONArray> parameters) {
@@ -108,41 +107,14 @@ public class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {
     /**
      * Encodes and adds the this.fireEvent method's parameters to the wickAjaxURL {@inheritDoc}
      */
-    @Override
-    protected final CharSequence getCallbackScript(boolean onlyTargetActivePage) {
-        StringBuilder b = new StringBuilder();
-        b.append("wicketAjaxGet('");
-        b.append(getCallbackUrl(onlyTargetActivePage));
-        b.append("' + (Ext.urlEncode(args) != '' ? '&' + Ext.urlEncode(args) : '')");
-        return generateCallbackScript(b.toString());
-    }
-
     public final JSONIdentifier getEventScript() {
-        String[] parameters = getParameters();
-        if (parameters != null) {
-            StringBuilder sb = new StringBuilder("{");
-            boolean first = true;
-            for (int i = 0; i < parameters.length; i++) {
-                String parameter = parameters[i];
-                if (parameter == null) {
-                    continue;
-                }
-                if (!first) {
-                    sb.append(",\n");
-                } else {
-                    first = false;
-                }
-                sb.append(parameter);
-                sb.append(':');
-                sb.append("arguments[");
-                sb.append(i);
-                sb.append(']');
-            }
-            sb.append("}");
-            return new JSONIdentifier("function() { var args=" + sb.toString() + ";" + getCallbackScript() + "}");
-        } else {
-            return new JSONIdentifier("function(args) { " + getCallbackScript() + "}");
+        CallbackParameter[] callbackParameters = new CallbackParameter[getParameters().length];
+        int index = 0;
+        for (String parameter : getParameters()) {
+            callbackParameters[index] = CallbackParameter.resolved(parameter, "arguments[" + index + "]");
+            index++;
         }
+        return new JSONIdentifier(getCallbackFunction(callbackParameters));
     }
 
     @Override

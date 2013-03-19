@@ -12,6 +12,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <maven.plugin.resources.version>2.6</maven.plugin.resources.version>
+
+    <wicket.version>6.6.0</wicket.version>
+    <jetty.version>6.1.25</jetty.version>
   </properties>
 
   <!--

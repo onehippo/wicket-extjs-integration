@@ -123,7 +123,7 @@ public class ExtPanel extends ExtContainer {
     @Override
     protected ExtEventAjaxBehavior newExtEventBehavior(final String event) {
         if (SUPPORTED_EVENTS.contains(event)) {
-            return new ExtEventAjaxBehavior(null);
+            return new ExtEventAjaxBehavior();
         }
         return super.newExtEventBehavior(event);
     }

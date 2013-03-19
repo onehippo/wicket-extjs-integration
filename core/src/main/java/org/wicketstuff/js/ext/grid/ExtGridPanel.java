@@ -39,9 +39,13 @@ public class ExtGridPanel<T> extends ExtPanel {
     }
 
     @Override
-    protected void preRenderExtHead(StringBuilder js) {
+    protected void onBeforeRender() {
         add(store);
+        super.onBeforeRender();
+    }
 
+    @Override
+    protected void preRenderExtHead(StringBuilder js) {
         try {
             properties.put("store", new JSONIdentifier(store.getJsObjectId()));
 
