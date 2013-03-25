@@ -23,13 +23,14 @@ import java.util.Map;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.IBehavior;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wicketstuff.js.ext.util.ExtClass;
@@ -118,7 +119,14 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
         if (children.size() == 1) {
             Component component = children.get(0);
             component.setOutputMarkupId(true);
-            component.add(new SimpleAttributeModifier("class", "x-hidden"));
+            component.add(new AttributeAppender("class", Model.of("x-hidden"), " ") {
+
+                @Override
+                public boolean isTemporary() {
+                    return true;
+                }
+
+            });
             this.contentEl = component.getMarkupId();
         }
         onAfterUpdateContentElement();
