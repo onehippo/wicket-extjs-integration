@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.wicketstuff</groupId>
   <artifactId>wicket-extjs-parent</artifactId>
-  <version>0.19-SNAPSHOT</version>
+  <version>0.19</version>
   <name>Wicket ExtJS Integration - parent</name>
   <description />
   <packaging>pom</packaging>
@@ -35,9 +35,9 @@
   </modules>
 
   <scm>
-    <connection>scm:svn:http://wicket-extjs-integration.googlecode.com/svn/trunk</connection>
-    <developerConnection>scm:svn:https://wicket-extjs-integration.googlecode.com/svn/trunk</developerConnection>
-    <url>http://wicket-extjs-integration.googlecode.com/svn/trunk</url>
+    <connection>scm:svn:http://wicket-extjs-integration.googlecode.com/svn/tags/wicket-extjs-parent-0.19</connection>
+    <developerConnection>scm:svn:https://wicket-extjs-integration.googlecode.com/svn/tags/wicket-extjs-parent-0.19</developerConnection>
+    <url>http://wicket-extjs-integration.googlecode.com/svn/tags/wicket-extjs-parent-0.19</url>
   </scm>
 
   <build>
