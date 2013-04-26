@@ -35,6 +35,8 @@ public class ExtArrayStore<T> extends ExtStore<T> {
 
     @Override
     public void onRenderProperties(JSONObject properties) throws JSONException {
+        super.onRenderProperties(properties);
+
         JSONArray jsonFields = new JSONArray();
         for (ExtDataField field : getFields()) {
             JSONObject jsonField = new JSONObject();
