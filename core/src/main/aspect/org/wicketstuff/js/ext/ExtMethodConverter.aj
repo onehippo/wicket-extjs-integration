@@ -1,8 +1,7 @@
 package org.wicketstuff.js.ext;
 
-import org.apache.wicket.IRequestTarget;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.request.cycle.RequestCycle;
 
 import static org.wicketstuff.js.ext.util.ExtPropertyConverter.generateArgs;
 import static org.wicketstuff.js.ext.util.ExtPropertyConverter.generateReferenceObject;
@@ -19,10 +18,8 @@ aspect ExtMethodConverter {
     public pointcut extMethod(): execution(@org.wicketstuff.js.ext.util.ExtMethod * *.*(..));
 
     after() returning : extMethod() {
-        IRequestTarget requestTarget = RequestCycle.get().getRequestTarget();
-        if (requestTarget instanceof AjaxRequestTarget) {
-            AjaxRequestTarget ajaxRT = (AjaxRequestTarget) requestTarget;
-
+        AjaxRequestTarget target = RequestCycle.get().find(AjaxRequestTarget.class);
+        if (target != null) {
             String method = thisJoinPoint.getStaticPart().getSignature().getName();
             String args = generateArgs(thisJoinPoint.getArgs());
             String object;
@@ -32,7 +29,7 @@ aspect ExtMethodConverter {
                 object = generateStaticPart(thisJoinPoint.getSignature().getDeclaringType());
             }
             String jsMethodCall = String.format("%s.%s(%s);", object, method, args);
-            ajaxRT.appendJavascript(jsMethodCall);
+            target.appendJavaScript(jsMethodCall);
         }
     }
 

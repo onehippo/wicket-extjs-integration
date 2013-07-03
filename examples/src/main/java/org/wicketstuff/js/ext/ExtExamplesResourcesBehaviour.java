@@ -14,19 +14,25 @@
 package org.wicketstuff.js.ext;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.AbstractBehavior;
-import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.JavascriptPackageResource;
+import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
-public class ExtExamplesResourcesBehaviour extends AbstractBehavior {
+public class ExtExamplesResourcesBehaviour extends Behavior {
+
+    private static final CssResourceReference EXT_STYLESHEET = new CssResourceReference(ExtBundle.class, ExtBundle.EXT_ALL_STYLE);
+    private static final CssResourceReference EXAMPLE_STYLESHEET = new CssResourceReference(ExtExamplesResourcesBehaviour.class, "examples/examples.css");
+    private static final JavaScriptResourceReference EXAMPLE_EXTJS = new JavaScriptResourceReference(ExtExamplesResourcesBehaviour.class, "examples/examples.js");
 
     @Override
-    public void bind(Component component) {
-        component.add(CSSPackageResource.getHeaderContribution(ExtBundle.class, ExtBundle.EXT_ALL_STYLE));
+    public void renderHead(Component component, IHeaderResponse response) {
+        response.render(CssHeaderItem.forReference(EXT_STYLESHEET));
 
-        component.add(JavascriptPackageResource
-                .getHeaderContribution(ExtExamplesResourcesBehaviour.class, "examples/examples.js"));
-        component.add(CSSPackageResource.getHeaderContribution(ExtExamplesResourcesBehaviour.class, "examples/examples.css"));
+        response.render(JavaScriptHeaderItem.forReference(EXAMPLE_EXTJS));
+        response.render(CssHeaderItem.forReference(EXAMPLE_STYLESHEET));
 
     }
 

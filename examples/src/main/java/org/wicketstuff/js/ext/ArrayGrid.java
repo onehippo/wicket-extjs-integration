@@ -13,6 +13,7 @@
  */
 package org.wicketstuff.js.ext;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -28,7 +29,7 @@ import org.wicketstuff.js.ext.util.ExtFormat;
 
 public class ArrayGrid extends ExamplesPage {
 
-    protected class Data {
+    protected class Data implements Serializable {
         private String company;
         private Float price;
         private Float change;

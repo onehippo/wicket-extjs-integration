@@ -17,11 +17,11 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.IRequestTarget;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +29,7 @@ import org.json.JSONTokener;
 import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtJsonRequestTarget;
 import org.wicketstuff.js.ext.util.ExtProperty;
+import org.wicketstuff.js.ext.util.JSONIdentifier;
 
 @ExtClass("Ext.data.JsonStore")
 public abstract class ExtJsonStore<T> extends ExtStore<T> {
@@ -49,16 +50,16 @@ public abstract class ExtJsonStore<T> extends ExtStore<T> {
     public ExtJsonStore(List<ExtDataField> fields) {
         super(fields);
 
-        behavior = new AbstractExtBehavior() {
+        behavior = new AbstractAjaxBehavior() {
             private static final long serialVersionUID = 1L;
 
             @Override
             public void onRequest() {
                 final RequestCycle requestCycle = RequestCycle.get();
                 ServletWebRequest request = ((ServletWebRequest) requestCycle.getRequest());
-                String xaction = request.getParameter("xaction");
+                String xaction = request.getPostParameters().getParameterValue("xaction").toString();
                 try {
-                    IRequestTarget requestTarget;
+                    IRequestHandler requestTarget;
 
                     if ("create".equals(xaction)) {
                         requestTarget = processRecords(request, CREATE_RECORDS, "Created record(s)");
@@ -70,7 +71,7 @@ public abstract class ExtJsonStore<T> extends ExtStore<T> {
                         }
                         requestTarget = readRecords();
                     }
-                    requestCycle.setRequestTarget(requestTarget);
+                    requestCycle.scheduleRequestHandlerAfterCurrent(requestTarget);
                 } catch (JSONException e) {
                     throw new WicketRuntimeException("JSON error while processing action '" + xaction + "'", e);
                 }
@@ -79,7 +80,7 @@ public abstract class ExtJsonStore<T> extends ExtStore<T> {
         };
     }
 
-    private IRequestTarget readRecords() throws JSONException {
+    private IRequestHandler readRecords() throws JSONException {
         long total = getTotal();
         JSONArray records = getData();
 
@@ -92,10 +93,10 @@ public abstract class ExtJsonStore<T> extends ExtStore<T> {
         return new ExtJsonRequestTarget(jsonData);
     }
 
-    private IRequestTarget processRecords(ServletWebRequest request, Action action, String successMsg)
+    private IRequestHandler processRecords(ServletWebRequest request, Action action, String successMsg)
             throws JSONException {
         JSONArray records = new JSONArray();
-        String recordStr = request.getParameter(JSON_PROP_RECORDS);
+        String recordStr = request.getPostParameters().getParameterValue(JSON_PROP_RECORDS).toString();
         JSONTokener tokener = new JSONTokener(recordStr);
         try {
             if (recordStr.startsWith("[")) {
@@ -130,8 +131,14 @@ public abstract class ExtJsonStore<T> extends ExtStore<T> {
 
     @Override
     protected JSONObject getProperties() throws JSONException {
+        StringBuilder proxySb = new StringBuilder();
+        proxySb.append("new Ext.data.HttpProxy({");
+        proxySb.append("url: '");
+        proxySb.append(behavior.getCallbackUrl());
+        proxySb.append("', headers: { 'Wicket-Ajax': true, 'Wicket-Ajax-BaseURL': Wicket.Ajax.baseUrl || '.' }})");
+
         JSONObject properties = super.getProperties();
-        properties.put("url", behavior.getCallbackUrl());
+        properties.put("proxy", new JSONIdentifier(proxySb.toString()));
         properties.put("root", JSON_PROP_RECORDS);
         properties.put("totalProperty", JSON_PROP_TOTAL);
         return properties;

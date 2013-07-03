@@ -9,7 +9,6 @@
 
   <groupId>org.wicketstuff</groupId>
   <artifactId>wicket-extjs-examples</artifactId>
-  <version>0.21-SNAPSHOT</version>
   <name>Wicket ExtJS Integration - Examples</name>
   <description />
   <packaging>war</packaging>
@@ -26,16 +25,11 @@
     </license>
   </licenses>
 
-  <properties>
-    <wicket.version>1.4.21</wicket.version>
-    <jetty.version>6.1.4</jetty.version>
-  </properties>
-
   <dependencies>
     <!--  WICKET DEPENDENCIES -->
     <dependency>
       <groupId>org.apache.wicket</groupId>
-      <artifactId>wicket</artifactId>
+      <artifactId>wicket-core</artifactId>
       <version>${wicket.version}</version>
     </dependency>
     <!--
@@ -48,7 +42,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <version>1.4.2</version>
+      <version>1.6.4</version>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
@@ -87,9 +81,10 @@
     <dependency>
       <groupId>org.wicketstuff</groupId>
       <artifactId>wicket-extjs</artifactId>
-      <version>0.21-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
+
   <build>
     <resources>
       <resource>

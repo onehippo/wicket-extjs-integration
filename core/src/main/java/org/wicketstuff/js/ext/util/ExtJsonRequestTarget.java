@@ -14,13 +14,13 @@
 package org.wicketstuff.js.ext.util;
 
 import org.apache.wicket.Application;
-import org.apache.wicket.IRequestTarget;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.protocol.http.WebResponse;
+import org.apache.wicket.request.IRequestCycle;
+import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.http.WebResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ExtJsonRequestTarget implements IRequestTarget {
+public class ExtJsonRequestTarget implements IRequestHandler {
 
     private Object responseJson;
 
@@ -33,12 +33,11 @@ public class ExtJsonRequestTarget implements IRequestTarget {
     }
 
     @Override
-    public void respond(RequestCycle requestCycle) {
+    public void respond(IRequestCycle requestCycle) {
         WebResponse r = (WebResponse) requestCycle.getResponse();
 
         // Determine encoding
         final String encoding = Application.get().getRequestCycleSettings().getResponseRequestEncoding();
-        r.setCharacterEncoding(encoding);
         r.setContentType("application/json;charset=" + encoding);
 
         // Make sure it is not cached
@@ -50,7 +49,7 @@ public class ExtJsonRequestTarget implements IRequestTarget {
     }
 
     @Override
-    public void detach(RequestCycle requestCycle) {
+    public void detach(IRequestCycle requestCycle) {
     }
 
 }

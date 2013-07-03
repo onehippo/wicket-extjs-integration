@@ -146,7 +146,7 @@ public class MessageBox extends ExamplesPage {
                         if (v == 12) {
                             ExtMessageBox.hide();
                             ExtExample.msg("Done", "Your fake items were loaded!", null, null);
-                            stop();
+                            stop(target);
                         } else {
                             float i = ((float) v) / 11;
                             ExtMessageBox.updateProgress(i, Math.round(100 * i) + "% completed", null);
@@ -156,7 +156,7 @@ public class MessageBox extends ExamplesPage {
 
                 });
 
-                target.addComponent(mb6);
+                target.add(mb6);
             }
 
         });
@@ -187,12 +187,12 @@ public class MessageBox extends ExamplesPage {
                     protected void onTimer(AjaxRequestTarget target) {
                         ExtMessageBox.hide();
                         ExtExample.msg("Done", "Your fake data was saved!", null, null);
-                        stop();
+                        stop(target);
                     }
 
                 });
 
-                target.addComponent(mb6);
+                target.add(mb6);
             }
 
         });

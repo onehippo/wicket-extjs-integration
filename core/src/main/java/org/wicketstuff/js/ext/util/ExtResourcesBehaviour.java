@@ -15,20 +15,22 @@ package org.wicketstuff.js.ext.util;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.WicketAjaxReference;
-import org.apache.wicket.behavior.AbstractBehavior;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.JavascriptPackageResource;
-import org.apache.wicket.markup.html.WicketEventReference;
+import org.apache.wicket.RuntimeConfigurationType;
+import org.apache.wicket.ajax.WicketAjaxJQueryResourceReference;
+import org.apache.wicket.ajax.WicketEventJQueryResourceReference;
+import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.wicketstuff.js.ext.ExtBundle;
 import org.wicketstuff.js.ext.ExtWicketAdapterBundle;
 
-public class ExtResourcesBehaviour extends AbstractBehavior {
+public class ExtResourcesBehaviour extends Behavior {
 
     @Override
-    public void bind(Component component) {
+    public void renderHead(Component component, IHeaderResponse response) {
         String extBase, extAll, patchedExtAjax, extAdapt;
-        if (Application.get().getConfigurationType().equals(Application.DEVELOPMENT)) {
+        if (Application.get().getConfigurationType().equals(RuntimeConfigurationType.DEVELOPMENT)) {
             extBase = ExtBundle.EXT_BASE_DEBUG;
             extAll = ExtBundle.EXT_ALL_DEBUG;
             patchedExtAjax = ExtWicketAdapterBundle.PATCHED_EXT_BASE_AJAX;
@@ -39,12 +41,12 @@ public class ExtResourcesBehaviour extends AbstractBehavior {
             patchedExtAjax = ExtWicketAdapterBundle.PATCHED_EXT_BASE_AJAX;
             extAdapt = ExtWicketAdapterBundle.EXT_WICKET_ADAPTER_DEPLOY;
         }
-        component.add(JavascriptPackageResource.getHeaderContribution(ExtBundle.class, extBase));
-        component.add(JavascriptPackageResource.getHeaderContribution(ExtBundle.class, extAll));
-        component.add(HeaderContributor.forJavaScript(WicketEventReference.INSTANCE));
-        component.add(HeaderContributor.forJavaScript(WicketAjaxReference.INSTANCE));
-        component.add(JavascriptPackageResource.getHeaderContribution(ExtBundle.class, patchedExtAjax));
-        component.add(JavascriptPackageResource.getHeaderContribution(ExtBundle.class, extAdapt));
+        response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ExtBundle.class, extBase)));
+        response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ExtBundle.class, extAll)));
+        response.render(JavaScriptHeaderItem.forReference(WicketEventJQueryResourceReference.get()));
+        response.render(JavaScriptHeaderItem.forReference(WicketAjaxJQueryResourceReference.get()));
+        response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ExtBundle.class, patchedExtAjax)));
+        response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ExtBundle.class, extAdapt)));
     }
 
 }

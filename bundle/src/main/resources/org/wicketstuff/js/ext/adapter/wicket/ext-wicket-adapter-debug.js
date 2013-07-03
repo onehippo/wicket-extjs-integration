@@ -13,7 +13,7 @@
         if (wicketChannel != null && wicketChannel.busy) {
             options.async = false;
         } else {
-            Wicket.Ajax.invokePreCallHandlers();
+            Wicket.Event.publish('/ajax/call/before');
         }
 
         var callback;
@@ -24,7 +24,8 @@
                     originalSuccess.apply(Ext.Ajax, arguments);
                 }
                 if (options.async) {
-                    Wicket.Ajax.invokePostCallHandlers();
+                    Wicket.Event.publish('/ajax/call/success');
+                    Wicket.Event.publish('/ajax/call/complete');
                 }
             };
             var originalFail = cb.failure;
@@ -33,8 +34,8 @@
                     originalFail.apply(Ext.Ajax, arguments);
                 }
                 if (options.async) {
-                    Wicket.Ajax.invokePostCallHandlers();
-                    Wicket.Ajax.invokeFailureHandlers();
+                    Wicket.Event.publish('/ajax/call/failure');
+                    Wicket.Event.publish('/ajax/call/complete');
                 }
             };
             callback = cb;
@@ -42,13 +43,14 @@
             callback = {
                 success: function() {
                     if (options.async) {
-                        Wicket.Ajax.invokePostCallHandlers();
+                        Wicket.Event.publish('/ajax/call/success');
+                        Wicket.Event.publish('/ajax/call/complete');
                     }
                 },
                 failure: function() {
                     if (options.async) {
-                        Wicket.Ajax.invokePostCallHandlers();
-                        Wicket.Ajax.invokeFailureHandlers();
+                        Wicket.Event.publish('/ajax/call/failure');
+                        Wicket.Event.publish('/ajax/call/complete');
                     }
                 }
             };

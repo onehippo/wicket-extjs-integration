@@ -24,13 +24,16 @@ import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.behavior.IBehavior;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitor;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wicketstuff.js.ext.util.ExtClass;
@@ -84,6 +87,11 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
     }
 
     @Override
+    protected boolean getStatelessHint() {
+        return false;
+    }
+
+    @Override
     protected void onBeforeRender() {
         updateContentElement();
 
@@ -102,14 +110,14 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
 
     private void updateContentElement() {
         final List<Component> children = new LinkedList<Component>();
-        visitChildren(new IVisitor<Component>() {
+        visitChildren(new IVisitor<Component, Void>() {
 
             @Override
-            public Object component(Component component) {
+            public void component(Component component, IVisit<Void> visit) {
                 if ((!(component instanceof ExtComponent)) && (!(component instanceof ItemsRepeater)) && (!(component instanceof ItemsRepeater.ExtItem))) {
                     children.add(component);
                 }
-                return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
+                visit.dontGoDeeper();
             }
 
         });
@@ -122,7 +130,7 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
             component.add(new AttributeAppender("class", Model.of("x-hidden"), " ") {
 
                 @Override
-                public boolean isTemporary() {
+                public boolean isTemporary(Component component) {
                     return true;
                 }
 
@@ -172,7 +180,7 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
             IHeaderResponse headerResponse = container.getHeaderResponse();
             StringBuilder js = new StringBuilder();
             onRenderExtHead(js);
-            headerResponse.renderOnDomReadyJavascript(js.toString());
+            headerResponse.render(OnDomReadyHeaderItem.forScript(js.toString()));
         }
     }
 
@@ -207,7 +215,7 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
             Component component = this;
             boolean foundTheme = false;
             while (component != null) {
-                for (IBehavior behavior : component.getBehaviors()) {
+                for (Behavior behavior : component.getBehaviors()) {
                     if (behavior instanceof ExtThemeBehavior) {
                         foundTheme = true;
                         break;
@@ -255,22 +263,22 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
      */
     protected ExtEventAjaxBehavior newExtEventBehavior(String event) {
         if (SUPPORTED_EVENTS.contains(event)) {
-            return new ExtEventAjaxBehavior(null);
+            return new ExtEventAjaxBehavior();
         }
         return new ExtEventAjaxBehavior();
     }
 
     public List<ExtComponent> getExtComponents() {
         final List<ExtComponent> itemsList = new ArrayList<ExtComponent>();
-        visitChildren(new IVisitor() {
+        visitChildren(new IVisitor<Component, Void>() {
 
             @Override
-            public Object component(Component component) {
+            public void component(Component component, IVisit<Void> visit) {
                 if (component instanceof ExtComponent) {
                     itemsList.add((ExtComponent) component);
-                    return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
+                    visit.dontGoDeeper();
+                    return;
                 }
-                return CONTINUE_TRAVERSAL;
             }
 
         });

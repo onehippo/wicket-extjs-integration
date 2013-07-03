@@ -20,6 +20,8 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,15 +65,15 @@ public class ExtContainer extends ExtBoxComponent {
     private void wrapNonExtComponents() {
         // wrap children in a BoxComponent
         final List<Component> children = new LinkedList<Component>();
-        visitChildren(new IVisitor<Component>() {
+        visitChildren(new IVisitor<Component, Void>() {
 
             @Override
-            public Object component(Component component) {
+            public void component(Component component, IVisit<Void> visit) {
                 if ((!(component instanceof ExtComponent)) && (!(component instanceof ItemsRepeater))
                         && (!(component instanceof ItemsRepeater.ExtItem))) {
                     children.add(component);
                 }
-                return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
+                visit.dontGoDeeper();
             }
 
         });

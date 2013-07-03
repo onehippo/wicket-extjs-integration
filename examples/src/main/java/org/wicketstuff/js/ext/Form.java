@@ -43,7 +43,7 @@ public class Form extends ExamplesPage {
             public void onEvent(final AjaxRequestTarget target, Map<String, JSONArray> parameters) {
                 Object newValue = parameters.get("newValue");
                 Object oldValue = parameters.get("oldValue");
-                target.prependJavascript("alert('old: " + oldValue + ", new: " + newValue + "')");
+                target.prependJavaScript("alert('old: " + oldValue + ", new: " + newValue + "')");
             }
         });
         formPanel.add(field);

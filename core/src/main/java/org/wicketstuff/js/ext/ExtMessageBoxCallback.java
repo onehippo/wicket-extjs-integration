@@ -13,9 +13,10 @@
  */
 package org.wicketstuff.js.ext;
 
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.request.cycle.RequestCycle;
 
 public abstract class ExtMessageBoxCallback extends AbstractDefaultAjaxBehavior {
 
@@ -30,25 +31,21 @@ public abstract class ExtMessageBoxCallback extends AbstractDefaultAjaxBehavior 
 
     @Override
     protected void respond(AjaxRequestTarget target) {
-        String button = RequestCycle.get().getRequest().getParameter(POST_PARAM_BTN);
-        String text = RequestCycle.get().getRequest().getParameter(POST_PARAM_TEXT);
+        String button = RequestCycle.get().getRequest().getPostParameters().getParameterValue(POST_PARAM_BTN).toString();
+        String text = RequestCycle.get().getRequest().getPostParameters().getParameterValue(POST_PARAM_TEXT).toString();
         onClick(target, button, text);
     }
 
     @Override
     public String toString() {
-        return "function(btn, text) {" + getCallbackScript() + ";}";
+        return "function(btn, text) {" + getCallbackScript(getComponent().getPage()) + ";}";
     }
 
     @Override
-    protected CharSequence getCallbackScript() {
-        String postBody = String.format("'%s='+btn+'&%s='+text", POST_PARAM_BTN, POST_PARAM_TEXT);
-        return generateCallbackScript("wicketAjaxPost('" + getCallbackUrl(false) + "', " + postBody);
-    }
-
-    @Override
-    protected CharSequence getPreconditionScript() {
-        return "return true;";
+    protected void updateAjaxAttributes(final AjaxRequestAttributes attributes) {
+        attributes.setMethod(AjaxRequestAttributes.Method.POST);
+        attributes.getExtraParameters().put(POST_PARAM_BTN, "btn");
+        attributes.getExtraParameters().put(POST_PARAM_TEXT, "btn");
     }
 
 }

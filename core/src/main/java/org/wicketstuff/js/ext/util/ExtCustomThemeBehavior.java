@@ -14,8 +14,10 @@
 package org.wicketstuff.js.ext.util;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.IBehavior;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.wicketstuff.js.ext.ExtBundle;
 
 /**
@@ -24,12 +26,16 @@ import org.wicketstuff.js.ext.ExtBundle;
  */
 public abstract class ExtCustomThemeBehavior extends ExtThemeBehavior {
 
+    private static final CssResourceReference EXT_ALL_NOTHEME_REFERENCE = new CssResourceReference(ExtBundle.class, ExtBundle.EXT_ALL_NOTHEME_STYLE);
+
     @Override
-    protected void onBind(Component component) {
+    public void renderHead(Component component, IHeaderResponse response) {
+        super.renderHead(component, response);
+
         Component parent = component.getParent();
         boolean foundTheme = false;
         while (parent != null) {
-            for (IBehavior behavior : parent.getBehaviors()) {
+            for (Behavior behavior : parent.getBehaviors()) {
                 if (behavior instanceof ExtThemeBehavior) {
                     foundTheme = true;
                     break;
@@ -41,16 +47,8 @@ public abstract class ExtCustomThemeBehavior extends ExtThemeBehavior {
             parent = parent.getParent();
         }
         if (!foundTheme) {
-            component.add(CSSPackageResource.getHeaderContribution(ExtBundle.class, ExtBundle.EXT_ALL_NOTHEME_STYLE));
+            response.render(CssHeaderItem.forReference(EXT_ALL_NOTHEME_REFERENCE));
         }
-        addCustomTheme(component);
     }
-
-    /**
-     * Adds custom theme CSS to a header.
-     *
-     * @param component the component to add CSS to.
-     */
-    protected abstract void addCustomTheme(Component component);
 
 }

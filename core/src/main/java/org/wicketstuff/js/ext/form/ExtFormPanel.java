@@ -64,7 +64,7 @@ public class ExtFormPanel<T> extends ExtPanel {
         if (form.getOutputMarkupId()) {
             properties.put("formId", form.getMarkupId());
         }
-        url = form.urlFor(IFormSubmitListener.INTERFACE).toString();
+        url = form.urlFor(IFormSubmitListener.INTERFACE, null).toString();
         super.onRenderProperties(properties);
     }
 

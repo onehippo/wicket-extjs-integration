@@ -17,8 +17,8 @@ import java.lang.reflect.Field;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.core.util.lang.PropertyResolver;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.lang.PropertyResolver;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
@@ -28,6 +28,7 @@ import org.wicketstuff.js.ext.ExtMessageBoxCallback;
 import org.wicketstuff.js.ext.ExtObservable;
 
 public class ExtPropertyConverter {
+
     public static Object convert(Object property) {
         if (property == null) {
             return null;

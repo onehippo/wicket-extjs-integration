@@ -21,6 +21,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.AbstractRepeater;
 import org.apache.wicket.util.collections.ReadOnlyIterator;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitor;
 
 final class ItemsRepeater<T extends ExtComponent> extends AbstractRepeater {
     private static final long serialVersionUID = 1L;
@@ -34,8 +36,9 @@ final class ItemsRepeater<T extends ExtComponent> extends AbstractRepeater {
         }
 
         @Override
-        public void remove(final Component component) {
+        public WebMarkupContainer remove(final Component component) {
             getParent().remove(this);
+            return this;
         }
     }
 
@@ -82,12 +85,12 @@ final class ItemsRepeater<T extends ExtComponent> extends AbstractRepeater {
 
     public final List<T> getExtComponents() {
         final List<T> itemsList = new ArrayList<T>();
-        visitChildren(ExtComponent.class, new IVisitor<T>() {
+        visitChildren(ExtComponent.class, new IVisitor<T, Void>() {
 
             @Override
-            public Object component(ExtComponent component) {
-                itemsList.add((T) component);
-                return CONTINUE_TRAVERSAL_BUT_DONT_GO_DEEPER;
+            public void component(T component, IVisit<Void> visit) {
+                itemsList.add(component);
+                visit.dontGoDeeper();
             }
 
         });
