@@ -4,12 +4,12 @@
   <parent>
     <groupId>org.wicketstuff</groupId>
     <artifactId>wicket-extjs-parent</artifactId>
-    <version>0.20-SNAPSHOT</version>
+    <version>0.20</version>
   </parent>
 
   <groupId>org.wicketstuff</groupId>
   <artifactId>wicket-extjs</artifactId>
-  <version>0.20-SNAPSHOT</version>
+  <version>0.20</version>
   <name>Wicket ExtJS Integration</name>
   <description />
   <!--
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>org.wicketstuff</groupId>
       <artifactId>wicket-extjs-bundle</artifactId>
-      <version>0.20-SNAPSHOT</version>
+      <version>0.20</version>
     </dependency>
 
     <!--  JUNIT DEPENDENCY FOR TESTING -->
