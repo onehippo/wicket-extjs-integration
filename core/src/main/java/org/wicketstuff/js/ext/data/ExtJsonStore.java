@@ -57,7 +57,7 @@ public abstract class ExtJsonStore<T> extends ExtStore<T> {
             public void onRequest() {
                 final RequestCycle requestCycle = RequestCycle.get();
                 ServletWebRequest request = ((ServletWebRequest) requestCycle.getRequest());
-                String xaction = request.getQueryParameters().getParameterValue("xaction").toString();
+                String xaction = request.getPostParameters().getParameterValue("xaction").toString();
                 try {
                     IRequestHandler requestTarget;
 
@@ -96,7 +96,7 @@ public abstract class ExtJsonStore<T> extends ExtStore<T> {
     private IRequestHandler processRecords(ServletWebRequest request, Action action, String successMsg)
             throws JSONException {
         JSONArray records = new JSONArray();
-        String recordStr = request.getQueryParameters().getParameterValue(JSON_PROP_RECORDS).toString();
+        String recordStr = request.getPostParameters().getParameterValue(JSON_PROP_RECORDS).toString();
         JSONTokener tokener = new JSONTokener(recordStr);
         try {
             if (recordStr.startsWith("[")) {
@@ -135,7 +135,7 @@ public abstract class ExtJsonStore<T> extends ExtStore<T> {
         proxySb.append("new Ext.data.HttpProxy({");
         proxySb.append("url: '");
         proxySb.append(behavior.getCallbackUrl());
-        proxySb.append("', headers: { 'Wicket-Ajax': true }})");
+        proxySb.append("', headers: { 'Wicket-Ajax': true, 'Wicket-Ajax-BaseURL': Wicket.Ajax.baseUrl || '.' }})");
 
         JSONObject properties = super.getProperties();
         properties.put("proxy", new JSONIdentifier(proxySb.toString()));
