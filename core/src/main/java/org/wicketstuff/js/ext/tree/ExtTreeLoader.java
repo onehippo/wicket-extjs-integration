@@ -46,7 +46,7 @@ public abstract class ExtTreeLoader extends ExtObservable {
             @Override
             public void onRequest() {
                 final RequestCycle requestCycle = RequestCycle.get();
-                StringValue nodeId = requestCycle.getRequest().getQueryParameters().getParameterValue(NODE_ID);
+                StringValue nodeId = requestCycle.getRequest().getPostParameters().getParameterValue(NODE_ID);
                 if (nodeId != null) {
                     List<? extends ExtTreeNode> children = getChildren(nodeId.toString());
                     JSONArray data = new JSONArray();
@@ -73,13 +73,13 @@ public abstract class ExtTreeLoader extends ExtObservable {
         directFnSb.append("function(nodeId, callback) {");
         directFnSb.append("Ext.Ajax.request({ url: '");
         directFnSb.append(behavior.getCallbackUrl());
-        directFnSb.append("', headers: { 'Wicket-Ajax': true }, ");
+        directFnSb.append("', headers: { 'Wicket-Ajax': true, 'Wicket-Ajax-BaseURL': Wicket.Ajax.BaseUrl }, ");
         directFnSb.append("params: { node: nodeId },\n");
         directFnSb.append("success: function(response, opts) {\n");
         directFnSb.append("    callback(Ext.decode(response.responseText), { status: true });\n");
         directFnSb.append("  },");
         directFnSb.append("failure: function() { callback(undefined, { status: false }); }");
-        directFnSb.append("}");
+        directFnSb.append("})}");
         properties.put("directFn", new JSONIdentifier(directFnSb.toString()));
         return properties;
     }
