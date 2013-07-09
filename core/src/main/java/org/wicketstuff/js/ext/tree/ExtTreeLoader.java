@@ -70,15 +70,15 @@ public abstract class ExtTreeLoader extends ExtObservable {
     protected JSONObject getProperties() throws JSONException {
         JSONObject properties = super.getProperties();
         StringBuilder directFnSb = new StringBuilder();
-        directFnSb.append("function(nodeId, callback) {");
-        directFnSb.append("Ext.Ajax.request({ url: '");
-        directFnSb.append(behavior.getCallbackUrl());
-        directFnSb.append("', headers: { 'Wicket-Ajax': true, 'Wicket-Ajax-BaseURL': Wicket.Ajax.BaseUrl }, ");
-        directFnSb.append("params: { node: nodeId },\n");
-        directFnSb.append("success: function(response, opts) {\n");
+        directFnSb.append("function(nodeId, callback) {\n");
+        directFnSb.append(" Ext.Ajax.request({\n");
+        directFnSb.append("  url: '").append(behavior.getCallbackUrl()).append("',\n");
+        directFnSb.append("  headers: { 'Wicket-Ajax': true, 'Wicket-Ajax-BaseURL': Wicket.Ajax.baseUrl || '.' },\n");
+        directFnSb.append("  params: { node: nodeId },\n");
+        directFnSb.append("  success: function(response, opts) {\n");
         directFnSb.append("    callback(Ext.decode(response.responseText), { status: true });\n");
-        directFnSb.append("  },");
-        directFnSb.append("failure: function() { callback(undefined, { status: false }); }");
+        directFnSb.append("  },\n");
+        directFnSb.append("  failure: function() { callback(undefined, { status: false }); }\n");
         directFnSb.append("})}");
         properties.put("directFn", new JSONIdentifier(directFnSb.toString()));
         return properties;
