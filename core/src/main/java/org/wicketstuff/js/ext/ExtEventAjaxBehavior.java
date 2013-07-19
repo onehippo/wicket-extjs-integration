@@ -20,6 +20,8 @@ import java.util.Map;
 
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxAttributeName;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.CallbackParameter;
 import org.apache.wicket.request.IRequestParameters;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -111,10 +113,58 @@ public class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {
         CallbackParameter[] callbackParameters = new CallbackParameter[getParameters().length];
         int index = 0;
         for (String parameter : getParameters()) {
-            callbackParameters[index] = CallbackParameter.resolved(parameter, "arguments[" + index + "]");
+            callbackParameters[index] = CallbackParameter.explicit(parameter);
             index++;
         }
         return new JSONIdentifier(getCallbackFunction(callbackParameters));
+    }
+
+    /**
+     * FIXME: code copy & pasted from wicket; the Wicket.Ajax.ajax call is (IMO) incorrect
+     * and has been replaced by Wicket.Ajax.get
+     *
+     * Generates the body the {@linkplain #getCallbackFunction(CallbackParameter...) callback
+     * function}. To embed this code directly into a piece of javascript, make sure any context
+     * parameters are available as local variables, global variables or within the closure.
+     *
+     * @param extraParameters
+     * @return The body of the {@linkplain #getCallbackFunction(CallbackParameter...) callback
+     *         function}.
+     */
+    public CharSequence getCallbackFunctionBody(CallbackParameter... extraParameters)
+    {
+        AjaxRequestAttributes attributes = getAttributes();
+        attributes.setEventNames();
+        CharSequence attrsJson = renderAjaxAttributes(getComponent().getPage(), attributes);
+        StringBuilder sb = new StringBuilder();
+        sb.append("var attrs = ");
+        sb.append(attrsJson);
+        sb.append(";\n");
+        sb.append("var params = {");
+        boolean first = true;
+        for (CallbackParameter curExtraParameter : extraParameters)
+        {
+            if (curExtraParameter.getAjaxParameterName() != null)
+            {
+                if (!first)
+                    sb.append(',');
+                else
+                    first = false;
+                sb.append('\'')
+                        .append(curExtraParameter.getAjaxParameterName())
+                        .append("': ")
+                        .append(curExtraParameter.getAjaxParameterCode());
+            }
+        }
+        sb.append("};\n");
+        if (attributes.getExtraParameters().isEmpty())
+            sb.append("attrs." + AjaxAttributeName.EXTRA_PARAMETERS + " = params;\n");
+        else
+            sb.append("attrs." + AjaxAttributeName.EXTRA_PARAMETERS + " = Wicket.merge(attrs." +
+                    AjaxAttributeName.EXTRA_PARAMETERS + ", params);\n");
+        sb.append("var call = new Wicket.Ajax.Call();\n");
+        sb.append("call.ajax(attrs);\n");
+        return sb;
     }
 
     @Override
