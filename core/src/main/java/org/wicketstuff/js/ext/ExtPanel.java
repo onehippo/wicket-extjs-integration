@@ -82,7 +82,7 @@ public class ExtPanel extends ExtContainer {
     @Override
     protected void onBeforeRender() {
         super.onBeforeRender();
-        if (isRenderFromMarkup()) {
+        if (isRenderFromMarkup() && !hasBeenRendered()) {
             getItemsContainer().add(new AttributeAppender("style", true, new Model<String>(bodyStyle), ";"));
         }
     }

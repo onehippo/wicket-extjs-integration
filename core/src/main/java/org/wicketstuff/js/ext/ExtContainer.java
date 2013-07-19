@@ -54,9 +54,11 @@ public class ExtContainer extends ExtBoxComponent {
 
     @Override
     protected void onBeforeRender() {
-        wrapNonExtComponents();
+        if (!hasBeenRendered()) {
+            wrapNonExtComponents();
 
-        items.beforeRender();
+            items.beforeRender();
+        }
 
         // before render of parent first
         super.onBeforeRender();

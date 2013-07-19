@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtEventListener;
 import org.wicketstuff.js.ext.util.ExtPropertyConverter;
+import org.wicketstuff.js.ext.util.ExtResourcesHeaderItem;
 
 import static org.wicketstuff.js.ext.util.ExtPropertyConverter.convert;
 
@@ -70,6 +71,8 @@ public class ExtObservable extends Behavior implements IExtObservable {
             onRenderExtHead(js);
             headerResponse.render(new OnDomReadyHeaderItem(" Ext.onReady(function() { " + js.toString() + " }); "));
         }
+
+        headerResponse.render(ExtResourcesHeaderItem.get());
     }
 
     protected final boolean isExtRoot() {

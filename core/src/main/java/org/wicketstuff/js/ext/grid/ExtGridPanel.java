@@ -40,7 +40,9 @@ public class ExtGridPanel<T> extends ExtPanel {
 
     @Override
     protected void onBeforeRender() {
-        add(store);
+        if (!hasBeenRendered()) {
+            add(store);
+        }
         super.onBeforeRender();
     }
 

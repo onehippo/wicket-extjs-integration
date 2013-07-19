@@ -28,7 +28,6 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -40,7 +39,7 @@ import org.wicketstuff.js.ext.util.ExtClass;
 import org.wicketstuff.js.ext.util.ExtEventListener;
 import org.wicketstuff.js.ext.util.ExtProperty;
 import org.wicketstuff.js.ext.util.ExtPropertyConverter;
-import org.wicketstuff.js.ext.util.ExtResourcesBehaviour;
+import org.wicketstuff.js.ext.util.ExtResourcesHeaderItem;
 import org.wicketstuff.js.ext.util.ExtThemeBehavior;
 
 import static org.wicketstuff.js.ext.util.ExtPropertyConverter.convert;
@@ -72,7 +71,6 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
 
     public ExtComponent(String id) {
         super(id);
-        add(new ExtResourcesBehaviour());
     }
 
     protected boolean isRenderFromMarkup() {
@@ -93,18 +91,19 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
 
     @Override
     protected void onBeforeRender() {
-        updateContentElement();
+        if (!hasBeenRendered()) {
+            updateContentElement();
 
-        renderProperties();
+            renderProperties();
 
-        if (isRenderFromMarkup()) {
-            setOutputMarkupId(true);
-        } else {
-            setRenderBodyOnly(true);
+            if (isRenderFromMarkup()) {
+                setOutputMarkupId(true);
+            } else {
+                setRenderBodyOnly(true);
+            }
+
+            addThemeBehavior();
         }
-
-        addThemeBehavior();
-
         super.onBeforeRender();
     }
 
@@ -173,14 +172,16 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
     }
 
     @Override
-    public void renderHead(HtmlHeaderContainer container) {
-        super.renderHead(container);
+    public void renderHead(final IHeaderResponse response) {
+        super.renderHead(response);
+
+        response.render(ExtResourcesHeaderItem.get());
+
         // find out if this is the root of a ext-component structure
         if (isExtRoot()) {
-            IHeaderResponse headerResponse = container.getHeaderResponse();
             StringBuilder js = new StringBuilder();
             onRenderExtHead(js);
-            headerResponse.render(OnDomReadyHeaderItem.forScript(js.toString()));
+            response.render(OnDomReadyHeaderItem.forScript(js.toString()));
         }
     }
 

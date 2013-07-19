@@ -29,14 +29,12 @@ import org.apache.wicket.util.time.Duration;
 import org.wicketstuff.js.ext.ExtMessageBox.Buttons;
 import org.wicketstuff.js.ext.ExtMessageBox.Icons;
 import org.wicketstuff.js.ext.util.ExtClass;
-import org.wicketstuff.js.ext.util.ExtResourcesBehaviour;
+import org.wicketstuff.js.ext.util.ExtResourcesHeaderItem;
 
 @ExtClass("Ext.MessageBox")
 public class MessageBox extends ExamplesPage {
 
     public MessageBox() {
-
-        add(new ExtResourcesBehaviour());
 
         final ExtMessageBoxCallback showResult = new ExtMessageBoxCallback() {
             @Override

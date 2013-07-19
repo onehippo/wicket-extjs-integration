@@ -13,15 +13,20 @@
  */
 package org.wicketstuff.js.ext;
 
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
-import org.wicketstuff.js.ext.util.ExtResourcesBehaviour;
+import org.wicketstuff.js.ext.util.ExtResourcesHeaderItem;
 
 public class ExamplesPage extends WebPage {
 
     public ExamplesPage() {
-        add(new ExtResourcesBehaviour());
         add(new ExtExamplesResourcesBehaviour());
-
     }
 
+    @Override
+    public void renderHead(final IHeaderResponse response) {
+        super.renderHead(response);
+
+        response.render(ExtResourcesHeaderItem.get());
+    }
 }
