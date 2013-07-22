@@ -120,8 +120,8 @@ public class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {
     }
 
     /**
-     * FIXME: code copy & pasted from wicket; the Wicket.Ajax.ajax call is (IMO) incorrect
-     * and has been replaced by Wicket.Ajax.get
+     * FIXME: code copy & pasted from wicket; the Component should not be rendered as attribute
+     * as this will trigger a precondition check (whether an element with the markupId exists)
      *
      * Generates the body the {@linkplain #getCallbackFunction(CallbackParameter...) callback
      * function}. To embed this code directly into a piece of javascript, make sure any context
@@ -162,8 +162,7 @@ public class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {
         else
             sb.append("attrs." + AjaxAttributeName.EXTRA_PARAMETERS + " = Wicket.merge(attrs." +
                     AjaxAttributeName.EXTRA_PARAMETERS + ", params);\n");
-        sb.append("var call = new Wicket.Ajax.Call();\n");
-        sb.append("call.ajax(attrs);\n");
+        sb.append("Wicket.Ajax.ajax(attrs);\n");
         return sb;
     }
 

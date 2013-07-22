@@ -19,12 +19,13 @@ import java.util.List;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.RuntimeConfigurationType;
-import org.apache.wicket.ajax.WicketAjaxJQueryResourceReference;
-import org.apache.wicket.ajax.WicketEventJQueryResourceReference;
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
+import org.apache.wicket.settings.IDebugSettings;
+import org.apache.wicket.settings.IJavaScriptLibrarySettings;
 import org.wicketstuff.js.ext.ExtBundle;
 import org.wicketstuff.js.ext.ExtWicketAdapterBundle;
 
@@ -36,7 +37,8 @@ public class ExtResourcesHeaderItem extends HeaderItem {
         return INSTANCE;
     }
 
-    private ExtResourcesHeaderItem() {}
+    private ExtResourcesHeaderItem() {
+    }
 
     @Override
     public List<? extends HeaderItem> getProvidedResources() {
@@ -56,11 +58,25 @@ public class ExtResourcesHeaderItem extends HeaderItem {
         }
         resources.add(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ExtBundle.class, extBase)));
         resources.add(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ExtBundle.class, extAll)));
-        resources.add(JavaScriptHeaderItem.forReference(WicketEventJQueryResourceReference.get()));
-        resources.add(JavaScriptHeaderItem.forReference(WicketAjaxJQueryResourceReference.get()));
         resources.add(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ExtBundle.class, patchedExtAjax)));
         resources.add(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(ExtBundle.class, extAdapt)));
         return resources;
+    }
+
+    @Override
+    public Iterable<? extends HeaderItem> getDependencies() {
+        final Application application = Application.get();
+        IJavaScriptLibrarySettings jsLibrarySettings = application.getJavaScriptLibrarySettings();
+
+        final IDebugSettings debugSettings = application.getDebugSettings();
+        if (debugSettings.isAjaxDebugModeEnabled()) {
+            return Arrays.asList(JavaScriptHeaderItem.forReference(jsLibrarySettings.getWicketAjaxDebugReference()),
+                    JavaScriptHeaderItem.forScript("Wicket.Ajax.DebugWindow.enabled=true;",
+                            "wicket-ajax-debug-enable"));
+        } else {
+            ResourceReference wicketAjaxReference = jsLibrarySettings.getWicketAjaxReference();
+            return Arrays.asList(JavaScriptHeaderItem.forReference(wicketAjaxReference));
+        }
     }
 
     @Override
