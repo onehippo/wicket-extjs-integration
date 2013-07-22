@@ -94,8 +94,6 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
         if (!hasBeenRendered()) {
             updateContentElement();
 
-            renderProperties();
-
             if (isRenderFromMarkup()) {
                 setOutputMarkupId(true);
             } else {
@@ -104,6 +102,9 @@ public abstract class ExtComponent extends Panel implements IExtObservable {
 
             addThemeBehavior();
         }
+
+        renderProperties();
+
         super.onBeforeRender();
     }
 
