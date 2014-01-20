@@ -113,7 +113,8 @@ public class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {
         CallbackParameter[] callbackParameters = new CallbackParameter[getParameters().length];
         int index = 0;
         for (String parameter : getParameters()) {
-            callbackParameters[index] = CallbackParameter.converted(parameter, "JSON.stringify(" + parameter + ")");
+            final String stringifyNonStrings = "typeof " + parameter + " === 'string' ? " + parameter + " : JSON.stringify(" + parameter + ")";
+            callbackParameters[index] = CallbackParameter.converted(parameter, stringifyNonStrings);
             index++;
         }
         return new JSONIdentifier(getCallbackFunction(callbackParameters));
