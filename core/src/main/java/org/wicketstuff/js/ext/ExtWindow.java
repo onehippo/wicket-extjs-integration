@@ -14,7 +14,6 @@
 package org.wicketstuff.js.ext;
 
 import org.wicketstuff.js.ext.util.ExtClass;
-import org.wicketstuff.js.ext.util.ExtMethod;
 import org.wicketstuff.js.ext.util.ExtProperty;
 import org.wicketstuff.js.ext.util.ExtResizable;
 
@@ -176,52 +175,41 @@ public class ExtWindow extends ExtPanel {
         }
     }
 
-    @ExtMethod
     public void center() {
     }
 
-    @ExtMethod
     public void close() {
     }
 
-    @ExtMethod
     public void focus() {
     }
 
-    @ExtMethod
     public void hide() {
         hidden = true;
     }
 
-    @ExtMethod
     public void maximize() {
         maximized = true;
     }
 
-    @ExtMethod
     public void minimize() {
         maximized = false;
     }
 
-    @ExtMethod
     public void restore() {
         maximized = false;
     }
 
-    @ExtMethod
     public void setActive(Boolean active) {
     }
 
-    @ExtMethod
     public void show() {
         hidden = false;
     }
 
-    @ExtMethod
     public void toBack() {
     }
 
-    @ExtMethod
     public void toFront() {
     }
 

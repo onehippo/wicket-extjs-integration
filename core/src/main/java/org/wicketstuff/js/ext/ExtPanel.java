@@ -24,7 +24,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wicketstuff.js.ext.util.ExtClass;
-import org.wicketstuff.js.ext.util.ExtMethod;
 import org.wicketstuff.js.ext.util.ExtProperty;
 import org.wicketstuff.js.ext.util.JSONIdentifier;
 
@@ -184,7 +183,6 @@ public class ExtPanel extends ExtContainer {
         this.split = split;
     }
 
-    @ExtMethod
     public void setTitle(IModel<String> title) {
         this.title = title;
     }

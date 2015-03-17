@@ -15,7 +15,6 @@ package org.wicketstuff.js.ext;
 
 import org.apache.wicket.model.Model;
 import org.wicketstuff.js.ext.util.ExtClass;
-import org.wicketstuff.js.ext.util.ExtMethod;
 import org.wicketstuff.js.ext.util.ExtProperty;
 
 @ExtClass("Ext.TabPanel")
@@ -52,7 +51,6 @@ public class ExtTabPanel extends ExtPanel {
         this.deferredRender = deferredRender;
     }
 
-    @ExtMethod
     public void setActiveTab(Integer activeTab) {
         this.activeTab = activeTab;
     }

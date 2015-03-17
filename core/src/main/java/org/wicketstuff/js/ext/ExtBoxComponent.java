@@ -15,7 +15,6 @@ package org.wicketstuff.js.ext;
 
 import org.wicketstuff.js.ext.layout.BorderLayout.Region;
 import org.wicketstuff.js.ext.util.ExtClass;
-import org.wicketstuff.js.ext.util.ExtMethod;
 import org.wicketstuff.js.ext.util.ExtProperty;
 
 @ExtClass("Ext.BoxComponent")
@@ -54,12 +53,10 @@ public class ExtBoxComponent extends ExtComponent {
         this.autoWidth = autoWidth;
     }
 
-    @ExtMethod
     public void setWidth(Number width) {
         this.width = width;
     }
 
-    @ExtMethod
     public void setHeight(Number height) {
         this.height = height;
     }

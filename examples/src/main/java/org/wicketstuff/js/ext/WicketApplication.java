@@ -42,7 +42,6 @@ public class WicketApplication extends WebApplication {
         mountPage("tabs/tabs.html", Tabs.class);
         mountPage("menu/menu.html", MenuPage.class);
         mountPage("grid/array-grid.html", ArrayGrid.class);
-        mountPage("message-box/msg-box.html", MessageBox.class);
         mountPage("layout/column.html", ColumnLayoutExample.class);
         mountPage("layout/table.html", TableLayoutExample.class);
         mountPage("form/dynamic.html", DynamicForms.class);
