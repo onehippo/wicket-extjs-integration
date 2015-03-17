@@ -25,6 +25,11 @@
   <repositories>
   </repositories>
 
+  <properties>
+    <aspectj.version>1.8.2</aspectj.version>
+    <maven.aspectj.version>1.7</maven.aspectj.version>
+  </properties>
+
   <dependencies>
     <!--  WICKET DEPENDENCIES -->
     <dependency>
@@ -48,7 +53,7 @@
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>
-      <version>1.8.2</version>
+      <version>${aspectj.version}</version>
     </dependency>
 
     <!-- LOGGING DEPENDENCIES - LOG4J -->
@@ -161,11 +166,11 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
-        <version>1.7</version>
+        <version>${maven.aspectj.version}</version>
         <configuration>
           <verbose>true</verbose>
           <showWeaveInfo>true</showWeaveInfo>
-          <complianceLevel>1.8</complianceLevel>
+          <complianceLevel>1.6</complianceLevel>
         </configuration>
         <executions>
           <execution>
@@ -177,4 +182,17 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>jdk-6</id>
+      <activation>
+        <jdk>1.6</jdk>
+      </activation>
+      <properties>
+        <aspectj.version>1.6.7</aspectj.version>
+        <maven.aspectj.version>1.3</maven.aspectj.version>
+      </properties>
+    </profile>
+  </profiles>
 </project>
