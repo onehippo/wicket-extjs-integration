@@ -37,4 +37,4 @@ win = new Ext.Window({
 ```
 
 ## Licenses ##
-Please see [the Licensing page on the WIKI](http://code.google.com/p/wicket-extjs-integration/wiki/Licensing) for details on licensing.
+Please see [the Licensing page on the WIKI](../../wiki/Licensing) for details on licensing.
