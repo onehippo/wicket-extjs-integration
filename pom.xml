@@ -13,7 +13,7 @@
 
     <maven.plugin.resources.version>2.6</maven.plugin.resources.version>
 
-    <wicket.version>6.8.0</wicket.version>
+    <wicket.version>6.19.0</wicket.version>
     <jetty.version>6.1.25</jetty.version>
   </properties>
 
