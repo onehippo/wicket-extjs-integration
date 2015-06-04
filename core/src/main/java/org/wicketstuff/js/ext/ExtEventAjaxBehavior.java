@@ -88,6 +88,8 @@ public class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {
                     } else if (value.startsWith("{")) {
                         JSONTokener tokener = new JSONTokener(value);
                         jsonObjects.put(new JSONObject(tokener));
+                    } else if ("null".equals(value)) {
+                    	jsonObjects.put(JSONObject.NULL);
                     } else {
                         jsonObjects.put(value);
                     }
