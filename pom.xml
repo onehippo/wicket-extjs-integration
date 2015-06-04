@@ -38,9 +38,9 @@
   </modules>
 
   <scm>
-    <connection>scm:svn:http://wicket-extjs-integration.googlecode.com/svn/tags/wicket-extjs-parent-0.24</connection>
-    <developerConnection>scm:svn:https://wicket-extjs-integration.googlecode.com/svn/tags/wicket-extjs-parent-0.24</developerConnection>
-    <url>http://wicket-extjs-integration.googlecode.com/svn/tags/wicket-extjs-parent-0.24</url>
+    <connection>scm:git:git@github.com:onehippo/wicket-extjs-integration.git</connection>
+    <developerConnection>scm:git:git@github.com:onehippo/wicket-extjs-integration.git</developerConnection>
+    <url>https://github.com/onehippo/wicket-extjs-integration</url>
   </scm>
 
   <build>
