@@ -38,9 +38,9 @@
   </modules>
 
   <scm>
-    <connection>scm:git:git@github.com:fvlankvelt/wicket-extjs-integration.git</connection>
-    <developerConnection>scm:git:git@github.com:fvlankvelt/wicket-extjs-integration.git</developerConnection>
-    <url>http://github.com/fvlankvelt/wicket-extjs-integration</url>
+    <connection>scm:git:git@github.com:onehippo/wicket-extjs-integration.git</connection>
+    <developerConnection>scm:git:git@github.com:onehippo/wicket-extjs-integration.git</developerConnection>
+    <url>http://github.com/onehippo/wicket-extjs-integration</url>
   </scm>
 
   <build>
