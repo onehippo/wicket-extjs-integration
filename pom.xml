@@ -14,10 +14,22 @@
     <maven.plugin.resources.version>2.6</maven.plugin.resources.version>
   </properties>
 
-  <!--
-    TODO <organization> <name>company name</name> <url>company url</url>
-    </organization>
-  -->
+  <!-- Where to publish the project data -->
+  <distributionManagement>
+    <repository>
+      <name>Hippo Maven 2 Repository</name>
+      <id>hippo-maven2</id>
+      <url>https://maven.onehippo.com/content/repositories/releases/</url>
+      <uniqueVersion>false</uniqueVersion>
+    </repository>
+    <snapshotRepository>
+      <id>hippo-maven2-snapshots</id>
+      <name>Hippo Maven 2 Snapshots Repository</name>
+      <url>https://maven.onehippo.com/content/repositories/snapshots/</url>
+      <uniqueVersion>false</uniqueVersion>
+    </snapshotRepository>
+  </distributionManagement>
+
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
