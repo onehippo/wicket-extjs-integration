@@ -33585,7 +33585,7 @@ Ext.QuickTip = Ext.extend(Ext.ToolTip, {
             cfg = this.tagConfig;
             ttp = t.qtip || Ext.fly(t).getAttribute(cfg.attribute, cfg.namespace);
         }
-        return ttp;
+        return Ext.util.Format.htmlEncode(ttp);
     },
 
     
