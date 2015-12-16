@@ -52,7 +52,7 @@
   <scm>
     <connection>scm:git:git@github.com:onehippo/wicket-extjs-integration.git</connection>
     <developerConnection>scm:git:git@github.com:onehippo/wicket-extjs-integration.git</developerConnection>
-    <url>http://github.com/onehippo/wicket-extjs-integration</url>
+    <url>https://github.com/onehippo/wicket-extjs-integration</url>
   </scm>
 
   <build>
