@@ -146,7 +146,7 @@ public abstract class ExtJsonStore<T> extends ExtStore<T> {
 
     /**
      * @return the array of records in this store.
-     * @throws JSONException
+     * @throws JSONException when no valid JSON could be produced
      */
     protected abstract JSONArray getData() throws JSONException;
 

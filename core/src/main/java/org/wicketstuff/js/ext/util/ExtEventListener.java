@@ -24,7 +24,7 @@ public abstract class ExtEventListener implements Serializable {
     /**
      * Callback method that is invoked for client-side events.
      *
-     * @param target
+     * @param target Ajax request target
      * @deprecated see {@link #onEvent(AjaxRequestTarget, java.util.Map)}
      */
     @Deprecated
@@ -34,8 +34,8 @@ public abstract class ExtEventListener implements Serializable {
     /**
      * Callback method with parameters retrieved from the request.
      *
-     * @param target
-     * @param parameters
+     * @param target Ajax request target
+     * @param parameters event parameters
      */
     public void onEvent(AjaxRequestTarget target, Map<String, JSONArray> parameters) {
         onEvent(target);

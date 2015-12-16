@@ -121,14 +121,14 @@ public class ExtEventAjaxBehavior extends AbstractDefaultAjaxBehavior {
     }
 
     /**
-     * FIXME: code copy & pasted from wicket; the Component should not be rendered as attribute
+     * FIXME: code copy &amp; pasted from wicket; the Component should not be rendered as attribute
      * as this will trigger a precondition check (whether an element with the markupId exists)
      *
      * Generates the body the {@linkplain #getCallbackFunction(CallbackParameter...) callback
      * function}. To embed this code directly into a piece of javascript, make sure any context
      * parameters are available as local variables, global variables or within the closure.
      *
-     * @param extraParameters
+     * @param extraParameters parameters for the callback
      * @return The body of the {@linkplain #getCallbackFunction(CallbackParameter...) callback
      *         function}.
      */
