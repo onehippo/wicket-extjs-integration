@@ -91,6 +91,7 @@ public class ExtObservable extends Behavior implements IExtObservable {
      * handled by the ExtProperty annotation.
      *
      * @return the properties of this observable
+     * @throws JSONException when no valid JSON could be produced
      */
     protected JSONObject getProperties() throws JSONException {
         JSONObject properties = new JSONObject();
