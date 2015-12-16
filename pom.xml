@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.wicketstuff</groupId>
   <artifactId>wicket-extjs-parent</artifactId>
-  <version>0.25.2-SNAPSHOT</version>
+  <version>0.25.1-SNAPSHOT</version>
   <name>Wicket ExtJS Integration - parent</name>
   <description />
   <packaging>pom</packaging>
@@ -53,7 +53,6 @@
     <connection>scm:git:git@github.com:onehippo/wicket-extjs-integration.git</connection>
     <developerConnection>scm:git:git@github.com:onehippo/wicket-extjs-integration.git</developerConnection>
     <url>http://github.com/onehippo/wicket-extjs-integration</url>
-    <tag>HEAD</tag>
   </scm>
 
   <build>

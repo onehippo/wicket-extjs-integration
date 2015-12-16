@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.wicketstuff</groupId>
     <artifactId>wicket-extjs-parent</artifactId>
-    <version>0.25.2-SNAPSHOT</version>
+    <version>0.25.1-SNAPSHOT</version>
   </parent>
 
   <groupId>org.wicketstuff</groupId>
