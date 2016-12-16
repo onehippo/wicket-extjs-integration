@@ -15,11 +15,17 @@ package org.wicketstuff.js.ext.util;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class ExtEventListener implements Serializable {
+
+    private static final Logger log = LoggerFactory.getLogger(ExtEventListener.class);
 
     /**
      * Callback method that is invoked for client-side events.
@@ -39,5 +45,20 @@ public abstract class ExtEventListener implements Serializable {
      */
     public void onEvent(AjaxRequestTarget target, Map<String, JSONArray> parameters) {
         onEvent(target);
+    }
+
+    /**
+     * Extract a singular parameter value from an event's parameters.
+     */
+    protected static Optional<String> getParameter(final String name, final Map<String, JSONArray> parameters) {
+        final JSONArray values = parameters.get(name);
+        if (values != null && values.length() > 0) {
+            try {
+                return Optional.of(values.get(0).toString());
+            } catch (JSONException e) {
+                log.warn("Invalid JSON parameter '{}'", name, e);
+            }
+        }
+        return Optional.empty();
     }
 }
