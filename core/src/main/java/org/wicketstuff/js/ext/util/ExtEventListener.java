@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class ExtEventListener implements Serializable {
 
-    private final Logger log = LoggerFactory.getLogger(ExtEventListener.class);
+    private static final Logger log = LoggerFactory.getLogger(ExtEventListener.class);
 
     /**
      * Callback method that is invoked for client-side events.
@@ -50,7 +50,7 @@ public abstract class ExtEventListener implements Serializable {
     /**
      * Extract a singular parameter value from an event's parameters.
      */
-    protected Optional<String> getParameter(final String name, final Map<String, JSONArray> parameters) {
+    protected static Optional<String> getParameter(final String name, final Map<String, JSONArray> parameters) {
         final JSONArray values = parameters.get(name);
         if (values != null && values.length() > 0) {
             try {
